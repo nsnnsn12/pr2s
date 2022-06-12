@@ -12,8 +12,8 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Client {
+public class JoinInfo {
     @Id
-    @Column(name = "client_id") @GeneratedValue
+    @Column(name = "join_info_id") @GeneratedValue
     private Long id;
 }

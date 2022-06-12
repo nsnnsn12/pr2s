@@ -2,6 +2,7 @@ package com.metacrew.pr2s.entity;
 
 import com.metacrew.pr2s.entity.base.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class PublicInstitution extends BaseEntity {
     @Id
     @Column(name = "public_id") @GeneratedValue
