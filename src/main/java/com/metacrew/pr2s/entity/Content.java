@@ -9,6 +9,7 @@ import javax.persistence.*;
 /**
  * Content 테이블과 매핑되는 엔티티이다.
  * 게시글 정보를 수정 및 조회할 수 있다.
+ * 이슈 생성을 위해 테스트로 글 작성
  * @author sunggyu
  * @since 2022.06.12
  */
