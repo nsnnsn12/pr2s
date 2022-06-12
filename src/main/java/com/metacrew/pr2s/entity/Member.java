@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Client {
+public class Member {
     @Id
     @Column(name = "client_id") @GeneratedValue
     private Long id;

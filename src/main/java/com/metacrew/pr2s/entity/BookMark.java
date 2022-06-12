@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Favorites {
+public class BookMark {
     @Id
     @Column(name = "favorites_id") @GeneratedValue
     private Long id;
