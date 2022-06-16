@@ -8,10 +8,10 @@ assignees: ''
 ---
 
 #### Description
-A clear and concise description of what the issue is about.
+기능에 대해서 설명
+ex) 중복 방지
 
 #### Tasks
-Include specific tasks in the order they need to be done in. Include links to specific lines of code where the task should happen at.
-- [ ] Task 1
-- [ ] Task 2
-- [ ] Task 3
+- [ ] 해당 issue와 연관된 todo 기능 구현
+- [ ] ex) 회원가입
+- [ ] 구현해야 할 것 3
