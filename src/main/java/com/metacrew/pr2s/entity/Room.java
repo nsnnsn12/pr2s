@@ -16,4 +16,9 @@ public class Room {
     @Id
     @Column(name = "room_id") @GeneratedValue
     private Long id;
+
+    @Column
+    private String title;
+    
+    //// TODO: 2022-06-16 File 매핑작업 필요 
 }
