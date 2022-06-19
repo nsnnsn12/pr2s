@@ -1,13 +1,11 @@
 package com.metacrew.pr2s.entity;
 
+import com.sun.xml.bind.v2.TODO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Member 테이블과 매핑되는 엔티티이다.
@@ -21,4 +19,23 @@ public class Member {
     @Id
     @Column(name = "client_id") @GeneratedValue
     private Long id;
+
+    @JoinColumn(name = "address_id")
+    @OneToOne
+    private Address address;
+    @Column
+    private String email;
+    @Column
+    private String telNo;
+    @Column
+    private String registId;
+    @Column
+    private String password;
+    @Column
+    private String name;
+    @Column
+    private boolean isDeleted;
+
+    // TODO: 2022-06-19 gender 관련 enum 타입 필요
+    // TODO: 2022-06-19 File 객체 정의 필요
 }
