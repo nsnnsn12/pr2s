@@ -14,6 +14,5 @@ ex) feat/6-login -> develop
 ### Screenshot
 -
 
-### Issue 해결 여부(하나 이상의 타입을 선택해주세요)
-- [ ] 해결
-- [ ] TODO 존재
+### Issue 해결 여부(해결 or TODO)
+- TODO : #{issueNumber} (해결인 경우 필요 없음)
