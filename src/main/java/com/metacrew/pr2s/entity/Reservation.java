@@ -1,19 +1,43 @@
 package com.metacrew.pr2s.entity;
 
+import com.metacrew.pr2s.entity.base.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Reservation {
+public class Reservation extends BaseEntity {
     @Id
     @Column(name = "reservation_id") @GeneratedValue
     private Long id;
+
+    @JoinColumn(name = "room_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Room room;
+
+    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
+
+    // TODO: 2022-06-23 period 객체 정의 필요
+
+    @Column
+    private Boolean isReserveApproved;
+
+    @Column
+    private LocalDateTime reserveApproveDate;
+
+    @Column
+    private int peopleCount;
+
+    @Column
+    private String usingMemberName;
+
+    @Column
+    private String usingMemberTelNumber;
 }
