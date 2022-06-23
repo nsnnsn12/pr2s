@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * File 테이블과 매핑되는 엔티티이다.
+ * @author hyeonwoo
+ * @since 2022.06.23
+ */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
