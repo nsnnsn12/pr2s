@@ -17,11 +17,11 @@ public class Room extends BaseEntity {
     private Long id;
 
     @JoinColumn(name = "address_id")
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Address address;
 
     @JoinColumn(name = "institution_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Institution institution;
 
     @JoinColumn(name = "file_id")
