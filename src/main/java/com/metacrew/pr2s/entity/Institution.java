@@ -26,12 +26,17 @@ public class Institution extends BaseEntity {
     private String name;
 
     @Column
-    private boolean isDeleted;
+    private Boolean isApprovedRegistration;
+
+    @Column
+    private String telNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
 
-    //// TODO: 2022-06-16 File 엔티티 객체 매핑 필요
+    // TODO: 2022-06-16 File 엔티티 객체 매핑 필요
+    // TODO: 2022-06-23 workDay Enum Type 정의 필요
+    // TODO: 2022-06-23 startTime endTime 기간 임베디드 타입 정의 필요
 
 }
