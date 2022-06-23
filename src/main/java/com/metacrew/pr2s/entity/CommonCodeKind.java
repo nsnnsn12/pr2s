@@ -24,8 +24,8 @@ public class CommonCodeKind extends BaseEntity {
     private Long id;
 
     @Column
-    private String knd_name;
+    private String kndName;
 
     @Column
-    private String knd_explain;
+    private String kndExplain;
 }
