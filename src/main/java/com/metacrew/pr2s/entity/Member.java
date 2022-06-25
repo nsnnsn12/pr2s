@@ -1,5 +1,6 @@
 package com.metacrew.pr2s.entity;
 
+import com.metacrew.pr2s.entity.enums.FileType;
 import com.sun.xml.bind.v2.TODO;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import javax.persistence.*;
 @Getter
 public class Member {
     @Id
-    @Column(name = "client_id") @GeneratedValue
+    @Column(name = "member_id") @GeneratedValue
     private Long id;
 
     @JoinColumn(name = "address_id")
@@ -37,5 +38,7 @@ public class Member {
     private boolean isDeleted;
 
     // TODO: 2022-06-19 gender 관련 enum 타입 필요
-    // TODO: 2022-06-19 File 객체 정의 필요
+    @Enumerated(EnumType.STRING)
+    @Column
+    private FileType fileType;
 }
