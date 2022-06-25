@@ -8,4 +8,5 @@ public interface MemberReservationService extends ReservationService{
     // TODO: 2022-06-25 예약수정 메소드
     // TODO: 2022-06-25 예약신청 메소드
     // TODO: 2022-06-25 예약취소 메소드
+    // TODO: 2022-06-25 대여이력 조회 메소드
 }
