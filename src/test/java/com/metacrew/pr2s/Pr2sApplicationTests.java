@@ -19,7 +19,6 @@ class Pr2sApplicationTests {
 	@Test
 	void contextLoads() {
 		Institution institution = em.find(Institution.class, 1L);
-
 	}
 
 }
