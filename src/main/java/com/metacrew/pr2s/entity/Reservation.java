@@ -1,6 +1,7 @@
 package com.metacrew.pr2s.entity;
 
 import com.metacrew.pr2s.entity.base.BaseEntity;
+import com.metacrew.pr2s.entity.embedded.Period;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,8 @@ public class Reservation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    // TODO: 2022-06-23 period 객체 정의 필요
+    @Embedded
+    private Period period;
 
     @Column
     private Boolean isReserveApproved;
