@@ -18,9 +18,7 @@ class Pr2sApplicationTests {
 	EntityManager em;
 	@Test
 	void contextLoads() {
-		Institution institution = em.find(Institution.class, 1);
-		Address address = institution.getAddress();
-
+		Institution institution = em.find(Institution.class, 1L);
 	}
 
 }
