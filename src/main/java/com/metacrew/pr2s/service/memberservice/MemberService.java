@@ -1,4 +1,4 @@
-package com.metacrew.pr2s.service;
+package com.metacrew.pr2s.service.memberservice;
 /**
  * 사용자가 자신의 정보를 관리하기 위한 서비스 로직을 가지고 있는 클래스이다.
  * @author sunggyu
