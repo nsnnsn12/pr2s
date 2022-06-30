@@ -1,9 +1,6 @@
 # PR2S 
 ![header](https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Public%20Room%20Reserve%20System&fontColor=&fontSize=50&fontAlign=50&desc=공공기관%20공실%20대여%20시스템&descSize=25&descAlign=70&descAlignY=75)
-
-![footer](https://capsule-render.vercel.app/api?section=footer)
 <br>
-<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fnsnnsn12%2Fpr2s&count_bg=%23FF0041&title_bg=%23555555&icon=firefoxbrowser.svg&icon_color=%23FFFFFF&title=hits&edge_flat=false"/></a>
 <br>
 <br>
 <br>
@@ -21,33 +18,27 @@
 <br>   
 ## ⛏️ 프로젝트 구조
 ##### 백엔드
-- JDK 11
-- Gradle<img src="https://img.shields.io/badge/문자-색코드?style=for-the-badge&logo=이미지 이름&logoColor=black">
-- <img src="https://img.shields.io/badge/문자-색코드?style=for-the-badge&logo=이미지 Spring Boot&logoColor=black">
+- <img src="https://img.shields.io/badge/JDK 11-007396?style=for-the-badge&logo=Jacva&logoColor=white">
+- <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white">
+-  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">
 - JPA - Hibernate
 
 ##### 프론트
-- ThymeLeaf
+- <img src="https://img.shields.io/badge/ThymeLeaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white">
 
 ##### 서버
-- AWS EC2
-- AWS RDB
-- Cent OS
+- <img src="https://img.shields.io/badge/AWS EC2-FF9900?style=for-the-badge&logo=Amazon ECS&logoColor=white">
+- <img src="https://img.shields.io/badge/AWS RDB-4053D6?style=for-the-badge&logo=Amazon DynamoDB&logoColor=white">
+- <img src="https://img.shields.io/badge/CentOS-262577?style=for-the-badge&logo=CentOS&logoColor=white">
 
 ##### 협업툴
-- [Git][Git]
-
-[Git]: https://github.com/nsnnsn12/pr2s "PR2S GITHUB"
-
-- Google Sheet
-- [Notion][Notion]
-
-[Notion]: https://www.notion.so/fad60bd617dd45ecbdd1fccccf2bfa31 "PR2S NOTION"
-
-- Google Meet
+- <a href="https://github.com/nsnnsn12/pr2s" target="_blank"><img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
+- <a href="" target="_blank"><img src="https://img.shields.io/badge/Google Sheets-34A853?style=for-the-badge&logo=Google Sheets&logoColor=white">
+- <a href="https://www.notion.so/fad60bd617dd45ecbdd1fccccf2bfa31" target="_blank"><img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">
+- <img src="https://img.shields.io/badge/Google Meet-00897B?style=for-the-badge&logo=Google Meet&logoColor=white">
 
 ##### DBMS
-- Maria DB - 운영DB
+- <img src="https://img.shields.io/badge/Maria DB - 운영DB-003545?style=for-the-badge&logo=MariaDB&logoColor=white">
 - H2 - 로컬DB
 
 ##### 문서
@@ -73,3 +64,8 @@
 조원 행동대장 👊 오나현 <br>
 조원 롯데스파이 🕵️ 박현우 <br>
 조원 노예 🐴 손동민 <br>
+<br>
+<br>
+<a href="https://hits.seeyoufarm.com"><div align=center><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fnsnnsn12%2Fpr2s&count_bg=%23FF0041&title_bg=%23555555&icon=firefoxbrowser.svg&icon_color=%23FFFFFF&title=hits&edge_flat=false"/></div></a>
+
+![footer](https://capsule-render.vercel.app/api?section=footer&color=random)
