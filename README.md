@@ -1,6 +1,9 @@
 # PR2S 
-Public Room Reserve System
-공공기관 공실 대여 시스템
+![header](https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Public%20Room%20Reserve%20System&fontColor=&fontSize=50&fontAlign=50&desc=공공기관%20공실%20대여%20시스템&descSize=25&descAlign=70&descAlignY=75)
+
+![footer](https://capsule-render.vercel.app/api?section=footer)
+<br>
+<a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fnsnnsn12%2Fpr2s&count_bg=%23FF0041&title_bg=%23555555&icon=firefoxbrowser.svg&icon_color=%23FFFFFF&title=hits&edge_flat=false"/></a>
 <br>
 <br>
 <br>
@@ -19,8 +22,8 @@ Public Room Reserve System
 ## ⛏️ 프로젝트 구조
 ##### 백엔드
 - JDK 11
-- Gradle
-- Spring Boot
+- Gradle<img src="https://img.shields.io/badge/문자-색코드?style=for-the-badge&logo=이미지 이름&logoColor=black">
+- <img src="https://img.shields.io/badge/문자-색코드?style=for-the-badge&logo=이미지 Spring Boot&logoColor=black">
 - JPA - Hibernate
 
 ##### 프론트
