@@ -1,6 +1,7 @@
 package com.metacrew.pr2s.entity;
 
 import com.metacrew.pr2s.entity.base.BaseEntity;
+import com.metacrew.pr2s.entity.enums.WorkDay;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,8 +36,12 @@ public class Institution extends BaseEntity {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private WorkDay workday;
+
+
     // TODO: 2022-06-16 File 엔티티 객체 매핑 필요
-    // TODO: 2022-06-23 workDay Enum Type 정의 필요
     // TODO: 2022-06-23 startTime endTime 기간 임베디드 타입 정의 필요
 
 }
