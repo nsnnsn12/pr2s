@@ -48,7 +48,9 @@ Public Room Reserve System
 - H2 - 로컬DB
 
 ##### 문서
-- 기능명세서 - Google Sheet
+- [기능명세서][기능명세서]
+
+[기능명세서]: 10sGIVokd4jCGOZaaMUWJflwkWZVt1JfnQHN0Qb7fANw "Google Sheet"
 - JAVA Doc
 - 개발 규칙 가이드
 - ERD : 
