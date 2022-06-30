@@ -18,39 +18,35 @@
 <br>   
 ## ⛏️ 프로젝트 구조
 ##### 백엔드
-- <img src="https://img.shields.io/badge/JDK 11-007396?style=for-the-badge&logo=Jacva&logoColor=white">
-- <img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white">
--  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">
-- JPA - Hibernate
+- <img src="https://img.shields.io/badge/JDK 11-007396?style=flat&logo=Jacva&logoColor=white">
+- <img src="https://img.shields.io/badge/Gradle-02303A?style=flat&logo=Gradle&logoColor=white">
+-  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=Spring Boot&logoColor=white">
+- <img src="https://img.shields.io/badge/JPA - Hibernate-brightgreen?style=flat&logo=&logoColor=white">
 
 ##### 프론트
-- <img src="https://img.shields.io/badge/ThymeLeaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white">
+- <img src="https://img.shields.io/badge/ThymeLeaf-005F0F?style=flat&logo=Thymeleaf&logoColor=white">
 
 ##### 서버
-- <img src="https://img.shields.io/badge/AWS EC2-FF9900?style=for-the-badge&logo=Amazon ECS&logoColor=white">
-- <img src="https://img.shields.io/badge/AWS RDB-4053D6?style=for-the-badge&logo=Amazon DynamoDB&logoColor=white">
-- <img src="https://img.shields.io/badge/CentOS-262577?style=for-the-badge&logo=CentOS&logoColor=white">
+- <img src="https://img.shields.io/badge/AWS EC2-FF9900?style=flat&logo=Amazon ECS&logoColor=white">
+- <img src="https://img.shields.io/badge/AWS RDB-4053D6?style=flat&logo=Amazon DynamoDB&logoColor=white">
+- <img src="https://img.shields.io/badge/CentOS-262577?style=flat&logo=CentOS&logoColor=white">
 
 ##### 협업툴
-- <a href="https://github.com/nsnnsn12/pr2s" target="_blank"><img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
-- <a href="" target="_blank"><img src="https://img.shields.io/badge/Google Sheets-34A853?style=for-the-badge&logo=Google Sheets&logoColor=white">
-- <a href="https://www.notion.so/fad60bd617dd45ecbdd1fccccf2bfa31" target="_blank"><img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">
-- <img src="https://img.shields.io/badge/Google Meet-00897B?style=for-the-badge&logo=Google Meet&logoColor=white">
+- <a href="https://github.com/nsnnsn12/pr2s" target="_blank"><img src="https://img.shields.io/badge/Git-F05032?style=flat&logo=Git&logoColor=white">
+- <a href="" target="_blank"><img src="https://img.shields.io/badge/Google Sheets-34A853?style=flat&logo=Google Sheets&logoColor=white">
+- <a href="https://www.notion.so/fad60bd617dd45ecbdd1fccccf2bfa31" target="_blank"><img src="https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white">
+- <img src="https://img.shields.io/badge/Google Meet-00897B?style=flat&logo=Google Meet&logoColor=white">
 
 ##### DBMS
-- <img src="https://img.shields.io/badge/Maria DB - 운영DB-003545?style=for-the-badge&logo=MariaDB&logoColor=white">
-- H2 - 로컬DB
+- <img src="https://img.shields.io/badge/Maria DB - 운영DB-003545?style=flat&logo=MariaDB&logoColor=white">
+- <img src="https://img.shields.io/badge/H2 - 로컬DB-lightgrey?style=flat&logo=&logoColor=white">
 
 ##### 문서
-- [기능명세서][기능명세서]
+- <a href="https://docs.google.com/spreadsheets/d/10sGIVokd4jCGOZaaMUWJflwkWZVt1JfnQHN0Qb7fANw/edit#gid=0" target="_blank"><img src="https://img.shields.io/badge/기능명세서-informational?style=flat&logo=&logoColor=white">
+- <img src="https://img.shields.io/badge/JAVA Doc-success?style=flat&logo=&logoColor=white">
+- <img src="https://img.shields.io/badge/개발 규칙 가이드-important?style=flat&logo=&logoColor=white">
+- <a href="https://www.erdcloud.com/d/Hnit3ncEPttC8NTwB" target="_blank"><img src="https://img.shields.io/badge/ERD-ERD CLOUD-blueviolet?style=flat&logo=&logoColor=white">
 
-[기능명세서]: 10sGIVokd4jCGOZaaMUWJflwkWZVt1JfnQHN0Qb7fANw "Google Sheet"
-- JAVA Doc
-- 개발 규칙 가이드
-- ERD : 
-[ERD CLOUD][ERD CLOUD]
-
-[ERD CLOUD]: https://www.erdcloud.com/d/Hnit3ncEPttC8NTwB "섬세하시군요"
 <br>
 <br>
 <br>
