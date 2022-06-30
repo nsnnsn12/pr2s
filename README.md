@@ -17,10 +17,12 @@
 <br>
 <br>   
 ## ⛏️ 프로젝트 구조
+<img src="https://user-images.githubusercontent.com/85435031/176792417-6bb40241-7fc9-4e94-ba1e-9ea09b64ad7d.png" width="600" height="450"/>
+
 ##### 백엔드
 - <img src="https://img.shields.io/badge/JDK 11-007396?style=flat&logo=Jacva&logoColor=white">
 - <img src="https://img.shields.io/badge/Gradle-02303A?style=flat&logo=Gradle&logoColor=white">
--  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=Spring Boot&logoColor=white">
+- <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=Spring Boot&logoColor=white">
 - <img src="https://img.shields.io/badge/JPA - Hibernate-brightgreen?style=flat&logo=&logoColor=white">
 
 ##### 프론트
@@ -43,18 +45,18 @@
 
 ##### 문서
 - <a href="https://docs.google.com/spreadsheets/d/10sGIVokd4jCGOZaaMUWJflwkWZVt1JfnQHN0Qb7fANw/edit#gid=0" target="_blank"><img src="https://img.shields.io/badge/기능명세서-informational?style=flat&logo=&logoColor=white">
-- <img src="https://img.shields.io/badge/JAVA Doc-success?style=flat&logo=&logoColor=white">
-- <img src="https://img.shields.io/badge/개발 규칙 가이드-important?style=flat&logo=&logoColor=white">
-- <a href="https://www.erdcloud.com/d/Hnit3ncEPttC8NTwB" target="_blank"><img src="https://img.shields.io/badge/ERD-ERD CLOUD-blueviolet?style=flat&logo=&logoColor=white">
+- <a href="https://www.erdcloud.com/d/Hnit3ncEPttC8NTwB" target="_blank"><img src="https://img.shields.io/badge/ERD-ERD CLOUD-blueviolet?style=flat&logo=&logoColor=white">   
+- <img src="https://img.shields.io/badge/JAVA Doc-success?style=flat&logo=&logoColor=white">   
+- <a href="https://continuous-lumber-2f3.notion.site/2bc03ab2f4364117a84f2d183a88a375" target="_blank"><img src="https://img.shields.io/badge/개발 규칙 가이드-important?style=flat&logo=&logoColor=white">   
 
 <br>
 <br>
 <br>
-
+  
 ## 프로젝트 참여 인원 
 조장 노예주인 🥕 노성규 <br>
 [메타넷 수장 노성규 단독 인터뷰 영상][메타넷 수장 노성규 단독 인터뷰 영상]
-
+  
 [메타넷 수장 노성규 단독 인터뷰 영상]: https://www.youtube.com/watch?v=stQT26gjjbI "메타넷 일진 인터뷰 영상"
 
 조원 행동대장 👊 오나현 <br>
