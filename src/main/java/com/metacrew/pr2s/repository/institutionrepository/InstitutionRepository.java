@@ -1,4 +1,4 @@
-package com.metacrew.pr2s.repository;
+package com.metacrew.pr2s.repository.institutionrepository;
 
 import com.metacrew.pr2s.entity.Institution;
 import org.springframework.data.jpa.repository.JpaRepository;

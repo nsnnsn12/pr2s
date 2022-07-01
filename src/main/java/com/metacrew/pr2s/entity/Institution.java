@@ -1,10 +1,12 @@
 package com.metacrew.pr2s.entity;
 
 import com.metacrew.pr2s.entity.base.BaseEntity;
+import com.metacrew.pr2s.entity.embedded.Period;
 import com.metacrew.pr2s.entity.enums.WorkDay;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -40,8 +42,15 @@ public class Institution extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private WorkDay workday;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "file_id")
+    private File file;
 
-    // TODO: 2022-06-16 File 엔티티 객체 매핑 필요
-    // TODO: 2022-06-23 startTime endTime 기간 임베디드 타입 정의 필요
+    @Embedded
+    private Period period;
+
+    public void deleteInstitution(){
+        // TODO: 2022-07-01 BaseEntity 삭제 메소드 구현 후 시작 
+    }
 
 }
