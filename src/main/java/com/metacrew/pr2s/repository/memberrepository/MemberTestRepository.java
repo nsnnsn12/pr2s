@@ -1,4 +1,4 @@
-package com.metacrew.pr2s.repository;
+package com.metacrew.pr2s.repository.memberrepository;
 
 import com.metacrew.pr2s.entity.Member;
 import lombok.RequiredArgsConstructor;
