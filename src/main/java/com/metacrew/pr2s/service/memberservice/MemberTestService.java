@@ -1,7 +1,7 @@
 package com.metacrew.pr2s.service.memberservice;
 
 import com.metacrew.pr2s.entity.Member;
-import com.metacrew.pr2s.repository.MemberTestRepository;
+import com.metacrew.pr2s.repository.memberrepository.MemberTestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
