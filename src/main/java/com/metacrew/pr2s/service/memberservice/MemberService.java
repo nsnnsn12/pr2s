@@ -9,4 +9,5 @@ public interface MemberService {
     // TODO: 2022-06-25 회원정보수정 메소드
     // TODO: 2022-06-25 회원탈퇴 메소드
     // TODO: 2022-06-25 기관 가입 요청 조회 메소드
+
 }
