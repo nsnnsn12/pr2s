@@ -79,4 +79,17 @@ public class MemberTestService implements MemberService{
         member.updateForMyPage(myPageDto);
         return member.getId();
     }
+
+    /**
+     * 회원탈퇴
+     * 회원탈퇴할 entity key를 입력받아
+     * 회원탈퇴 처리한다.
+     * @author sunggyu
+     * @since 2022.07.01
+     * @param id 회원탈퇴할 entity key
+     */
+    public void removeAccount(Long id){
+        Member findMember = memberTestRepository.getMember(id);
+        if(!findMember.getIsDeleted()) findMember.deleted();
+    }
 }
