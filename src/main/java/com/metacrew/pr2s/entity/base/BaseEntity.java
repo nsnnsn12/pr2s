@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class BaseEntity extends BaseTimeEntity{
     @Column
-    private Boolean isDeleted;
+    private boolean isDeleted;
 
     @Column
     private LocalDateTime deletedDate;
