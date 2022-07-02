@@ -15,7 +15,7 @@ public class BaseEntity extends BaseTimeEntity{
 
     @Column
     private LocalDateTime deletedDate;
-
+    
     public void deleted(){
         isDeleted = true;
         deletedDate = LocalDateTime.now();
