@@ -1,6 +1,7 @@
 package com.metacrew.pr2s.entity.base;
 
 import lombok.Getter;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -14,6 +15,9 @@ public class BaseEntity extends BaseTimeEntity{
 
     @Column
     private LocalDateTime deletedDate;
-
-    // TODO: 2022-07-01 삭제 여부, 일시 셋터 메소드 필요
+    
+    public void deleted(){
+        isDeleted = true;
+        deletedDate = LocalDateTime.now();
+    }
 }

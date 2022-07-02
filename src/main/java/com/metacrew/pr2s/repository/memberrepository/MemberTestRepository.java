@@ -2,6 +2,7 @@ package com.metacrew.pr2s.repository.memberrepository;
 
 import com.metacrew.pr2s.entity.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberTestRepository {
     private final EntityManager em;
+
     public void save(Member member){
         em.persist(member);
     }
@@ -24,5 +26,10 @@ public class MemberTestRepository {
         return em.createQuery("select m from Member m where m.loginId = :loginId", Member.class)
                 .setParameter("loginId", loginId)
                 .getResultList();
+    }
+
+    public Member getMember(Long id) {
+        Member member = em.find(Member.class, id);
+        return member;
     }
 }

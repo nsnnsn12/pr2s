@@ -1,5 +1,7 @@
 package com.metacrew.pr2s.entity;
 
+import com.metacrew.pr2s.dto.JoinMemberDto;
+import com.metacrew.pr2s.dto.MyPageDto;
 import com.metacrew.pr2s.entity.base.BaseEntity;
 import com.metacrew.pr2s.entity.enums.FileType;
 import com.metacrew.pr2s.entity.enums.Gender;
@@ -7,6 +9,7 @@ import com.sun.xml.bind.v2.TODO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -17,7 +20,7 @@ import javax.persistence.*;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@Getter @Setter
 public class Member extends BaseEntity {
     @Id
     @Column(name = "member_id") @GeneratedValue
@@ -49,4 +52,13 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column
     private Gender gender;
+
+
+    public void updateForMyPage(MyPageDto myPageDto){
+        name = myPageDto.getName();
+        email = myPageDto.getEmail();
+        telNo = myPageDto.getTelNo();
+        birthDay = myPageDto.getBirthDay();
+    }
+
 }
