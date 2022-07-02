@@ -20,7 +20,7 @@ import javax.persistence.*;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Setter
+@Getter
 public class Member extends BaseEntity {
     @Id
     @Column(name = "member_id") @GeneratedValue
@@ -61,8 +61,15 @@ public class Member extends BaseEntity {
         birthDay = myPageDto.getBirthDay();
     }
 
-
-    public static Member createJoinMember(JoinMemberDto joinMemberDto){
+    /**
+     * JoinMemberDto -> Member
+     * @author sunggyu
+     * @since 2022.07.02
+     * @param joinMemberDto 엔티티로 변환할 값
+     * @param address Address 엔티티
+     * @return Member 엔티티로 변환한 값
+     */
+    public static Member createJoinMember(JoinMemberDto joinMemberDto, Address address){
         Member member = new Member();
         member.email = joinMemberDto.getEmail();
         member.telNo = joinMemberDto.getTelNo();
@@ -71,6 +78,7 @@ public class Member extends BaseEntity {
         member.name = joinMemberDto.getName();
         member.birthDay = joinMemberDto.getBirthDay();
         member.gender = joinMemberDto.getGender();
+        member.address = address;
         return member;
     }
 }
