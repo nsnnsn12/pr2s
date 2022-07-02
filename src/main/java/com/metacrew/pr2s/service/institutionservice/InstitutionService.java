@@ -1,4 +1,4 @@
-package com.metacrew.pr2s.service;
+package com.metacrew.pr2s.service.institutionservice;
 
 /**
  * 기관이 기관 정보를 관리하기 위한 서비스 로직을 가지고 있는 클래스이다.
