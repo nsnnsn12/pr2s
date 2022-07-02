@@ -38,5 +38,7 @@ public class HyeonwooTest {
         testDto.setName("변경된테스트기관명");
         testDto.setTelNumber("010-2345-6789");
         institutionService.updateInstitutionInfo(testDto);
+
+        institutionService.deleteInstitution(insertedId);
     }
 }

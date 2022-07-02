@@ -20,7 +20,6 @@ public class InstitutionTestRepository {
 
     public Long save(Institution givenInstitution){
         em.persist(givenInstitution);
-
         return givenInstitution.getId();
     }
 

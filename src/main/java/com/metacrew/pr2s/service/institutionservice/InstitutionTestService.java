@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * JPQL 학습을 위한 테스트 서비스 클래스이다.
  * @author hyeonwoo
@@ -20,13 +22,29 @@ public class InstitutionTestService implements InstitutionService {
     private final InstitutionTestRepository institutionTestRepository;
 
     /**
-     * 입력한 기관정보를 DB에 저장하고 key 값을 리턴한다.
+     * 기관 정보를 입력받아 중복을 확인하고
+     * 중복일 경우 예외를 던지고
+     * 중복된 경우는 예외를 던지고
+     * 중복이 아닌 경우는 엔티티를 DB에 저장하고 key값을 리턴한다.
      * @author hyeonwoo
      * @since 2022.07.01
+     * @param institutionDto 등록할 기관 정보.
+     * @return 등록한 회원 key 값.
      */
     public Long joinPr2s(InstitutionDto institutionDto){
-        Institution institution = new Institution(institutionDto);
-        return institutionTestRepository.save(institution);
+        Institution institution = Institution.setForInsertInstitution(institutionDto);
+        validateDuplicateInstitution();
+        institutionTestRepository.save(institution);
+        return institution.getId();
+    }
+
+    /**
+     * 임시
+     * @author hyeonwoo
+     * @since 2022.07.02
+     */
+    private void validateDuplicateInstitution(){
+
     }
 
     /**
@@ -45,7 +63,8 @@ public class InstitutionTestService implements InstitutionService {
      * @author hyeonwoo
      * @since 2022.07.01
      */
-    public void deleteInstitution(InstitutionDto institutionDto) {
-        // TODO: 2022-07-01 BaseEntity 변경 후 구현
+    public void deleteInstitution(Long id) {
+        Institution findInstitution = institutionTestRepository.getInstitution(id);
+        if(!findInstitution.isDeleted()) findInstitution.deleted();
     }
 }

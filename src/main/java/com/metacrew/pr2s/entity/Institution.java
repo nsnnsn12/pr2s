@@ -65,8 +65,12 @@ public class Institution extends BaseEntity {
         setForInsert(dto);
     }
 
-    public void deleteInstitution(){
-        // TODO: 2022-07-01 BaseEntity 삭제 메소드 구현 후 시작
+    public static Institution setForInsertInstitution(InstitutionDto dto){
+        Institution institution = new Institution();
+        institution.name = dto.getName();
+        institution.telNumber = dto.getTelNumber();
+        institution.workday = dto.getWorkday();
+        return institution;
     }
 
 }
