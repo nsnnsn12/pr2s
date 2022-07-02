@@ -105,33 +105,43 @@ public class Address extends BaseEntity {
     @Column
     private String entY;
 
-    public Address(AddressDto addressDto){
-        roadFullAddr = addressDto.getRoadFullAddr();
-        roadAddrPart1 = addressDto.getRoadAddrPart1();
-        roadAddrPart2 = addressDto.getRoadAddrPart2();
-        jibunAddr = addressDto.getJibunAddr();
-        engAddr = addressDto.getEngAddr();
-        zipNo = addressDto.getZipNo();
-        addrDetail = addressDto.getAddrDetail();
-        admCd = addressDto.getAdmCd();
-        rnMgtSn = addressDto.getRnMgtSn();
-        bdMgtSn = addressDto.getBdMgtSn();
-        detBdNmList = addressDto.getDetBdNmList();
-        bdNm = addressDto.getBdNm();
-        bdKdcd = addressDto.getBdKdcd();
-        siNm = addressDto.getSiNm();
-        sggNm = addressDto.getSggNm();
-        emdNm = addressDto.getEmdNm();
-        liNm = addressDto.getLiNm();
-        rn = addressDto.getRn();
-        udrtYn = addressDto.getUdrtYn();
-        buldMnnm = addressDto.getBuldMnnm();
-        buldSlno = addressDto.getBuldSlno();
-        mtYn = addressDto.getMtYn();
-        lnbrMnnm = addressDto.getLnbrMnnm();
-        lnbrSlno = addressDto.getLnbrSlno();
-        emdNo = addressDto.getEmdNo();
-        entX = addressDto.getEntX();
-        entY = addressDto.getEntY();
+    /**
+     * AddressDto -> Address
+     * @author sunggyu
+     * @since 2022.07.02
+     * @param addressDto 엔티티로 변환할 값
+     * @return Address 엔티티로 변환한 값
+     */
+    public static Address createAddressByAddressDto(AddressDto addressDto){
+        Address address = new Address();
+        address.roadFullAddr = addressDto.getRoadFullAddr();
+        address.roadAddrPart1 = addressDto.getRoadAddrPart1();
+        address.roadAddrPart2 = addressDto.getRoadAddrPart2();
+        address.jibunAddr = addressDto.getJibunAddr();
+        address.engAddr = addressDto.getEngAddr();
+        address.zipNo = addressDto.getZipNo();
+        address.addrDetail = addressDto.getAddrDetail();
+        address.admCd = addressDto.getAdmCd();
+        address.rnMgtSn = addressDto.getRnMgtSn();
+        address.bdMgtSn = addressDto.getBdMgtSn();
+        address.detBdNmList = addressDto.getDetBdNmList();
+        address.bdNm = addressDto.getBdNm();
+        address.bdKdcd = addressDto.getBdKdcd();
+        address.siNm = addressDto.getSiNm();
+        address.sggNm = addressDto.getSggNm();
+        address.emdNm = addressDto.getEmdNm();
+        address.liNm = addressDto.getLiNm();
+        address.rn = addressDto.getRn();
+        address.udrtYn = addressDto.getUdrtYn();
+        address.buldMnnm = addressDto.getBuldMnnm();
+        address.buldSlno = addressDto.getBuldSlno();
+        address.mtYn = addressDto.getMtYn();
+        address.lnbrMnnm = addressDto.getLnbrMnnm();
+        address.lnbrSlno = addressDto.getLnbrSlno();
+        address.emdNo = addressDto.getEmdNo();
+        address.entX = addressDto.getEntX();
+        address.entY = addressDto.getEntY();
+
+        return address;
     }
 }
