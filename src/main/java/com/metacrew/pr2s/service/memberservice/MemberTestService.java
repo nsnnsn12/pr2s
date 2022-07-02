@@ -2,6 +2,7 @@ package com.metacrew.pr2s.service.memberservice;
 
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.MyPageDto;
+import com.metacrew.pr2s.entity.Address;
 import com.metacrew.pr2s.entity.Member;
 import com.metacrew.pr2s.repository.AddressRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberTestRepository;
@@ -22,7 +23,7 @@ import java.util.List;
 public class MemberTestService implements MemberService{
     private final MemberTestRepository memberTestRepository;
     private final AddressRepository addressRepository;
-    // TODO: 2022-06-25 기관에 회원 가입 요청
+
     /**
      * 회원가입
      * Member 엔티티를 입력받아 loginId 중복을 확인하고
@@ -34,10 +35,13 @@ public class MemberTestService implements MemberService{
      * @return 등록한 회원 key 값.
      */
     public Long join(JoinMemberDto joinMember){
-        Member member = Member.createJoinMember(joinMember);
-        // TODO: 2022-07-02 회원가입시 주소 정보 처리 기능 필요
+        validateDuplicateMember(joinMember.getLoginId());
+        Address address = null;
+        if(joinMember.getAddressDto() != null){
+            address = addressRepository.save(Address.createAddressByAddressDto(joinMember.getAddressDto()));
+        }
+        Member member = Member.createJoinMember(joinMember, address);
         // TODO: 2022-07-02 회원가입시 프로필 사진 등록 처리 기능 필요
-        validateDuplicateMember(member.getLoginId());
         memberTestRepository.save(member);
         return member.getId();
     }
@@ -92,6 +96,8 @@ public class MemberTestService implements MemberService{
      */
     public void removeAccount(Long id){
         Member findMember = memberTestRepository.getMember(id);
-        if(!findMember.getIsDeleted()) findMember.deleted();
+        if(!findMember.isDeleted()) findMember.deleted();
     }
+
+    // TODO: 2022-06-25 기관에 회원 가입 요청
 }
