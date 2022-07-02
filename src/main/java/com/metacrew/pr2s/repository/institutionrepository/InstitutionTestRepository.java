@@ -18,8 +18,10 @@ import javax.persistence.EntityManager;
 public class InstitutionTestRepository {
     private final EntityManager em;
 
-    public void save(Institution givenInstitution){
+    public Long save(Institution givenInstitution){
         em.persist(givenInstitution);
+
+        return givenInstitution.getId();
     }
 
     public Institution getInstitution(Long id) {

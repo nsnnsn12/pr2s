@@ -1,5 +1,6 @@
 package com.metacrew.pr2s.entity;
 
+import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.entity.base.BaseEntity;
 import com.metacrew.pr2s.entity.embedded.Period;
 import com.metacrew.pr2s.entity.enums.WorkDay;
@@ -49,8 +50,23 @@ public class Institution extends BaseEntity {
     @Embedded
     private Period period;
 
+    public void setForInsert(InstitutionDto institutionDto) {
+        this.name = institutionDto.getName();
+        this.telNumber = institutionDto.getTelNumber();
+        this.workday = institutionDto.getWorkday();
+    }
+
+    public void setForUpdate(InstitutionDto institutionDto) {
+        this.name = institutionDto.getName();
+        this.workday = institutionDto.getWorkday();
+    }
+
+    public Institution(InstitutionDto dto) {
+        setForInsert(dto);
+    }
+
     public void deleteInstitution(){
-        // TODO: 2022-07-01 BaseEntity 삭제 메소드 구현 후 시작 
+        // TODO: 2022-07-01 BaseEntity 삭제 메소드 구현 후 시작
     }
 
 }

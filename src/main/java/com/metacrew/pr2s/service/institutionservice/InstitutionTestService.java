@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class InstitutionTestService {
+public class InstitutionTestService implements InstitutionService {
     private final InstitutionTestRepository institutionTestRepository;
 
     /**
@@ -25,8 +25,8 @@ public class InstitutionTestService {
      * @since 2022.07.01
      */
     public Long joinPr2s(InstitutionDto institutionDto){
-        //institutionTestRepository.save(institutionDto);
-        return institutionDto.getId();
+        Institution institution = new Institution(institutionDto);
+        return institutionTestRepository.save(institution);
     }
 
     /**
@@ -36,7 +36,7 @@ public class InstitutionTestService {
      */
     public Long updateInstitutionInfo(InstitutionDto institutionDto){
         Institution findInstitution = institutionTestRepository.getInstitution(institutionDto.getId());
-        //findInstitution.update(institutionDto);
+        findInstitution.setForUpdate(institutionDto);
         return institutionDto.getId();
     }
 
