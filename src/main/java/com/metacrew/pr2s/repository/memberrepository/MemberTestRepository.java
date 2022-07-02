@@ -2,7 +2,6 @@ package com.metacrew.pr2s.repository.memberrepository;
 
 import com.metacrew.pr2s.entity.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -28,7 +27,7 @@ public class MemberTestRepository {
                 .getResultList();
     }
 
-    public Member getMember(Long id) {
+    public Member findById(Long id) {
         Member member = em.find(Member.class, id);
         return member;
     }

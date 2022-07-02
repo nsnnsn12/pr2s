@@ -41,4 +41,11 @@ public class JoinInfo extends BaseEntity {
 
     @Column
     private Boolean isForceResigned;
+
+    public static JoinInfo createJoinInfo(Member member, Institution institution){
+        JoinInfo joinInfo = new JoinInfo();
+        joinInfo.member = member;
+        joinInfo.institution = institution;
+        return joinInfo;
+    }
 }
