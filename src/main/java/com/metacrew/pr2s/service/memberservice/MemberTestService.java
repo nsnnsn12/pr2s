@@ -3,6 +3,7 @@ package com.metacrew.pr2s.service.memberservice;
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.MyPageDto;
 import com.metacrew.pr2s.entity.Member;
+import com.metacrew.pr2s.repository.AddressRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberTestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberTestService implements MemberService{
     private final MemberTestRepository memberTestRepository;
-    // TODO: 2022-06-25 회원탈퇴 메소드
+    private final AddressRepository addressRepository;
     // TODO: 2022-06-25 기관에 회원 가입 요청
     /**
      * 회원가입
@@ -29,16 +30,17 @@ public class MemberTestService implements MemberService{
      * 중복이 아닌 경우는 엔티티를 DB에 저장하고 key값을 리턴한다.
      * @author sunggyu
      * @since 2022.06.29
-     * @param member 등록할 회원 정보.
+     * @param joinMember 등록할 회원 정보.
      * @return 등록한 회원 key 값.
      */
-    /*public Long join(JoinMemberDto joinMember){
-        Member member = new Member();
-        member.joinMemberDto(joinMember);
+    public Long join(JoinMemberDto joinMember){
+        Member member = Member.createJoinMember(joinMember);
+        // TODO: 2022-07-02 회원가입시 주소 정보 처리 기능 필요
+        // TODO: 2022-07-02 회원가입시 프로필 사진 등록 처리 기능 필요
         validateDuplicateMember(member.getLoginId());
         memberTestRepository.save(member);
         return member.getId();
-    }*/
+    }
 
     /**
      * 입력받은 문자열이 Member 테이블의 loginId 컬럼과 중복된다면 예외를 던진다.

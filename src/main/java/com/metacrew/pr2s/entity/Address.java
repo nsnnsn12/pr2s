@@ -1,5 +1,6 @@
 package com.metacrew.pr2s.entity;
 
+import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.entity.base.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -103,4 +104,34 @@ public class Address extends BaseEntity {
 
     @Column
     private String entY;
+
+    public Address(AddressDto addressDto){
+        roadFullAddr = addressDto.getRoadFullAddr();
+        roadAddrPart1 = addressDto.getRoadAddrPart1();
+        roadAddrPart2 = addressDto.getRoadAddrPart2();
+        jibunAddr = addressDto.getJibunAddr();
+        engAddr = addressDto.getEngAddr();
+        zipNo = addressDto.getZipNo();
+        addrDetail = addressDto.getAddrDetail();
+        admCd = addressDto.getAdmCd();
+        rnMgtSn = addressDto.getRnMgtSn();
+        bdMgtSn = addressDto.getBdMgtSn();
+        detBdNmList = addressDto.getDetBdNmList();
+        bdNm = addressDto.getBdNm();
+        bdKdcd = addressDto.getBdKdcd();
+        siNm = addressDto.getSiNm();
+        sggNm = addressDto.getSggNm();
+        emdNm = addressDto.getEmdNm();
+        liNm = addressDto.getLiNm();
+        rn = addressDto.getRn();
+        udrtYn = addressDto.getUdrtYn();
+        buldMnnm = addressDto.getBuldMnnm();
+        buldSlno = addressDto.getBuldSlno();
+        mtYn = addressDto.getMtYn();
+        lnbrMnnm = addressDto.getLnbrMnnm();
+        lnbrSlno = addressDto.getLnbrSlno();
+        emdNo = addressDto.getEmdNo();
+        entX = addressDto.getEntX();
+        entY = addressDto.getEntY();
+    }
 }

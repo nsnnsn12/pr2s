@@ -61,4 +61,16 @@ public class Member extends BaseEntity {
         birthDay = myPageDto.getBirthDay();
     }
 
+
+    public static Member createJoinMember(JoinMemberDto joinMemberDto){
+        Member member = new Member();
+        member.email = joinMemberDto.getEmail();
+        member.telNo = joinMemberDto.getTelNo();
+        member.loginId = joinMemberDto.getLoginId();
+        member.password = joinMemberDto.getPassword();
+        member.name = joinMemberDto.getName();
+        member.birthDay = joinMemberDto.getBirthDay();
+        member.gender = joinMemberDto.getGender();
+        return member;
+    }
 }
