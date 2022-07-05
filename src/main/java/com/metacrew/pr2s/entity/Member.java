@@ -66,10 +66,32 @@ public class Member extends BaseEntity {
      * @author sunggyu
      * @since 2022.07.02
      * @param joinMemberDto 엔티티로 변환할 값
-     * @param address Address 엔티티
      * @return Member 엔티티로 변환한 값
      */
+    public static Member createJoinMember(JoinMemberDto joinMemberDto){
+        return convertJoinMemberToMember(joinMemberDto);
+    }
+
     public static Member createJoinMember(JoinMemberDto joinMemberDto, Address address){
+        Member member = convertJoinMemberToMember(joinMemberDto);
+        member.address = address;
+        return member;
+    }
+
+    public static Member createJoinMember(JoinMemberDto joinMemberDto, File file){
+        Member member = convertJoinMemberToMember(joinMemberDto);
+        member.imageFile = file;
+        return member;
+    }
+
+    public static Member createJoinMember(JoinMemberDto joinMemberDto, Address address, File file){
+        Member member = convertJoinMemberToMember(joinMemberDto);
+        member.imageFile = file;
+        member.address = address;
+        return member;
+    }
+
+    public static Member convertJoinMemberToMember(JoinMemberDto joinMemberDto){
         Member member = new Member();
         member.email = joinMemberDto.getEmail();
         member.telNo = joinMemberDto.getTelNo();
@@ -78,7 +100,6 @@ public class Member extends BaseEntity {
         member.name = joinMemberDto.getName();
         member.birthDay = joinMemberDto.getBirthDay();
         member.gender = joinMemberDto.getGender();
-        member.address = address;
         return member;
     }
 }
