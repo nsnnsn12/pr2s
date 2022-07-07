@@ -7,6 +7,8 @@ import com.metacrew.pr2s.entity.JoinInfo;
 import com.metacrew.pr2s.entity.Member;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +29,7 @@ class JoinInfoRepositoryTest {
     @Test
     public void findByMemberAndInstitutionAndIsDeletedTest(){
         //given
-        Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData(), null);
+        Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData(), null, null);
         memberRepository.save(joinMember);
 
         Institution institution = new Institution(getInstitutionDtoTestData());
