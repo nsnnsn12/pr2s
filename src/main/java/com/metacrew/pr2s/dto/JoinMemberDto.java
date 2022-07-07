@@ -13,7 +13,6 @@ import lombok.Setter;
  */
 @Getter @Setter
 public class JoinMemberDto {
-    private AddressDto addressDto;
     private String email;
     private String telNo;
     private String loginId;

@@ -42,7 +42,7 @@ public class MemberTestService implements MemberService{
     public Long join(JoinMemberDto joinMember, AddressDto addressDto){
         validateDuplicateMember(joinMember.getLoginId());
         Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
-        // TODO: 2022-07-02 회원가입시 프로필 사진 등록 처리 기능 필요
+        // TODO: 2022-07-02 회원가입시 프로필 사진을 등록할 파일 Dto 필요
         File file = null;
 
         Member member = Member.createJoinMember(joinMember, address, file);
