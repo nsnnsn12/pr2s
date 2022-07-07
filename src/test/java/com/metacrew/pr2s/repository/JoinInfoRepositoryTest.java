@@ -7,12 +7,12 @@ import com.metacrew.pr2s.entity.JoinInfo;
 import com.metacrew.pr2s.entity.Member;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
@@ -35,8 +35,17 @@ class JoinInfoRepositoryTest {
         Institution institution = new Institution(getInstitutionDtoTestData());
         institutionRepository.save(institution);
 
-        boolean deleted = true;
-        List<JoinInfo> result = joinInfoRepository.findByMemberAndInstitutionAndIsDeleted(joinMember, institution, deleted);
+        JoinInfo joinInfo = JoinInfo.createJoinInfo(joinMember, institution);
+        joinInfoRepository.save(joinInfo);
+
+        //when
+        boolean notDeleted = false;
+        List<JoinInfo> result = joinInfoRepository.findByMemberAndInstitutionAndIsDeleted(joinMember, institution, notDeleted);
+
+        //then
+        JoinInfo findJoinInfo = result.get(0);
+        assertThat(findJoinInfo.getInstitution().getId()).isEqualTo(institution.getId());
+        assertThat(findJoinInfo.getMember().getId()).isEqualTo(joinMember.getId());
     }
 
     public JoinMemberDto getJoinMemberDtoByTestData(){
