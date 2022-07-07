@@ -27,19 +27,20 @@ public class InstitutionTestService implements InstitutionService {
     private final WorkdaysTestRepository workdaysTestRepository;
 
     /**
-     * 기관 정보를 입력받아 
+     * 기관 정보를 입력받아 엔터티를 DB에 저장하고 key 값을 반환
      * @author hyeonwoo
      * @since 2022.07.01
      * @param institutionDto 등록할 기관 정보.
      * @param workdaysDto 등록할 기관의 운영 요일 정보
      * @return 등록한 회원 key 값.
      */
-    public Long joinPr2s(InstitutionDto institutionDto, WorkdaysDto workdaysDto){
+    public Institution joinPr2s(InstitutionDto institutionDto, WorkdaysDto workdaysDto){
         Workdays workdays = workdaysTestRepository.save(Workdays.createWorkdays(workdaysDto));
 
         Institution institution = Institution.createInstitution(institutionDto, workdays);
         institutionTestRepository.save(institution);
-        return institution.getId();
+
+        return institution;
     }
 
     /**
@@ -57,11 +58,10 @@ public class InstitutionTestService implements InstitutionService {
     }
 
     /**
-     * 삭제하려는 기관의 ID를 받아 삭제여부를 TRUE 로 하고 삭제일자를 현재일자로 업데이트
+     * 삭제하려는 기관의 ID를 받아 삭제여부와 삭제일자를 업데이트
      * @author hyeonwoo
      * @since 2022.07.01
      * @param id 변경할 기관 id
-     * @return 리턴값 없음
      */
     public void deleteInstitution(Long id) {
         Institution findInstitution = institutionTestRepository.getInstitution(id).orElseThrow(IllegalArgumentException::new);

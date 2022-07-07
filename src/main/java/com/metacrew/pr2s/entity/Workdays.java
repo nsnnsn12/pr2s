@@ -2,6 +2,7 @@ package com.metacrew.pr2s.entity;
 
 import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
+import com.metacrew.pr2s.entity.base.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Workdays {
+public class Workdays extends BaseTimeEntity {
     @Id
     @Column(name = "workdays_id") @GeneratedValue
     Long id;

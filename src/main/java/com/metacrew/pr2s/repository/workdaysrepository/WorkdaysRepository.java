@@ -1,6 +1,7 @@
 package com.metacrew.pr2s.repository.workdaysrepository;
 
 import com.metacrew.pr2s.entity.Institution;
+import com.metacrew.pr2s.entity.Workdays;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -8,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author hyeonwoo
  * @since 2022.07.07
  */
-public interface WorkdaysRepository extends JpaRepository<Institution, Long>{
+public interface WorkdaysRepository extends JpaRepository<Workdays, Long>{
 }
