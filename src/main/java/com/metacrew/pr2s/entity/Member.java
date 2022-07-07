@@ -3,13 +3,10 @@ package com.metacrew.pr2s.entity;
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.MyPageDto;
 import com.metacrew.pr2s.entity.base.BaseEntity;
-import com.metacrew.pr2s.entity.enums.FileType;
 import com.metacrew.pr2s.entity.enums.Gender;
-import com.sun.xml.bind.v2.TODO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -66,10 +63,9 @@ public class Member extends BaseEntity {
      * @author sunggyu
      * @since 2022.07.02
      * @param joinMemberDto 엔티티로 변환할 값
-     * @param address Address 엔티티
      * @return Member 엔티티로 변환한 값
      */
-    public static Member createJoinMember(JoinMemberDto joinMemberDto, Address address){
+    public static Member createJoinMember(JoinMemberDto joinMemberDto, Address address, File file){
         Member member = new Member();
         member.email = joinMemberDto.getEmail();
         member.telNo = joinMemberDto.getTelNo();
@@ -78,6 +74,7 @@ public class Member extends BaseEntity {
         member.name = joinMemberDto.getName();
         member.birthDay = joinMemberDto.getBirthDay();
         member.gender = joinMemberDto.getGender();
+        member.imageFile = file;
         member.address = address;
         return member;
     }

@@ -1,11 +1,9 @@
 package com.metacrew.pr2s.service.memberservice;
 
+import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.MyPageDto;
-import com.metacrew.pr2s.entity.Address;
-import com.metacrew.pr2s.entity.Institution;
-import com.metacrew.pr2s.entity.JoinInfo;
-import com.metacrew.pr2s.entity.Member;
+import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.repository.AddressRepository;
 import com.metacrew.pr2s.repository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
@@ -41,14 +39,13 @@ public class MemberTestService implements MemberService{
      * @param joinMember 등록할 회원 정보.
      * @return 등록한 회원 key 값.
      */
-    public Long join(JoinMemberDto joinMember){
+    public Long join(JoinMemberDto joinMember, AddressDto addressDto){
         validateDuplicateMember(joinMember.getLoginId());
-        Address address = null;
-        if(joinMember.getAddressDto() != null){
-            address = addressRepository.save(Address.createAddressByAddressDto(joinMember.getAddressDto()));
-        }
-        Member member = Member.createJoinMember(joinMember, address);
-        // TODO: 2022-07-02 회원가입시 프로필 사진 등록 처리 기능 필요
+        Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
+        // TODO: 2022-07-02 회원가입시 프로필 사진을 등록할 파일 Dto 필요
+        File file = null;
+
+        Member member = Member.createJoinMember(joinMember, address, file);
         memberTestRepository.save(member);
         return member.getId();
     }
@@ -124,7 +121,7 @@ public class MemberTestService implements MemberService{
         if(institution.isEmpty()) throw new IllegalStateException("기관정보가 존재하지 않습니다.");
 
         //회원정보와 기관정보를 조회한다.
-        //해당 가입 기관 정보가 존재하고 삭제처리가 되어 있지 않다면 삭제할 수 없다.
+        //해당 가입 기관 정보가 존재하고 삭제처리가 되어 있지 않다면 등록할 수 없다.
         validateDuplicateJoinInfo(member, institution.get());
         JoinInfo joinInfo = JoinInfo.createJoinInfo(member, institution.get());
         joinInfoRepository.save(joinInfo);
