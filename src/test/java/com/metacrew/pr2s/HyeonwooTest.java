@@ -1,11 +1,10 @@
 package com.metacrew.pr2s;
 
 import com.metacrew.pr2s.dto.InstitutionDto;
-import com.metacrew.pr2s.entity.Institution;
-import com.metacrew.pr2s.entity.enums.WorkDay;
-import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
+import com.metacrew.pr2s.dto.WorkdaysDto;
+import com.metacrew.pr2s.entity.Workdays;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionTestRepository;
-import com.metacrew.pr2s.service.institutionservice.InstitutionService;
+import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysTestRepository;
 import com.metacrew.pr2s.service.institutionservice.InstitutionTestService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +24,24 @@ public class HyeonwooTest {
 
     @Test
     void contextLoads() {
-        InstitutionTestRepository testRepository = new InstitutionTestRepository(em);
-        InstitutionTestService institutionService = new InstitutionTestService(testRepository);
+        InstitutionTestRepository institutionTestRepository = new InstitutionTestRepository(em);
+        WorkdaysTestRepository workdaysTestRepository = new WorkdaysTestRepository(em);
+        InstitutionTestService institutionService = new InstitutionTestService(institutionTestRepository, workdaysTestRepository);
 
         InstitutionDto testDto = new InstitutionDto();
         testDto.setName("테스트기관1");
         testDto.setTelNumber("010-1234-5678");
-        testDto.setWorkday(WorkDay.FRI);
-        Long insertedId = institutionService.joinPr2s(testDto);
 
-        testDto.setId(insertedId);
+        WorkdaysDto workdaysDto = new WorkdaysDto();
+        workdaysDto.setIsMonday(true);
+        workdaysDto.setIsWednesday(true);
+        workdaysDto.setIsFriday(true);
+
+        Long insertedId = institutionService.joinPr2s(testDto, workdaysDto);
+
         testDto.setName("변경된테스트기관명");
         testDto.setTelNumber("010-2345-6789");
-        institutionService.updateInstitutionInfo(testDto);
+        institutionService.updateInstitutionInfo(testDto, insertedId);
 
         institutionService.deleteInstitution(insertedId);
     }
