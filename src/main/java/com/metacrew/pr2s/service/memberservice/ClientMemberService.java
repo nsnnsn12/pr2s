@@ -47,8 +47,8 @@ public class ClientMemberService implements MemberService{
      * @since 2022.07.07
      */
     private void validateDuplicateMember(String loginId){
-        List<Member> result = memberTestRepository.findByLoginId(loginId);
-        if(result.size() > 0) throw new IllegalStateException("이미 존재하는 회원입니다.");
+        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
+        if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 회원입니다.");
     }
 
     /**
