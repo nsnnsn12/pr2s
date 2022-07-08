@@ -60,7 +60,7 @@ public class ClientMemberService implements MemberService{
      * @return MyPageDto 사용자에 보여 줄 마이페이지 정보
      */
     public MyPageDto getMyPageInfo(Long id) {
-        Member findMember = memberTestRepository.findById(id);
+        Member findMember = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
         return new MyPageDto(findMember);
     }
 
@@ -76,7 +76,7 @@ public class ClientMemberService implements MemberService{
      * @return 수정한 회원 key 값.
      */
     public Long updateForMyPage(MyPageDto myPageDto, Long id){
-        Member member = memberTestRepository.findById(id);
+        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
         member.updateForMyPage(myPageDto);
         return member.getId();
     }

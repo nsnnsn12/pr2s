@@ -88,6 +88,15 @@ class ClientMemberServiceTest {
         assertThat(myPageInfo.getBirthDay()).isEqualTo(findMember.getBirthDay());
     }
 
+    @Test
+    @DisplayName("존재하지 않는 마이페이지 정보 조회 테스트")
+    void getMyPageInfoByNonMemberId() {
+        // then
+        assertThatThrownBy(() -> {
+            MyPageDto myPageInfo = clientMemberService.getMyPageInfo(-1L);
+        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
     public JoinMemberDto getJoinMemberDtoByTestData(){
         JoinMemberDto joinMemberDto = new JoinMemberDto();
         joinMemberDto.setName("노성규");
