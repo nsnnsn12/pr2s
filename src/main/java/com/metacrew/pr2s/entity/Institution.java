@@ -3,14 +3,11 @@ package com.metacrew.pr2s.entity;
 import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.entity.base.BaseEntity;
 import com.metacrew.pr2s.entity.embedded.Period;
-import com.metacrew.pr2s.entity.enums.WorkDay;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 /**
  * Institution 테이블과 매핑되는 엔티티이다.
@@ -39,9 +36,9 @@ public class Institution extends BaseEntity {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private WorkDay workday;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "workdays_id")
+    private Workdays workdays;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
@@ -50,23 +47,32 @@ public class Institution extends BaseEntity {
     @Embedded
     private Period period;
 
-    public void setForInsert(InstitutionDto institutionDto) {
-        this.name = institutionDto.getName();
-        this.telNumber = institutionDto.getTelNumber();
-        this.workday = institutionDto.getWorkday();
+    /**
+     * InstitutionDto -> Institution
+     * @author hyeonwoo
+     * @since 2022.07.07
+     * @param institutionDto 엔티티로 변환할 값
+     * @param workdays Workdays 엔티티
+     * @return Institution 엔티티로 변환한 값
+     */
+    public static Institution createInstitution(InstitutionDto institutionDto, Workdays workdays){
+        Institution institution = new Institution();
+        institution.name = institutionDto.getName();
+        institution.telNumber = institutionDto.getTelNumber();
+        institution.workdays = workdays;
+        return institution;
     }
 
+    /**
+     * InstitutionDto 내용으로 Entity 변경
+     * @author hyeonwoo
+     * @since 2022.07.07
+     * @param institutionDto 엔티티로 변환할 값
+     * @return void 리턴하지 않음
+     */
     public void setForUpdate(InstitutionDto institutionDto) {
         this.name = institutionDto.getName();
-        this.workday = institutionDto.getWorkday();
-    }
-
-    public Institution(InstitutionDto dto) {
-        setForInsert(dto);
-    }
-
-    public void deleteInstitution(){
-        // TODO: 2022-07-01 BaseEntity 삭제 메소드 구현 후 시작
+        this.telNumber = institutionDto.getTelNumber();
     }
 
 }

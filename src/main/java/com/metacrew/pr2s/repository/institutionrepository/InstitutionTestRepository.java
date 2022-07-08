@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 /**
  * JPQL 학습을 위한 테스트 Repository 클래스이다.
@@ -18,13 +19,13 @@ import javax.persistence.EntityManager;
 public class InstitutionTestRepository {
     private final EntityManager em;
 
-    public Long save(Institution givenInstitution){
+    public Institution save(Institution givenInstitution){
         em.persist(givenInstitution);
-
-        return givenInstitution.getId();
+        return givenInstitution;
     }
 
-    public Institution getInstitution(Long id) {
-        return em.find(Institution.class, id);
+    public Optional<Institution> getInstitution(Long id) {
+        Optional<Institution> findInstitution = Optional.ofNullable(em.find(Institution.class, id));
+        return findInstitution;
     }
 }
