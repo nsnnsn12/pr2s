@@ -76,7 +76,7 @@ class ClientMemberServiceTest {
     }
 
     @Test
-    @DisplayName("마이페이지 정보 조회 테스트")
+    @DisplayName("마이페이지 정보 조회")
     void getMyPageInfo() {
         // given
         Member findMember = memberRepository.findByLoginId(EXISTED_LOGIN_ID).orElseThrow();
@@ -91,7 +91,7 @@ class ClientMemberServiceTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 마이페이지 정보 조회 테스트")
+    @DisplayName("존재하지 않는 마이페이지 정보 조회")
     void getMyPageInfoByNonMemberId() {
         // then
         assertThatThrownBy(() -> {
@@ -135,10 +135,44 @@ class ClientMemberServiceTest {
     }
 
     @Test
-    @DisplayName("존재하지 않는 마이페이지 수정 테스트")
+    @DisplayName("존재하지 않는 마이페이지 수정")
     void updateForMyPageByNonMemberId() {
         // then
         assertThatThrownBy(() -> clientMemberService.updateForMyPage(new MyPageDto(), -1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
+    @DisplayName("회원탈퇴")
+    void removeAccount() {
+        // given
+        JoinMemberDto joinMemberDto = new JoinMemberDto();
+        joinMemberDto.setName("노성규");
+        joinMemberDto.setLoginId("shtjdrb");
+        joinMemberDto.setPassword("shtjdrb123");
+        joinMemberDto.setBirthDay("19950914");
+
+        AddressDto addressDto = new AddressDto();
+        addressDto.setSggNm("서울시 마포구");
+
+        Member member = clientMemberService.join(joinMemberDto, addressDto);
+        entityManager.flush();
+        entityManager.clear();
+        // when
+        clientMemberService.removeAccount(member.getId());
+        entityManager.flush();
+        entityManager.clear();
+        Member findMember = memberRepository.findById(member.getId()).orElseThrow();
+        // then
+        assertThat(findMember.isDeleted()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 회원정보 탈퇴")
+    void removeAccountByNonMemberId() {
+        // then
+        assertThatThrownBy(() -> clientMemberService.removeAccount( -1L))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("존재하지 않는 회원정보입니다.");
     }

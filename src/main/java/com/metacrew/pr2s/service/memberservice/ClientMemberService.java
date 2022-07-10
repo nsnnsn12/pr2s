@@ -90,7 +90,7 @@ public class ClientMemberService implements MemberService{
      * @param id 회원탈퇴할 entity key
      */
     public void removeAccount(Long id){
-        Member findMember = memberTestRepository.findById(id);
+        Member findMember = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
         if(!findMember.isDeleted()) findMember.deleted();
     }
 
