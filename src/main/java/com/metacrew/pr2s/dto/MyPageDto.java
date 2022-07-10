@@ -2,6 +2,7 @@ package com.metacrew.pr2s.dto;
 
 import com.metacrew.pr2s.entity.Member;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Setter;
  * @since 2022.07.01
  */
 @Getter @Setter
+@NoArgsConstructor
 public class MyPageDto {
     private String name;
     private String email;
