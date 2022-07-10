@@ -1,9 +1,12 @@
 package com.metacrew.pr2s.service.institutionservice;
 
+import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
+import com.metacrew.pr2s.entity.Address;
 import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.Workdays;
+import com.metacrew.pr2s.repository.AddressRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionTestRepository;
 import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysTestRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class InstitutionTestService implements InstitutionService {
     private final InstitutionTestRepository institutionTestRepository;
     private final WorkdaysTestRepository workdaysTestRepository;
+    private final AddressRepository addressRepository ;
 
     /**
      * 기관 정보를 입력받아 엔터티를 DB에 저장하고 key 값을 반환
@@ -30,10 +34,10 @@ public class InstitutionTestService implements InstitutionService {
      * @param workdaysDto 등록할 기관의 운영 요일 정보
      * @return 등록한 회원 key 값.
      */
-    public Institution joinPr2s(InstitutionDto institutionDto, WorkdaysDto workdaysDto){
+    public Institution joinPr2s(InstitutionDto institutionDto, WorkdaysDto workdaysDto, AddressDto addressDto){
         Workdays workdays = workdaysTestRepository.save(Workdays.createWorkdays(workdaysDto));
-
-        Institution institution = Institution.createInstitution(institutionDto, workdays);
+        Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
+        Institution institution = Institution.createInstitution(institutionDto, workdays, address);
         institutionTestRepository.save(institution);
 
         return institution;
@@ -47,7 +51,7 @@ public class InstitutionTestService implements InstitutionService {
      * @return 수정한 회원 엔터티
      */
     public Institution updateInstitutionInfo(InstitutionDto institutionDto, Long id){
-        Institution findInstitution = institutionTestRepository.findInstitutionById(id).orElseThrow(IllegalArgumentException::new);
+        Institution findInstitution = institutionTestRepository.findInstitutionById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
         findInstitution.updateInstitution(institutionDto);
 
         return findInstitution;
@@ -60,7 +64,7 @@ public class InstitutionTestService implements InstitutionService {
      * @param id 변경할 기관 id
      */
     public void deleteInstitution(Long id) {
-        Institution findInstitution = institutionTestRepository.findInstitutionById(id).orElseThrow(IllegalArgumentException::new);
+        Institution findInstitution = institutionTestRepository.findInstitutionById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
         if(!findInstitution.isDeleted()) findInstitution.deleted();
     }
 

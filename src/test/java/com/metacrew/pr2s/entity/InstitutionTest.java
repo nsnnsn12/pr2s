@@ -1,5 +1,6 @@
 package com.metacrew.pr2s.entity;
 
+import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
 import org.junit.jupiter.api.DisplayName;
@@ -17,11 +18,11 @@ class InstitutionTest {
     public void createInstitutionTest() {
         //given
         InstitutionDto institutionDto = getTestInstitutionDtoByInsertTestData();
-        WorkdaysDto workdaysDto = getTestWorkdaysDtoByTestData();
-        Workdays workdays = Workdays.createWorkdays(workdaysDto);
+        Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
+        Address address = Address.createAddressByAddressDto(getTestAddressDtoByTestData());
 
         //when
-        Institution institution = Institution.createInstitution(institutionDto, workdays);
+        Institution institution = Institution.createInstitution(institutionDto, workdays, address);
 
         //then
         assertThat(institution.getName()).isEqualTo(institutionDto.getName());
@@ -46,5 +47,11 @@ class InstitutionTest {
         workdaysDto.setIsWednesday(true);
         workdaysDto.setIsFriday(true);
         return workdaysDto;
+    }
+
+    public AddressDto getTestAddressDtoByTestData() {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setRn("비고");
+        return addressDto;
     }
 }

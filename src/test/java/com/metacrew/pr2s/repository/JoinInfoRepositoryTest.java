@@ -1,12 +1,10 @@
 package com.metacrew.pr2s.repository;
 
+import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
-import com.metacrew.pr2s.entity.Institution;
-import com.metacrew.pr2s.entity.JoinInfo;
-import com.metacrew.pr2s.entity.Member;
-import com.metacrew.pr2s.entity.Workdays;
+import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysTestRepository;
@@ -30,6 +28,8 @@ class JoinInfoRepositoryTest {
     private InstitutionRepository institutionRepository;
     @Autowired
     private WorkdaysTestRepository workdaysTestRepository;
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Test
     public void findByMemberAndInstitutionAndIsDeletedTest(){
@@ -40,7 +40,10 @@ class JoinInfoRepositoryTest {
         Workdays testWorkdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
         workdaysTestRepository.save(testWorkdays);
 
-        Institution institution = Institution.createInstitution(getInstitutionDtoTestData(),testWorkdays);
+        Address testAddress = Address.createAddressByAddressDto(getTestAddressDtoByTestData());
+        addressRepository.save(testAddress);
+
+        Institution institution = Institution.createInstitution(getInstitutionDtoTestData(),testWorkdays, testAddress);
 
         institutionRepository.save(institution);
 
@@ -79,5 +82,11 @@ class JoinInfoRepositoryTest {
         workdaysDto.setIsWednesday(true);
         workdaysDto.setIsFriday(true);
         return workdaysDto;
+    }
+
+    public AddressDto getTestAddressDtoByTestData() {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setRn("비고");
+        return addressDto;
     }
 }

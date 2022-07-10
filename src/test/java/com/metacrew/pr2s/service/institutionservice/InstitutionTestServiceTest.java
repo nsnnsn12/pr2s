@@ -1,7 +1,9 @@
 package com.metacrew.pr2s.service.institutionservice;
 
+import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
+import com.metacrew.pr2s.entity.Address;
 import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.Workdays;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionTestRepository;
@@ -28,9 +30,10 @@ class InstitutionTestServiceTest {
         //given
         InstitutionDto institutionDto = getTestInstitutionDtoByInsertTestData();
         WorkdaysDto workdaysDto = getTestWorkdaysDtoByTestData();
+        AddressDto addressDto = getTestAddressDtoByTestData();
 
         //when
-        Institution insertedInstitution = institutionTestService.joinPr2s(institutionDto, workdaysDto);
+        Institution insertedInstitution = institutionTestService.joinPr2s(institutionDto, workdaysDto, addressDto);
 
         //then
         Institution findInstitution = institutionTestRepository.findInstitutionById(insertedInstitution.getId()).orElseThrow(IllegalArgumentException::new);
@@ -42,10 +45,10 @@ class InstitutionTestServiceTest {
     public void updateInstitutionInfoTest() {
         // given
         InstitutionDto institutionDto = getTestInstitutionDtoByInsertTestData();
-        WorkdaysDto workdaysDto = getTestWorkdaysDtoByTestData();
-        Workdays workdays = Workdays.createWorkdays(workdaysDto);
+        Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
+        Address address = Address.createAddressByAddressDto(getTestAddressDtoByTestData());
 
-        Institution insertedInstitution = institutionTestRepository.save(Institution.createInstitution(institutionDto, workdays));
+        Institution insertedInstitution = institutionTestRepository.save(Institution.createInstitution(institutionDto, workdays, address));
 
         // when
         Institution updatedInstitution = institutionTestService.updateInstitutionInfo(getTestInstitutionDtoByUpdateTestData(), insertedInstitution.getId());
@@ -63,10 +66,10 @@ class InstitutionTestServiceTest {
     public void deleteInstitutionTest() {
         // given
         InstitutionDto institutionDto = getTestInstitutionDtoByInsertTestData();
-        WorkdaysDto workdaysDto = getTestWorkdaysDtoByTestData();
-        Workdays workdays = Workdays.createWorkdays(workdaysDto);
+        Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
+        Address address = Address.createAddressByAddressDto(getTestAddressDtoByTestData());
 
-        Institution insertedInstitution = institutionTestRepository.save(Institution.createInstitution(institutionDto, workdays));
+        Institution insertedInstitution = institutionTestRepository.save(Institution.createInstitution(institutionDto, workdays, address));
 
         //when
         institutionTestService.deleteInstitution(insertedInstitution.getId());
@@ -99,6 +102,12 @@ class InstitutionTestServiceTest {
         workdaysDto.setIsWednesday(true);
         workdaysDto.setIsFriday(true);
         return workdaysDto;
+    }
+    
+    public AddressDto getTestAddressDtoByTestData() {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setRn("비고");
+        return addressDto;
     }
 
 }
