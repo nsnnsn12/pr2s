@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -228,6 +227,23 @@ class ClientMemberServiceTest {
         assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getId(), 1L))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("기관정보가 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("중복 기관 가입 요청")
+    void requestJoinOfInstitution4() {
+        //given
+        List<Member> list = memberRepository.findAll();
+        List<Institution> institutions = institutionRepository.findAll();
+        Long joinInfoId = clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institutions.get(0).getId());
+        entityManager.flush();
+        entityManager.clear();
+
+        // when
+        // then
+        assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institutions.get(0).getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("이미 존재하는 가입 요청입니다.");
     }
 
     public JoinMemberDto getJoinMemberDtoByTestData(){
