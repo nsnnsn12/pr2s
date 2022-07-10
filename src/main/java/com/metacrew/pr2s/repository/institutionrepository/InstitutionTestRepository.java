@@ -24,8 +24,7 @@ public class InstitutionTestRepository {
         return givenInstitution;
     }
 
-    public Optional<Institution> getInstitution(Long id) {
-        Optional<Institution> findInstitution = Optional.ofNullable(em.find(Institution.class, id));
-        return findInstitution;
+    public Optional<Institution> findInstitutionById(Long id) {
+        return Optional.ofNullable(em.find(Institution.class, id));
     }
 }

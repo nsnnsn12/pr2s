@@ -2,11 +2,14 @@ package com.metacrew.pr2s.repository;
 
 import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
+import com.metacrew.pr2s.dto.WorkdaysDto;
 import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.JoinInfo;
 import com.metacrew.pr2s.entity.Member;
+import com.metacrew.pr2s.entity.Workdays;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
+import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +28,8 @@ class JoinInfoRepositoryTest {
     private MemberRepository memberRepository;
     @Autowired
     private InstitutionRepository institutionRepository;
+    @Autowired
+    private WorkdaysTestRepository workdaysTestRepository;
 
     @Test
     public void findByMemberAndInstitutionAndIsDeletedTest(){
@@ -32,7 +37,11 @@ class JoinInfoRepositoryTest {
         Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData(), null, null);
         memberRepository.save(joinMember);
 
-        Institution institution = new Institution(getInstitutionDtoTestData());
+        Workdays testWorkdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
+        workdaysTestRepository.save(testWorkdays);
+
+        Institution institution = Institution.createInstitution(getInstitutionDtoTestData(),testWorkdays);
+
         institutionRepository.save(institution);
 
         JoinInfo joinInfo = JoinInfo.createJoinInfo(joinMember, institution);
@@ -64,4 +73,11 @@ class JoinInfoRepositoryTest {
         return institutionDto;
     }
 
+    public WorkdaysDto getTestWorkdaysDtoByTestData() {
+        WorkdaysDto workdaysDto = new WorkdaysDto();
+        workdaysDto.setIsMonday(true);
+        workdaysDto.setIsWednesday(true);
+        workdaysDto.setIsFriday(true);
+        return workdaysDto;
+    }
 }

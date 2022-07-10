@@ -4,15 +4,11 @@ import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
 import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.Workdays;
-import com.metacrew.pr2s.repository.AddressRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionTestRepository;
 import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysTestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.swing.text.html.Option;
-import java.util.Optional;
 
 /**
  * JPQL 학습을 위한 테스트 서비스 클래스이다.
@@ -48,13 +44,13 @@ public class InstitutionTestService implements InstitutionService {
      * @author hpyeonwoo
      * @since 2022.07.07
      * @param institutionDto 변경할 기관 정보
-     * @return 수정한 회원 key 값
+     * @return 수정한 회원 엔터티
      */
-    public Long updateInstitutionInfo(InstitutionDto institutionDto, Long id){
-        Institution findInstitution = institutionTestRepository.getInstitution(id).orElseThrow(IllegalArgumentException::new);
-        findInstitution.setForUpdate(institutionDto);
+    public Institution updateInstitutionInfo(InstitutionDto institutionDto, Long id){
+        Institution findInstitution = institutionTestRepository.findInstitutionById(id).orElseThrow(IllegalArgumentException::new);
+        findInstitution.updateInstitution(institutionDto);
 
-        return findInstitution.getId();
+        return findInstitution;
     }
 
     /**
@@ -64,7 +60,8 @@ public class InstitutionTestService implements InstitutionService {
      * @param id 변경할 기관 id
      */
     public void deleteInstitution(Long id) {
-        Institution findInstitution = institutionTestRepository.getInstitution(id).orElseThrow(IllegalArgumentException::new);
+        Institution findInstitution = institutionTestRepository.findInstitutionById(id).orElseThrow(IllegalArgumentException::new);
         if(!findInstitution.isDeleted()) findInstitution.deleted();
     }
+
 }

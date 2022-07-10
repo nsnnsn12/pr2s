@@ -68,9 +68,8 @@ public class Institution extends BaseEntity {
      * @author hyeonwoo
      * @since 2022.07.07
      * @param institutionDto 엔티티로 변환할 값
-     * @return void 리턴하지 않음
      */
-    public void setForUpdate(InstitutionDto institutionDto) {
+    public void updateInstitution(InstitutionDto institutionDto) {
         this.name = institutionDto.getName();
         this.telNumber = institutionDto.getTelNumber();
     }
