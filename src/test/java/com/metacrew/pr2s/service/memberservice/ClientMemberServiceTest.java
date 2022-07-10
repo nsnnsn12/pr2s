@@ -39,12 +39,11 @@ class ClientMemberServiceTest {
     @Autowired
     EntityManager entityManager;
 
-    private static final String EXISTED_LOGIN_ID = "kqrgusdn";
     @BeforeEach
     public void init(){
         JoinMemberDto joinMemberDto = new JoinMemberDto();
         joinMemberDto.setName("박현우");
-        joinMemberDto.setLoginId(EXISTED_LOGIN_ID);
+        joinMemberDto.setLoginId("kqrgusdn");
         joinMemberDto.setPassword("qkrgusdn123");
         joinMemberDto.setBirthDay("19950101");
 
@@ -91,8 +90,14 @@ class ClientMemberServiceTest {
     @DisplayName("중복Id로 회원가입")
     void joinByDuplicatedLoginId() {
         // given
-        JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
-        joinMemberDto.setLoginId(EXISTED_LOGIN_ID);
+        List<Member> list = memberRepository.findAll();
+        String duplicatedLoginId = list.get(0).getLoginId();
+        JoinMemberDto joinMemberDto = new JoinMemberDto();
+        joinMemberDto.setName("노성규");
+        joinMemberDto.setLoginId(duplicatedLoginId);
+        joinMemberDto.setPassword("shtjdrb123");
+        joinMemberDto.setBirthDay("19950914");
+
         AddressDto addressDto = new AddressDto();
         addressDto.setSggNm("서울시 노원구");
 
@@ -105,7 +110,9 @@ class ClientMemberServiceTest {
     @DisplayName("마이페이지 정보 조회")
     void getMyPageInfo() {
         // given
-        Member findMember = memberRepository.findByLoginId(EXISTED_LOGIN_ID).orElseThrow();
+        List<Member> list = memberRepository.findAll();
+        String duplicatedLoginId = list.get(0).getLoginId();
+        Member findMember = memberRepository.findByLoginId(duplicatedLoginId).orElseThrow();
 
         // when
         MyPageDto myPageInfo = clientMemberService.getMyPageInfo(findMember.getId());
