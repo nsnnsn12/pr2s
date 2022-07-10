@@ -208,6 +208,28 @@ class ClientMemberServiceTest {
         assertThat(findJoinInfo.getInstitution()).isEqualTo(institution);
     }
 
+    @Test
+    @DisplayName("회원 정보 없이 기관 가입 요청")
+    void requestJoinOfInstitution2() {
+        //given
+        List<Institution> institutions = institutionRepository.findAll();
+        // when
+        assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(-1L, institutions.get(0).getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
+    @DisplayName("기관 정보 없이 기관 가입 요청")
+    void requestJoinOfInstitution3() {
+        //given
+        List<Member> list = memberRepository.findAll();
+        // when
+        assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getId(), 1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("기관정보가 존재하지 않습니다.");
+    }
+
     public JoinMemberDto getJoinMemberDtoByTestData(){
         JoinMemberDto joinMemberDto = new JoinMemberDto();
         joinMemberDto.setName("노성규");
