@@ -111,8 +111,7 @@ class ClientMemberServiceTest {
     void getMyPageInfo() {
         // given
         List<Member> list = memberRepository.findAll();
-        String duplicatedLoginId = list.get(0).getLoginId();
-        Member findMember = memberRepository.findByLoginId(duplicatedLoginId).orElseThrow();
+        Member findMember = list.get(0);
 
         // when
         MyPageDto myPageInfo = clientMemberService.getMyPageInfo(findMember.getId());
