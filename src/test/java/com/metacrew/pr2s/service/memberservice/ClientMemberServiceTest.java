@@ -169,23 +169,14 @@ class ClientMemberServiceTest {
     @DisplayName("회원탈퇴")
     void removeAccount() {
         // given
-        JoinMemberDto joinMemberDto = new JoinMemberDto();
-        joinMemberDto.setName("노성규");
-        joinMemberDto.setLoginId("shtjdrb");
-        joinMemberDto.setPassword("shtjdrb123");
-        joinMemberDto.setBirthDay("19950914");
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
 
-        AddressDto addressDto = new AddressDto();
-        addressDto.setSggNm("서울시 마포구");
-
-        Member member = clientMemberService.join(joinMemberDto, addressDto);
-        entityManager.flush();
-        entityManager.clear();
         // when
-        clientMemberService.removeAccount(member.getId());
+        clientMemberService.removeAccount(findMember.getId());
         entityManager.flush();
         entityManager.clear();
-        Member findMember = memberRepository.findById(member.getId()).orElseThrow();
+        findMember = memberRepository.findById(findMember.getId()).orElseThrow(() -> new IllegalArgumentException("테스트 실패"));
         // then
         assertThat(findMember.isDeleted()).isEqualTo(true);
     }
