@@ -135,18 +135,8 @@ class ClientMemberServiceTest {
     @DisplayName("마이페이지 정보 수정")
     void updateForMyPage() {
         //given
-        JoinMemberDto joinMemberDto = new JoinMemberDto();
-        joinMemberDto.setName("노성규");
-        joinMemberDto.setLoginId("shtjdrb");
-        joinMemberDto.setPassword("shtjdrb123");
-        joinMemberDto.setBirthDay("19950914");
-
-        AddressDto addressDto = new AddressDto();
-        addressDto.setSggNm("서울시 마포구");
-
-        Member member = clientMemberService.join(joinMemberDto, addressDto);
-        entityManager.flush();
-        entityManager.clear();
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
 
         //when
         MyPageDto myPageDto = new MyPageDto();
@@ -154,12 +144,12 @@ class ClientMemberServiceTest {
         myPageDto.setName("박현우");
         myPageDto.setTelNo("01012341234");
         myPageDto.setBirthDay("19950101");
-        Long updateId = clientMemberService.updateForMyPage(myPageDto, member.getId());
+        clientMemberService.updateForMyPage(myPageDto, findMember.getId());
         entityManager.flush();
         entityManager.clear();
 
         // then
-        Member findMember = memberRepository.findById(member.getId()).orElseThrow();
+        findMember = memberRepository.findById(findMember.getId()).orElseThrow(() -> new IllegalArgumentException("테스트 실패"));
         assertThat(findMember.getEmail()).isEqualTo(myPageDto.getEmail());
         assertThat(findMember.getName()).isEqualTo(myPageDto.getName());
         assertThat(findMember.getBirthDay()).isEqualTo(myPageDto.getBirthDay());
