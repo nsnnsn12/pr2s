@@ -1,9 +1,14 @@
 package com.metacrew.pr2s.service.memberservice;
 
 import com.metacrew.pr2s.dto.AddressDto;
+import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.MyPageDto;
+import com.metacrew.pr2s.entity.Institution;
+import com.metacrew.pr2s.entity.JoinInfo;
 import com.metacrew.pr2s.entity.Member;
+import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
+import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -25,6 +31,10 @@ class ClientMemberServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private InstitutionRepository institutionRepository;
+    @Autowired
+    private JoinInfoRepository joinInfoRepository;
 
     @Autowired
     EntityManager entityManager;
@@ -42,10 +52,16 @@ class ClientMemberServiceTest {
         addressDto.setSggNm("서울시 마포구");
 
         Member member = clientMemberService.join(joinMemberDto, addressDto);
+
+        InstitutionDto institutionDto = new InstitutionDto();
+        institutionDto.setName("우리은행");
+        institutionDto.setTelNumber("010-3013-8124");
+        Institution institution = new Institution(institutionDto);
+        institutionRepository.save(institution);
     }
 
     @Test
-    @DisplayName("중복 id를 사용하지 않는 회원가입")
+    @DisplayName("회원가입")
     void join() {
         // given
         JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
@@ -175,6 +191,24 @@ class ClientMemberServiceTest {
         assertThatThrownBy(() -> clientMemberService.removeAccount( -1L))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
+    @DisplayName("기관 가입 요청")
+    void requestJoinOfInstitution() {
+        //given
+        List<Member> list = memberRepository.findAll();
+        List<Institution> institutions = institutionRepository.findAll();
+        // when
+        Long joinInfoId = clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institutions.get(0).getId());
+        entityManager.flush();
+        entityManager.clear();
+        JoinInfo findJoinInfo = joinInfoRepository.findById(joinInfoId).orElseThrow((() -> new IllegalArgumentException("테스트 실패")));
+        Member member = memberRepository.findById(findJoinInfo.getMember().getId()).orElseThrow((() -> new IllegalArgumentException("테스트 실패")));
+        Institution institution = institutionRepository.findById(findJoinInfo.getInstitution().getId()).orElseThrow((() -> new IllegalArgumentException("테스트 실패")));
+        // then
+        assertThat(findJoinInfo.getMember()).isEqualTo(member);
+        assertThat(findJoinInfo.getInstitution()).isEqualTo(institution);
     }
 
     public JoinMemberDto getJoinMemberDtoByTestData(){

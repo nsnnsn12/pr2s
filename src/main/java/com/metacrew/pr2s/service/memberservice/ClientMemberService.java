@@ -5,7 +5,7 @@ import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.MyPageDto;
 import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.repository.AddressRepository;
-import com.metacrew.pr2s.repository.JoinInfoRepository;
+import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberTestRepository;
@@ -105,16 +105,15 @@ public class ClientMemberService implements MemberService{
      * @return joinInfo key
      */
     public Long requestJoinOfInstitution(Long memberId, Long institutionId){
-        Member member = memberTestRepository.findById(memberId);
-        Optional<Institution> institution = institutionRepository.findById(institutionId);
-
-        if(member == null) throw new IllegalStateException("회원정보가 존재하지 않습니다.");
-        if(institution.isEmpty()) throw new IllegalStateException("기관정보가 존재하지 않습니다.");
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
+        Institution institution = institutionRepository.findById(institutionId)
+                .orElseThrow(()-> new IllegalStateException("기관정보가 존재하지 않습니다."));
 
         //회원정보와 기관정보를 조회한다.
         //해당 가입 기관 정보가 존재하고 삭제처리가 되어 있지 않다면 등록할 수 없다.
-        validateDuplicateJoinInfo(member, institution.get());
-        JoinInfo joinInfo = JoinInfo.createJoinInfo(member, institution.get());
+        validateDuplicateJoinInfo(member, institution);
+        JoinInfo joinInfo = JoinInfo.createJoinInfo(member, institution);
         joinInfoRepository.save(joinInfo);
         return joinInfo.getId();
     }
@@ -129,9 +128,9 @@ public class ClientMemberService implements MemberService{
      * @param member Member 정보
      * @param institution Institution 정보
      */
-    public void validateDuplicateJoinInfo(Member member, Institution institution){
-        // TODO: 2022-07-02 joinfo 조회 기능 필요
-
+    private void validateDuplicateJoinInfo(Member member, Institution institution){
+        List<JoinInfo> result = joinInfoRepository.findByMemberAndInstitutionAndIsDeleted(member, institution, false);
+        if(result.size() > 0) throw new IllegalStateException("이미 존재하는 가입 요청입니다.");
     }
 
     @Override
