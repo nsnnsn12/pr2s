@@ -1,4 +1,4 @@
-package com.metacrew.pr2s.repository;
+package com.metacrew.pr2s.repository.joininforepository;
 
 import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
@@ -6,6 +6,7 @@ import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.JoinInfo;
 import com.metacrew.pr2s.entity.Member;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
+import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
