@@ -64,17 +64,27 @@ class ClientMemberServiceTest {
     @DisplayName("회원가입")
     void join() {
         // given
-        JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
-        joinMemberDto.setLoginId("shtjdrb123");
+        JoinMemberDto joinMemberDto = new JoinMemberDto();
+        joinMemberDto.setName("노성규");
+        joinMemberDto.setLoginId("shtjdrb");
+        joinMemberDto.setPassword("shtjdrb123");
+        joinMemberDto.setBirthDay("19950914");
+
         AddressDto addressDto = new AddressDto();
         addressDto.setSggNm("서울시 노원구");
         Member member = clientMemberService.join(joinMemberDto, addressDto);
 
+        entityManager.flush();
+        entityManager.clear();
         // when
-        Optional<Member> findMember = memberRepository.findById(member.getId());
+        Member findMember = memberRepository.findById(member.getId()).orElseThrow(() -> new IllegalArgumentException("테스트 실패"));
 
         // then
-        assertThat(findMember.isPresent()).isEqualTo(true);
+        assertThat(findMember.getName()).isEqualTo(joinMemberDto.getName());
+        assertThat(findMember.getLoginId()).isEqualTo(joinMemberDto.getLoginId());
+        assertThat(findMember.getPassword()).isEqualTo(joinMemberDto.getPassword());
+        assertThat(findMember.getBirthDay()).isEqualTo(joinMemberDto.getBirthDay());
+        assertThat(findMember.getAddress().getSggNm()).isEqualTo(addressDto.getSggNm());
     }
 
     @Test
