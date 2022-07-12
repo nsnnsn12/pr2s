@@ -31,6 +31,7 @@ public class ClientMemberService implements MemberService{
     private final InstitutionRepository institutionRepository;
     private final JoinInfoRepository joinInfoRepository;
 
+    @Override
     public Member join(JoinMemberDto joinMember, AddressDto addressDto){
         validateDuplicateMember(joinMember.getLoginId());
         Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
@@ -59,6 +60,7 @@ public class ClientMemberService implements MemberService{
      * @param id 조회할 id값
      * @return MyPageDto 사용자에 보여 줄 마이페이지 정보
      */
+    @Override
     public MyPageDto getMyPageInfo(Long id) {
         Member findMember = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
         return new MyPageDto(findMember);
@@ -75,6 +77,7 @@ public class ClientMemberService implements MemberService{
      * @param myPageDto 수정할 내용을 담고 있는 dto
      * @return 수정한 회원 key 값.
      */
+    @Override
     public Long updateForMyPage(MyPageDto myPageDto, Long id){
         Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
         member.updateForMyPage(myPageDto);
@@ -89,6 +92,7 @@ public class ClientMemberService implements MemberService{
      * @since 2022.07.01
      * @param id 회원탈퇴할 entity key
      */
+    @Override
     public void removeAccount(Long id){
         Member findMember = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
         if(!findMember.isDeleted()) findMember.deleted();
@@ -104,6 +108,7 @@ public class ClientMemberService implements MemberService{
      * @param institutionId Institution key
      * @return joinInfo key
      */
+    @Override
     public Long requestJoinOfInstitution(Long memberId, Long institutionId){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
@@ -135,6 +140,7 @@ public class ClientMemberService implements MemberService{
 
     @Override
     public void cancelRequestedJoinOfInstitution(Long id) {
-
+        JoinInfo joinInfo = joinInfoRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입정보입니다."));
+        if(!joinInfo.isDeleted()) joinInfo.deleted();
     }
 }

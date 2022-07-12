@@ -56,6 +56,8 @@ class ClientMemberServiceTest {
         institutionDto.setTelNumber("010-3013-8124");
         Institution institution = new Institution(institutionDto);
         institutionRepository.save(institution);
+
+        clientMemberService.requestJoinOfInstitution(member.getId(),institution.getId());
     }
 
     @Test
@@ -244,6 +246,29 @@ class ClientMemberServiceTest {
         assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institutions.get(0).getId()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("이미 존재하는 가입 요청입니다.");
+    }
+
+    @Test
+    @DisplayName("기관에 가입 요청")
+    void cancelRequestedJoinOfInstitution() {
+        // given
+        List<JoinInfo> list = joinInfoRepository.findAll();
+        // when
+        JoinInfo joinInfo = list.get(0);
+        clientMemberService.cancelRequestedJoinOfInstitution(joinInfo.getId());
+        entityManager.flush();
+        entityManager.clear();
+        // then
+        assertThat(joinInfo.isDeleted()).isEqualTo(true);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 가입 요청 취소")
+    void cancelRequestedJoinOfInstitutionByNonMemberId() {
+        // then
+        assertThatThrownBy(() -> clientMemberService.cancelRequestedJoinOfInstitution( -1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 가입정보입니다.");
     }
 
     public JoinMemberDto getJoinMemberDtoByTestData(){
