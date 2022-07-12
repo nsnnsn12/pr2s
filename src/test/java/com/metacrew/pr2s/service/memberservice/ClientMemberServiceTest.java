@@ -40,42 +40,41 @@ class ClientMemberServiceTest {
 
     @BeforeEach
     public void init(){
-        JoinMemberDto joinMemberDto = new JoinMemberDto();
-        joinMemberDto.setName("박현우");
-        joinMemberDto.setLoginId("kqrgusdn");
-        joinMemberDto.setPassword("qkrgusdn123");
-        joinMemberDto.setBirthDay("19950101");
+        for(int i = 0; i < 2; i++){
+            JoinMemberDto joinMemberDto = new JoinMemberDto();
+            joinMemberDto.setName("박현우"+i);
+            joinMemberDto.setLoginId("kqrgusdn"+i);
+            joinMemberDto.setPassword("qkrgusdn"+i);
+            joinMemberDto.setBirthDay("1995010"+i);
 
-        AddressDto addressDto = new AddressDto();
-        addressDto.setSggNm("서울시 마포구");
+            AddressDto addressDto = new AddressDto();
+            addressDto.setSggNm("서울시 마포구"+1);
 
-        Member member = clientMemberService.join(joinMemberDto, addressDto);
+            Member member = clientMemberService.join(joinMemberDto, addressDto);
 
-        InstitutionDto institutionDto = new InstitutionDto();
-        institutionDto.setName("우리은행");
-        institutionDto.setTelNumber("010-3013-8124");
-        Institution institution = new Institution(institutionDto);
-        institutionRepository.save(institution);
+            InstitutionDto institutionDto = new InstitutionDto();
+            institutionDto.setName("우리은행"+i);
+            institutionDto.setTelNumber("010-1234-1234");
+            Institution institution = new Institution(institutionDto);
+            institutionRepository.save(institution);
+        }
+        List<Member> list = memberRepository.findAll();
+        List<Institution> institutions = institutionRepository.findAll();
+        Long joinInfoId = clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institutions.get(0).getId());
 
-        clientMemberService.requestJoinOfInstitution(member.getId(),institution.getId());
     }
 
     @Test
     @DisplayName("회원가입")
     void join() {
         // given
-        JoinMemberDto joinMemberDto = new JoinMemberDto();
-        joinMemberDto.setName("노성규");
-        joinMemberDto.setLoginId("shtjdrb");
-        joinMemberDto.setPassword("shtjdrb123");
-        joinMemberDto.setBirthDay("19950914");
+        JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
 
-        AddressDto addressDto = new AddressDto();
-        addressDto.setSggNm("서울시 노원구");
+        AddressDto addressDto = getAddressDtoByTestData();
         Member member = clientMemberService.join(joinMemberDto, addressDto);
-
         entityManager.flush();
         entityManager.clear();
+
         // when
         Member findMember = memberRepository.findById(member.getId()).orElseThrow(() -> new IllegalArgumentException("테스트 실패"));
 
@@ -93,14 +92,10 @@ class ClientMemberServiceTest {
         // given
         List<Member> list = memberRepository.findAll();
         String duplicatedLoginId = list.get(0).getLoginId();
-        JoinMemberDto joinMemberDto = new JoinMemberDto();
-        joinMemberDto.setName("노성규");
+        JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
         joinMemberDto.setLoginId(duplicatedLoginId);
-        joinMemberDto.setPassword("shtjdrb123");
-        joinMemberDto.setBirthDay("19950914");
 
-        AddressDto addressDto = new AddressDto();
-        addressDto.setSggNm("서울시 노원구");
+        AddressDto addressDto = getAddressDtoByTestData();
 
         assertThatThrownBy(() -> {
             Member member = clientMemberService.join(joinMemberDto, addressDto);
@@ -140,11 +135,7 @@ class ClientMemberServiceTest {
         Member findMember = list.get(0);
 
         //when
-        MyPageDto myPageDto = new MyPageDto();
-        myPageDto.setEmail("gkdlshtjdrb@naver.com");
-        myPageDto.setName("박현우");
-        myPageDto.setTelNo("01012341234");
-        myPageDto.setBirthDay("19950101");
+        MyPageDto myPageDto = getMyPageDto();
         clientMemberService.updateForMyPage(myPageDto, findMember.getId());
         entityManager.flush();
         entityManager.clear();
@@ -197,8 +188,16 @@ class ClientMemberServiceTest {
         //given
         List<Member> list = memberRepository.findAll();
         List<Institution> institutions = institutionRepository.findAll();
+        List<JoinInfo> joinInfos = joinInfoRepository.findAll();
+        Long memberId = joinInfos.get(0).getMember().getId();
+        Long joinInfoId = 0L;
         // when
-        Long joinInfoId = clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institutions.get(0).getId());
+        for(int i = 0; i < list.size(); i++){
+            if(!list.get(i).getId().equals(memberId)){
+                joinInfoId = clientMemberService.requestJoinOfInstitution(list.get(i).getId(), institutions.get(i).getId());
+                break;
+            }
+        }
         entityManager.flush();
         entityManager.clear();
         JoinInfo findJoinInfo = joinInfoRepository.findById(joinInfoId).orElseThrow((() -> new IllegalArgumentException("테스트 실패")));
@@ -235,21 +234,19 @@ class ClientMemberServiceTest {
     @DisplayName("중복 기관 가입 요청")
     void requestJoinOfInstitution4() {
         //given
-        List<Member> list = memberRepository.findAll();
-        List<Institution> institutions = institutionRepository.findAll();
-        Long joinInfoId = clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institutions.get(0).getId());
+        List<JoinInfo> list = joinInfoRepository.findAll();
         entityManager.flush();
         entityManager.clear();
 
         // when
         // then
-        assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institutions.get(0).getId()))
+        assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getMember().getId(), list.get(0).getInstitution().getId()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("이미 존재하는 가입 요청입니다.");
     }
 
     @Test
-    @DisplayName("기관에 가입 요청")
+    @DisplayName("기관 가입 요청 취소")
     void cancelRequestedJoinOfInstitution() {
         // given
         List<JoinInfo> list = joinInfoRepository.findAll();
@@ -278,5 +275,20 @@ class ClientMemberServiceTest {
         joinMemberDto.setPassword("shtjdrb123");
         joinMemberDto.setBirthDay("19950914");
         return joinMemberDto;
+    }
+
+    public AddressDto getAddressDtoByTestData(){
+        AddressDto addressDto = new AddressDto();
+        addressDto.setSggNm("서울시 노원구");
+        return addressDto;
+    }
+
+    private MyPageDto getMyPageDto() {
+        MyPageDto myPageDto = new MyPageDto();
+        myPageDto.setEmail("gkdlshtjdrb@naver.com");
+        myPageDto.setName("박현우");
+        myPageDto.setTelNo("01012341234");
+        myPageDto.setBirthDay("19950101");
+        return myPageDto;
     }
 }

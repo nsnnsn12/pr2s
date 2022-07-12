@@ -52,31 +52,12 @@ public class ClientMemberService implements MemberService{
         if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 회원입니다.");
     }
 
-    /**
-     * 마이페이지 정보 조회
-     * 입력받은 id로 MyPage 정보를 조회하여 리턴한다.
-     * @author sunggyu
-     * @since 2022.07.01
-     * @param id 조회할 id값
-     * @return MyPageDto 사용자에 보여 줄 마이페이지 정보
-     */
     @Override
     public MyPageDto getMyPageInfo(Long id) {
         Member findMember = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
         return new MyPageDto(findMember);
     }
 
-    /**
-     * 마이페이지 정보 수정
-     * 수정할 내용과 수정할 entity key를 입력받아
-     * 마이 페이지에 해당하는 회원정보를 수정 후
-     * entity key를 리턴한다.
-     * @author sunggyu
-     * @since 2022.07.01
-     * @param id 수정할 entity key
-     * @param myPageDto 수정할 내용을 담고 있는 dto
-     * @return 수정한 회원 key 값.
-     */
     @Override
     public Long updateForMyPage(MyPageDto myPageDto, Long id){
         Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
@@ -84,30 +65,12 @@ public class ClientMemberService implements MemberService{
         return member.getId();
     }
 
-    /**
-     * 회원탈퇴
-     * 회원탈퇴할 entity key를 입력받아
-     * 회원탈퇴 처리한다.
-     * @author sunggyu
-     * @since 2022.07.01
-     * @param id 회원탈퇴할 entity key
-     */
     @Override
     public void removeAccount(Long id){
         Member findMember = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
         if(!findMember.isDeleted()) findMember.deleted();
     }
 
-    /**
-     * 기관에 가입 요청
-     * 이미 가입요청 혹은 가입이 되어 있다면 예외를 던지고
-     * 그렇지 않다면 가입요청 등록을 한다.
-     * @author sunggyu
-     * @since 2022.07.02
-     * @param memberId Member key
-     * @param institutionId Institution key
-     * @return joinInfo key
-     */
     @Override
     public Long requestJoinOfInstitution(Long memberId, Long institutionId){
         Member member = memberRepository.findById(memberId)
