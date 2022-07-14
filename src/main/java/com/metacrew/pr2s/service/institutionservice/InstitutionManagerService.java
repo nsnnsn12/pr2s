@@ -7,23 +7,23 @@ import com.metacrew.pr2s.entity.Address;
 import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.Workdays;
 import com.metacrew.pr2s.repository.AddressRepository;
-import com.metacrew.pr2s.repository.institutionrepository.InstitutionTestRepository;
-import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysTestRepository;
+import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
+import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * JPQL 학습을 위한 테스트 서비스 클래스이다.
- * @author hyeonwoo
- * @since 2022.07.01
+ * 사용자가 자신의 정보를 관리하기 위한 서비스 로직을 가지고 있는 클래스이다.
+ * @author sunggyu
+ * @since 2022.07.07
  */
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class InstitutionTestService implements InstitutionService {
-    private final InstitutionTestRepository institutionTestRepository;
-    private final WorkdaysTestRepository workdaysTestRepository;
+public class InstitutionManagerService implements InstitutionService {
+    private final InstitutionRepository institutionRepository;
+    private final WorkdaysRepository workdaysRepository;
     private final AddressRepository addressRepository ;
 
     /**
@@ -35,10 +35,10 @@ public class InstitutionTestService implements InstitutionService {
      * @return 등록한 회원 key 값.
      */
     public Institution joinPr2s(InstitutionDto institutionDto, WorkdaysDto workdaysDto, AddressDto addressDto){
-        Workdays workdays = workdaysTestRepository.save(Workdays.createWorkdays(workdaysDto));
+        Workdays workdays = workdaysRepository.save(Workdays.createWorkdays(workdaysDto));
         Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
         Institution institution = Institution.createInstitution(institutionDto, workdays, address);
-        institutionTestRepository.save(institution);
+        institutionRepository.save(institution);
 
         return institution;
     }
@@ -51,7 +51,7 @@ public class InstitutionTestService implements InstitutionService {
      * @return 수정한 회원 엔터티
      */
     public Institution updateInstitutionInfo(InstitutionDto institutionDto, Long id){
-        Institution findInstitution = institutionTestRepository.findInstitutionById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
+        Institution findInstitution = institutionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
         findInstitution.updateInstitution(institutionDto);
 
         return findInstitution;
@@ -64,8 +64,7 @@ public class InstitutionTestService implements InstitutionService {
      * @param id 변경할 기관 id
      */
     public void deleteInstitution(Long id) {
-        Institution findInstitution = institutionTestRepository.findInstitutionById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
+        Institution findInstitution = institutionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
         if(!findInstitution.isDeleted()) findInstitution.deleted();
     }
-
 }
