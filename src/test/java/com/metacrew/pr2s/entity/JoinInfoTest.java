@@ -1,5 +1,6 @@
 package com.metacrew.pr2s.entity;
 
+import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
@@ -20,20 +21,32 @@ class JoinInfoTest {
         joinMemberDto.setBirthDay("19950914");
         Member member = Member.createJoinMember(joinMemberDto, null, null);
 
-        WorkdaysDto workdaysDto = new WorkdaysDto();
-        workdaysDto.setIsFriday(true);
-        workdaysDto.setIsMonday(true);
-        Workdays workdays = Workdays.createWorkdays(workdaysDto);
+        Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
 
+        Address address = Address.createAddressByAddressDto(getTestAddressDtoByTestData());
         InstitutionDto institutionDto = new InstitutionDto();
         institutionDto.setName("우리은행");
         institutionDto.setTelNumber("010-3013-8124");
-        Institution institution = Institution.createInstitution(institutionDto, workdays);
+        Institution institution = Institution.createInstitution(institutionDto, workdays, address);
         // when
         JoinInfo joinInfo = JoinInfo.createJoinInfo(member, institution);
 
         //then
         assertThat(joinInfo.getMember()).isEqualTo(member);
         assertThat(joinInfo.getInstitution()).isEqualTo(institution);
+    }
+
+    public WorkdaysDto getTestWorkdaysDtoByTestData() {
+        WorkdaysDto workdaysDto = new WorkdaysDto();
+        workdaysDto.setIsMonday(true);
+        workdaysDto.setIsWednesday(true);
+        workdaysDto.setIsFriday(true);
+        return workdaysDto;
+    }
+
+    public AddressDto getTestAddressDtoByTestData() {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setRn("비고");
+        return addressDto;
     }
 }

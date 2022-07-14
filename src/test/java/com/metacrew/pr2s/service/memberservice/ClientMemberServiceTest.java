@@ -9,6 +9,7 @@ import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysRepository;
+import com.metacrew.pr2s.service.institutionservice.InstitutionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,8 @@ class ClientMemberServiceTest {
     @Autowired
     private WorkdaysRepository workdaysRepository;
     @Autowired
+    private InstitutionService institutionService;
+    @Autowired
     EntityManager entityManager;
 
     @BeforeEach
@@ -43,8 +46,6 @@ class ClientMemberServiceTest {
         WorkdaysDto workdaysDto = new WorkdaysDto();
         workdaysDto.setIsFriday(true);
         workdaysDto.setIsMonday(true);
-        Workdays workdays = Workdays.createWorkdays(workdaysDto);
-        workdaysRepository.save(workdays);
         for(int i = 0; i < 2; i++){
             JoinMemberDto joinMemberDto = new JoinMemberDto();
             joinMemberDto.setName("박현우"+i);
@@ -60,7 +61,7 @@ class ClientMemberServiceTest {
             InstitutionDto institutionDto = new InstitutionDto();
             institutionDto.setName("우리은행"+i);
             institutionDto.setTelNumber("010-1234-1234");
-            Institution institution = Institution.createInstitution(institutionDto, workdays);
+            Institution institution = institutionService.joinPr2s(institutionDto, workdaysDto, addressDto);
             institutionRepository.save(institution);
         }
         List<Member> list = memberRepository.findAll();
