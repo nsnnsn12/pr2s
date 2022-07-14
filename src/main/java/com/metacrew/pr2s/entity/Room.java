@@ -67,7 +67,6 @@ public class Room extends BaseEntity {
         title= roomDto.getTitle();
         description= roomDto.getDescription();
         maximumPersonCount= roomDto.getMaximumPersonCount();
-        updated();
     }
 
     //삭제시사용
@@ -76,5 +75,6 @@ public class Room extends BaseEntity {
     }
 
 
+    //
 }
 
