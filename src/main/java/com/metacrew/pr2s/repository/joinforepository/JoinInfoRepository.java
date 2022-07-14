@@ -1,4 +1,4 @@
-package com.metacrew.pr2s.repository;
+package com.metacrew.pr2s.repository.joinforepository;
 
 import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.JoinInfo;

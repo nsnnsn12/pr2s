@@ -50,7 +50,12 @@ public class Member extends BaseEntity {
     @Column
     private Gender gender;
 
-
+    /**
+     * 수정해야 할 마이페이지 정보를 입력받아 수정한다.
+     * @author sunggyu
+     * @since 2022.07.10
+     * @param myPageDto 수정해야 할 정보
+     */
     public void updateForMyPage(MyPageDto myPageDto){
         name = myPageDto.getName();
         email = myPageDto.getEmail();
