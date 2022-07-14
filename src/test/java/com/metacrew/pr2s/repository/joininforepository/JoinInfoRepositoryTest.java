@@ -1,12 +1,10 @@
-package com.metacrew.pr2s.repository.joininforepository;
+package com.metacrew.pr2s.repository;
 
+import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
-import com.metacrew.pr2s.entity.Institution;
-import com.metacrew.pr2s.entity.JoinInfo;
-import com.metacrew.pr2s.entity.Member;
-import com.metacrew.pr2s.entity.Workdays;
+import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
@@ -32,14 +30,15 @@ class JoinInfoRepositoryTest {
     @Autowired
     private WorkdaysRepository workdaysRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
     @Test
     public void findByMemberAndInstitutionAndIsDeletedTest(){
         //given
         Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData(), null, null);
         memberRepository.save(joinMember);
 
-
-        Institution institution = getInstitutionDtoTestData();
+        Institution institution = getInstitutionTestData();
         institutionRepository.save(institution);
 
         JoinInfo joinInfo = JoinInfo.createJoinInfo(joinMember, institution);
@@ -64,17 +63,30 @@ class JoinInfoRepositoryTest {
         return joinMemberDto;
     }
 
-    public Institution getInstitutionDtoTestData(){
-        WorkdaysDto workdaysDto = new WorkdaysDto();
-        workdaysDto.setIsFriday(true);
-        workdaysDto.setIsMonday(true);
-        Workdays workdays = Workdays.createWorkdays(workdaysDto);
+    public Institution getInstitutionTestData(){
+        Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
         workdaysRepository.save(workdays);
+
+        Address testAddress = Address.createAddressByAddressDto(getTestAddressDtoByTestData());
+        addressRepository.save(testAddress);
+
         InstitutionDto institutionDto = new InstitutionDto();
         institutionDto.setName("우리은행");
         institutionDto.setTelNumber("010-3013-8124");
-
-        return Institution.createInstitution(institutionDto, workdays);
+        return Institution.createInstitution(institutionDto,workdays, testAddress);
     }
 
+    public WorkdaysDto getTestWorkdaysDtoByTestData() {
+        WorkdaysDto workdaysDto = new WorkdaysDto();
+        workdaysDto.setIsMonday(true);
+        workdaysDto.setIsWednesday(true);
+        workdaysDto.setIsFriday(true);
+        return workdaysDto;
+    }
+
+    public AddressDto getTestAddressDtoByTestData() {
+        AddressDto addressDto = new AddressDto();
+        addressDto.setRn("비고");
+        return addressDto;
+    }
 }

@@ -42,7 +42,7 @@ public class Institution extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
-    private File file;
+    private File thumbnail;
 
     @Embedded
     private Period period;
@@ -55,11 +55,14 @@ public class Institution extends BaseEntity {
      * @param workdays Workdays 엔티티
      * @return Institution 엔티티로 변환한 값
      */
-    public static Institution createInstitution(InstitutionDto institutionDto, Workdays workdays){
+    public static Institution createInstitution(InstitutionDto institutionDto, Workdays workdays, Address address){
         Institution institution = new Institution();
         institution.name = institutionDto.getName();
         institution.telNumber = institutionDto.getTelNumber();
+        institution.isApprovedRegistration = institutionDto.getIsApprovedRegistration();
+        institution.period = institutionDto.getPeriod();
         institution.workdays = workdays;
+        institution.address = address;
         return institution;
     }
 
@@ -68,9 +71,8 @@ public class Institution extends BaseEntity {
      * @author hyeonwoo
      * @since 2022.07.07
      * @param institutionDto 엔티티로 변환할 값
-     * @return void 리턴하지 않음
      */
-    public void setForUpdate(InstitutionDto institutionDto) {
+    public void updateInstitution(InstitutionDto institutionDto) {
         this.name = institutionDto.getName();
         this.telNumber = institutionDto.getTelNumber();
     }
