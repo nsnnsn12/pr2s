@@ -97,22 +97,22 @@ class RoomTestServiceTest {
         assertThat(findRoom.getMaximumPersonCount()).isEqualTo(roomDto.getMaximumPersonCount());
     }
 
-    @Test
-    @DisplayName("방 삭제")
-    void deleteRoom() {
-        //given
-        List<Room> list = roomTestRepository.findAllRoom();
-        //Room findRoom = roomTestRepository.findByRoomLongId(1L);
-        Room findRoom = list.get(0);
-
-        //when
-        roomTestService.deleteRoom(findRoom.getId());
-        em.flush();
-        em.clear();
-
-        //then
-        findRoom = roomTestRepository.findByRoomLongId(findRoom.getId());
-        assertThat(findMember.isDeleted()).isEqualTo(true);
-    }
+//    @Test
+//    @DisplayName("방 삭제")
+//    void deleteRoom() {
+//        //given
+//        List<Room> list = roomTestRepository.findAllRoom();
+//        //Room findRoom = roomTestRepository.findByRoomLongId(1L);
+//        Room findRoom = list.get(0);
+//
+//        //when
+//        roomTestService.deleteRoom(findRoom.getId());
+//        em.flush();
+//        em.clear();
+//
+//        //then
+//        findRoom = roomTestRepository.findByRoomLongId(findRoom.getId());
+//        assertThat(findMember.isDeleted()).isEqualTo(true);
+//    }
 
 }
