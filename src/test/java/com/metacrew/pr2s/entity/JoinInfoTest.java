@@ -2,6 +2,7 @@ package com.metacrew.pr2s.entity;
 
 import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
+import com.metacrew.pr2s.dto.WorkdaysDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,10 +20,15 @@ class JoinInfoTest {
         joinMemberDto.setBirthDay("19950914");
         Member member = Member.createJoinMember(joinMemberDto, null, null);
 
+        WorkdaysDto workdaysDto = new WorkdaysDto();
+        workdaysDto.setIsFriday(true);
+        workdaysDto.setIsMonday(true);
+        Workdays workdays = Workdays.createWorkdays(workdaysDto);
+
         InstitutionDto institutionDto = new InstitutionDto();
         institutionDto.setName("우리은행");
         institutionDto.setTelNumber("010-3013-8124");
-        Institution institution = new Institution(institutionDto);
+        Institution institution = Institution.createInstitution(institutionDto, workdays);
         // when
         JoinInfo joinInfo = JoinInfo.createJoinInfo(member, institution);
 

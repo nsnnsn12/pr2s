@@ -1,15 +1,14 @@
 package com.metacrew.pr2s.service.memberservice;
 
-import com.metacrew.pr2s.dto.AddressDto;
-import com.metacrew.pr2s.dto.InstitutionDto;
-import com.metacrew.pr2s.dto.JoinMemberDto;
-import com.metacrew.pr2s.dto.MyPageDto;
+import com.metacrew.pr2s.dto.*;
 import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.JoinInfo;
 import com.metacrew.pr2s.entity.Member;
+import com.metacrew.pr2s.entity.Workdays;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
+import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,12 +33,18 @@ class ClientMemberServiceTest {
     private InstitutionRepository institutionRepository;
     @Autowired
     private JoinInfoRepository joinInfoRepository;
-
+    @Autowired
+    private WorkdaysRepository workdaysRepository;
     @Autowired
     EntityManager entityManager;
 
     @BeforeEach
     public void init(){
+        WorkdaysDto workdaysDto = new WorkdaysDto();
+        workdaysDto.setIsFriday(true);
+        workdaysDto.setIsMonday(true);
+        Workdays workdays = Workdays.createWorkdays(workdaysDto);
+        workdaysRepository.save(workdays);
         for(int i = 0; i < 2; i++){
             JoinMemberDto joinMemberDto = new JoinMemberDto();
             joinMemberDto.setName("박현우"+i);
@@ -55,7 +60,7 @@ class ClientMemberServiceTest {
             InstitutionDto institutionDto = new InstitutionDto();
             institutionDto.setName("우리은행"+i);
             institutionDto.setTelNumber("010-1234-1234");
-            Institution institution = new Institution(institutionDto);
+            Institution institution = Institution.createInstitution(institutionDto, workdays);
             institutionRepository.save(institution);
         }
         List<Member> list = memberRepository.findAll();
