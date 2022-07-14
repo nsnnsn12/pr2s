@@ -1,5 +1,6 @@
 package com.metacrew.pr2s.entity;
 
+import com.metacrew.pr2s.dto.RoomDto;
 import com.metacrew.pr2s.entity.base.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,7 +19,8 @@ import java.time.LocalDateTime;
 @Getter
 public class Room extends BaseEntity {
     @Id
-    @Column(name = "room_id") @GeneratedValue
+    @Column(name = "room_id")
+    @GeneratedValue
     private Long id;
 
     @JoinColumn(name = "address_id")
@@ -42,4 +44,37 @@ public class Room extends BaseEntity {
     @Column
     private int maximumPersonCount;
 
+    /**
+     * RoomDto -> Room
+     * @author nahyun
+     * @since 2022.07.07
+     * @param roomDto 엔티티로 변환할 값
+     * @return Room 엔티티로 변환한 값
+     */
+    public static Room createRoomByRoomDto(RoomDto roomDto, Address address, File file){
+        Room room = new Room();
+        room.id=roomDto.getId();
+        room.title= roomDto.getTitle();
+        room.description=roomDto.getDescription();
+        room.maximumPersonCount=roomDto.getMaximumPersonCount();
+        room.address=address;
+        room.file=file;
+        return room;
+    }
+
+    //수정시사용
+    public void setForUpdateRoom(RoomDto roomDto) {
+        title= roomDto.getTitle();
+        description= roomDto.getDescription();
+        maximumPersonCount= roomDto.getMaximumPersonCount();
+        updated();
+    }
+
+    //삭제시사용
+    public void setForDeleteRoom(RoomDto roomDto){
+        deleted();
+    }
+
+
 }
+
