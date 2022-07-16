@@ -30,4 +30,13 @@ public class File extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column
     private FileType fileType;
+
+    static File createFile(String name, String source, FileType fileType){
+        File file = new File();
+        file.source = source;
+        file.name = name;
+        file.fileType = fileType;
+
+        return file;
+    }
 }
