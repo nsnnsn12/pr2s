@@ -35,6 +35,10 @@ public class InstitutionManagerService implements InstitutionService {
      * @return 등록한 회원 key 값.
      */
     public Institution joinPr2s(InstitutionDto institutionDto, WorkdaysDto workdaysDto, AddressDto addressDto){
+        // 1. 파리미터 유효성 검사
+        validateInstitution(institutionDto, workdaysDto, addressDto);
+        
+        // 2. 기관 생성
         Workdays workdays = workdaysRepository.save(Workdays.createWorkdays(workdaysDto));
         Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
         Institution institution = Institution.createInstitution(institutionDto, workdays, address);
@@ -50,9 +54,18 @@ public class InstitutionManagerService implements InstitutionService {
      * @param institutionDto 변경할 기관 정보
      * @return 수정한 회원 엔터티
      */
-    public Institution updateInstitutionInfo(InstitutionDto institutionDto, Long id){
-        Institution findInstitution = institutionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
-        findInstitution.updateInstitution(institutionDto);
+    public Institution updateInstitutionInfo(InstitutionDto institutionDto, WorkdaysDto workdaysDto, AddressDto addressDto, Long updateInstitutionId){
+        // 1. 파리미터 유효성 검사
+        validateInstitution(institutionDto, workdaysDto, addressDto);
+
+        // 2. 기관 조회
+        Institution findInstitution = institutionRepository.findById(updateInstitutionId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
+
+        // 3. 기관 정보 수정
+        Workdays workdays = Workdays.createWorkdays(workdaysDto);
+        Address address = Address.createAddressByAddressDto(addressDto);
+
+        findInstitution.updateInstitution(institutionDto, workdays, address);
 
         return findInstitution;
     }
@@ -66,5 +79,24 @@ public class InstitutionManagerService implements InstitutionService {
     public void deleteInstitution(Long id) {
         Institution findInstitution = institutionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
         if(!findInstitution.isDeleted()) findInstitution.deleted();
+    }
+
+    /**
+     * 삽입 및 수정하려는 기관 정보 유효성 검사
+     * Dto 값들이 null 이거나
+     * 유효하지않은 정보가 들어있다면
+     * 예외를 던진다.
+     * @author hyeonwoo
+     * @since 2022.07.01
+     * @param institutionDto 삽입 및 변경할 기관정보
+     * @param workdaysDto 삽입 및 변경할 기관의 운영 요일
+     * @param addressDto 삽입 및 변경할 기관의 주소 정보
+     */
+    public void validateInstitution(InstitutionDto institutionDto, WorkdaysDto workdaysDto, AddressDto addressDto) {
+        if(institutionDto == null || workdaysDto == null || addressDto == null) {
+            throw new IllegalStateException("입력 정보가 유효하지 않습니다.");
+        }
+        
+        // 유효정보 체크
     }
 }

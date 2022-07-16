@@ -6,6 +6,7 @@ import com.metacrew.pr2s.dto.WorkdaysDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -30,6 +31,7 @@ class InstitutionTest {
         assertThat(institution.getWorkdays().getIsMonday()).isEqualTo(workdays.getIsMonday());
         assertThat(institution.getWorkdays().getIsWednesday()).isEqualTo(workdays.getIsWednesday());
         assertThat(institution.getWorkdays().getIsFriday()).isEqualTo(workdays.getIsFriday());
+        assertThat(institution.isApprovedRegistration()).isEqualTo(false);
 
     }
 

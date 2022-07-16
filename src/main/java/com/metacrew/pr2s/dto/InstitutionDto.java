@@ -21,9 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class InstitutionDto {
-    private Long id;
     private String name;
-    private Boolean isApprovedRegistration;
     private String telNumber;
     private Period period;
 
@@ -34,9 +32,7 @@ public class InstitutionDto {
      * @param institution 기관정보
      */
     public InstitutionDto(Institution institution) {
-        this.id = institution.getId();
         this.name = institution.getName();
-        this.isApprovedRegistration = institution.getIsApprovedRegistration();
         this.telNumber = institution.getTelNumber();
         this.period = institution.getPeriod();
     }

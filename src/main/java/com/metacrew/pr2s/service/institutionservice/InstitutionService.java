@@ -32,7 +32,7 @@ public interface InstitutionService {
      * @param institutionDto 변경할 기관 정보
      * @return 변경한 기관 정보
      */
-    Institution updateInstitutionInfo(InstitutionDto institutionDto, Long id);
+    Institution updateInstitutionInfo(InstitutionDto institutionDto, WorkdaysDto workdaysDto, AddressDto addressDto, Long id);
 
     /**
      * 삭제하려는 기관의 ID를 받아 삭제여부와 삭제일자를 업데이트
