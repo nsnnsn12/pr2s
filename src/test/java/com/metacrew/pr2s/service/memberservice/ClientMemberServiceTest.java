@@ -1,10 +1,8 @@
 package com.metacrew.pr2s.service.memberservice;
 
 import com.metacrew.pr2s.dto.*;
-import com.metacrew.pr2s.entity.Institution;
-import com.metacrew.pr2s.entity.JoinInfo;
-import com.metacrew.pr2s.entity.Member;
-import com.metacrew.pr2s.entity.Workdays;
+import com.metacrew.pr2s.entity.*;
+import com.metacrew.pr2s.repository.FileRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
@@ -38,6 +36,9 @@ class ClientMemberServiceTest {
     private WorkdaysRepository workdaysRepository;
     @Autowired
     private InstitutionService institutionService;
+
+    @Autowired
+    private FileRepository fileRepository;
     @Autowired
     EntityManager entityManager;
 
@@ -112,9 +113,24 @@ class ClientMemberServiceTest {
     @DisplayName("회원가입시 프로필을 등록하는 경우")
     void joinExistedFile() {
         // given
+        JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
+
+        AddressDto addressDto = getAddressDtoByTestData();
+        File testFile = getTestFile();
+        fileRepository.save(testFile);
+        Member member = clientMemberService.join(joinMemberDto, addressDto, testFile.getId());
+        entityManager.flush();
+        entityManager.clear();
+
         // when
-        // TODO: 2022-07-16 file 생성자 메소드 필요
-        assertThat(true);
+        Member findMember = memberRepository.findById(member.getId()).orElseThrow(() -> new IllegalArgumentException("테스트 실패"));
+
+        // then
+        assertThat(findMember.getName()).isEqualTo(joinMemberDto.getName());
+        assertThat(findMember.getLoginId()).isEqualTo(joinMemberDto.getLoginId());
+        assertThat(findMember.getPassword()).isEqualTo(joinMemberDto.getPassword());
+        assertThat(findMember.getBirthDay()).isEqualTo(joinMemberDto.getBirthDay());
+        assertThat(findMember.getAddress().getSggNm()).isEqualTo(addressDto.getSggNm());
     }
 
     @Test
@@ -309,6 +325,10 @@ class ClientMemberServiceTest {
         AddressDto addressDto = new AddressDto();
         addressDto.setSggNm("서울시 노원구");
         return addressDto;
+    }
+
+    public File getTestFile(){
+        return File.createFile("노성규", "/photo", null);
     }
 
     private MyPageDto getMyPageDto() {
