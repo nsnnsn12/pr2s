@@ -13,10 +13,11 @@ import com.metacrew.pr2s.entity.Member;
 public interface MemberService {
     /**
      * 회원가입
-     * 회원가입용 DTO와 Address Dto를 입력받아 회원가입 처리하고 회원 정보를 리턴한다.
+     * 회원, 주소, 파일 정보를 입력받아 회원가입 처리를 하고 회원 정보를 리턴한다.
      *
      * @param joinMember 회원 정보.
      * @param addressDto 주소 정보
+     * @param fileId 파일 정보
      * @return 회원정보
      * @author sunggyu
      * @since 2022.07.07
