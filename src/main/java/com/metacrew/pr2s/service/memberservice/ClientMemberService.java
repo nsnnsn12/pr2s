@@ -5,10 +5,10 @@ import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.MyPageDto;
 import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.repository.AddressRepository;
+import com.metacrew.pr2s.repository.FileRepository;
 import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
-import com.metacrew.pr2s.repository.memberrepository.MemberTestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,18 +25,20 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class ClientMemberService implements MemberService{
-    private final MemberTestRepository memberTestRepository;
     private final MemberRepository memberRepository;
     private final AddressRepository addressRepository;
     private final InstitutionRepository institutionRepository;
     private final JoinInfoRepository joinInfoRepository;
+    private final FileRepository fileRepository;
 
     @Override
-    public Member join(JoinMemberDto joinMember, AddressDto addressDto){
+    public Member join(JoinMemberDto joinMember, AddressDto addressDto, Long fileId){
         validateDuplicateMember(joinMember.getLoginId());
         Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
-        // TODO: 2022-07-02 회원가입시 프로필 사진을 등록할 파일 Dto 필요
         File file = null;
+        if(fileId != null){
+            file = fileRepository.findById(fileId).orElseThrow(() -> new IllegalStateException("존재하지 않는 파일정보입니다."));
+        }
 
         Member member = Member.createJoinMember(joinMember, address, file);
         return memberRepository.save(member);

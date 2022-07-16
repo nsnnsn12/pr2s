@@ -21,7 +21,7 @@ public interface MemberService {
      * @author sunggyu
      * @since 2022.07.07
      */
-    Member join(JoinMemberDto joinMember, AddressDto addressDto);
+    Member join(JoinMemberDto joinMember, AddressDto addressDto, Long fileId);
 
     /**
      * 마이페이지 정보 조회
