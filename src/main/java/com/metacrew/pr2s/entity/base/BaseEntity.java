@@ -18,10 +18,11 @@ public class BaseEntity extends BaseTimeEntity{
 
     /**
      * 엔터티를 삭제 상태로 변경
-     * @author hyeonwoo
+     * @author hyeonwoo, sunggyu
      * @since 2022.07.10
      */
     public void deleted(){
+        if(isDeleted) return;
         isDeleted = true;
         deletedDate = LocalDateTime.now();
     }
