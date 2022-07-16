@@ -31,7 +31,7 @@ public class File extends BaseEntity {
     @Column
     private FileType fileType;
 
-    static File createFile(String name, String source, FileType fileType){
+    public static File createFile(String name, String source, FileType fileType){
         File file = new File();
         file.source = source;
         file.name = name;
