@@ -56,7 +56,7 @@ class ClientMemberServiceTest {
             AddressDto addressDto = new AddressDto();
             addressDto.setSggNm("서울시 마포구"+1);
 
-            Member member = clientMemberService.join(joinMemberDto, addressDto);
+            Member member = clientMemberService.join(joinMemberDto, addressDto, null);
 
             InstitutionDto institutionDto = new InstitutionDto();
             institutionDto.setName("우리은행"+i);
@@ -71,13 +71,13 @@ class ClientMemberServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입")
+    @DisplayName("회원가입시 프로필을 등록하지 않은 경우")
     void join() {
         // given
         JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
 
         AddressDto addressDto = getAddressDtoByTestData();
-        Member member = clientMemberService.join(joinMemberDto, addressDto);
+        Member member = clientMemberService.join(joinMemberDto, addressDto, null);
         entityManager.flush();
         entityManager.clear();
 
@@ -93,7 +93,7 @@ class ClientMemberServiceTest {
     }
 
     @Test
-    @DisplayName("중복Id로 회원가입")
+    @DisplayName("중복Id로 회원가입하는 경우")
     void joinByDuplicatedLoginId() {
         // given
         List<Member> list = memberRepository.findAll();
@@ -104,8 +104,30 @@ class ClientMemberServiceTest {
         AddressDto addressDto = getAddressDtoByTestData();
 
         assertThatThrownBy(() -> {
-            Member member = clientMemberService.join(joinMemberDto, addressDto);
+            Member member = clientMemberService.join(joinMemberDto, addressDto, null);
         }).isInstanceOf(IllegalStateException.class).hasMessageContaining("이미 존재하는 회원입니다.");
+    }
+
+    @Test
+    @DisplayName("회원가입시 프로필을 등록하는 경우")
+    void joinExistedFile() {
+        // given
+        // when
+        // TODO: 2022-07-16 file 생성자 메소드 필요
+        assertThat(true);
+    }
+
+    @Test
+    @DisplayName("회원가입시 존재하지 않는 파일의 대한 예외 처리")
+    void joinFileException() {
+        // given
+        JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
+
+        AddressDto addressDto = getAddressDtoByTestData();
+        // when
+        assertThatThrownBy(() -> {
+            Member member = clientMemberService.join(joinMemberDto, addressDto, -1L);
+        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("존재하지 않는 파일정보입니다.");
     }
 
     @Test
