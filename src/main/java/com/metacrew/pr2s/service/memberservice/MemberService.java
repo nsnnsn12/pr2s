@@ -53,7 +53,7 @@ public interface MemberService {
      * 회원탈퇴
      * Member table id를 입력받아 회원탈퇴처리한다.
      * @param id Member table id
-     * @throws IllegalStateException 존재하지 않는 회원정보를 삭제하려는 경우
+     * @throws IllegalStateException 존재하지 않거나 삭제 처리된 회원정보를 삭제하려는 경우
      * @author sunggyu
      * @since 2022.07.07
      */

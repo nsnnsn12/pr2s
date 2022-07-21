@@ -257,6 +257,21 @@ class ClientMemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원탈퇴한 회원정보 탈퇴")
+    void removeAccountByDeletedMember() {
+        // given
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // then
+        assertThatThrownBy(() -> clientMemberService.removeAccount( findMember.getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
     @DisplayName("기관 가입 요청")
     void requestJoinOfInstitution() {
         //given
