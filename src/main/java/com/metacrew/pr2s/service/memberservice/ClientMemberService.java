@@ -33,7 +33,7 @@ public class ClientMemberService implements MemberService{
 
     @Override
     public Member join(JoinMemberDto joinMember, AddressDto addressDto, Long fileId){
-        validateDuplicateMember(joinMember.getLoginId());
+        validateDuplicateLoginId(joinMember.getLoginId());
         Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
         File file = null;
         if(fileId != null){
@@ -49,14 +49,18 @@ public class ClientMemberService implements MemberService{
      * @author sunggyu
      * @since 2022.07.07
      */
-    private void validateDuplicateMember(String loginId){
+    private void validateDuplicateLoginId(String loginId){
         Optional<Member> findMember = memberRepository.findByLoginId(loginId);
-        if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 회원입니다.");
+        if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 로그인 ID입니다.");
     }
+
+    // TODO: 2022-07-21 회원 인증 로직 추가 필요
+    // TODO: 2022-07-21 회원 인증에 따른 회원 중복 가입 여부 처리 필요
 
     @Override
     public MyPageDto getMyPageInfo(Long id) {
         Member findMember = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
+        if(findMember.isDeleted()) throw new IllegalStateException("존재하지 않는 회원정보입니다.");
         return new MyPageDto(findMember);
     }
 

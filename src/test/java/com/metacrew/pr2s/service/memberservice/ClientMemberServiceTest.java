@@ -106,7 +106,7 @@ class ClientMemberServiceTest {
 
         assertThatThrownBy(() -> {
             Member member = clientMemberService.join(joinMemberDto, addressDto, null);
-        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("이미 존재하는 회원입니다.");
+        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("이미 존재하는 로그인 ID입니다.");
     }
 
     @Test
@@ -168,6 +168,21 @@ class ClientMemberServiceTest {
         // then
         assertThatThrownBy(() -> {
             MyPageDto myPageInfo = clientMemberService.getMyPageInfo(-1L);
+        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
+    @DisplayName("회원탈퇴된 회원의 관한 마이페이지 정보 조회")
+    void getMyPageInfoByDeletedMember() {
+        // given
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // then
+        assertThatThrownBy(() -> {
+            MyPageDto myPageInfo = clientMemberService.getMyPageInfo(findMember.getId());
         }).isInstanceOf(IllegalStateException.class).hasMessageContaining("존재하지 않는 회원정보입니다.");
     }
 
