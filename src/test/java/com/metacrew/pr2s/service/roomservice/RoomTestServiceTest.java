@@ -112,7 +112,7 @@ class RoomTestServiceTest {
 
         //then
         findRoom = roomTestRepository.findByRoomLongId(findRoom.getId());
-        assertThat(findMember.isDeleted()).isEqualTo(true);
+        assertThat(findRoom.isDeleted()).isEqualTo(true);
     }
 
 }

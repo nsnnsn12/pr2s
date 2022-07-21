@@ -5,7 +5,7 @@ import com.metacrew.pr2s.entity.Room;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.aboot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
@@ -26,6 +26,9 @@ class RoomTestRepositoryTest {
     RoomTestRepository roomTestRepository;
 
     @Autowired
+    RoomRepository roomRepository;
+
+    @Autowired
     private EntityManager entityManager;
 
     @Test
@@ -33,11 +36,13 @@ class RoomTestRepositoryTest {
     void register() {
         //given
         Room room = Room.createRoomByRoomDto(roomDtoTestData(), null, null);
-        roomTestRepository.register(room);
+        //roomTestRepository.register(room);
+        roomRepository.save(room);
         entityManager.flush();
         entityManager.clear();
         //when
-        Room findRoom = roomTestRepository.findByRoomLongId(room.getId());
+        //Room findRoom = roomTestRepository.findByRoomLongId(room.getId());
+        Room findRoom = roomRepository.findByRoomId(room.getId());
 
         //then
         assertThat(findRoom.getTitle()).isEqualTo(room.getTitle());
@@ -57,7 +62,7 @@ class RoomTestRepositoryTest {
     void findByRoomTitle(){
         //given
         Room room = Room.createRoomByRoomDto(roomDtoTestData(), null, null);
-        roomTestRepository.register(room);
+        roomRepository.save(room);
         entityManager.flush();
         entityManager.clear();
 
@@ -66,7 +71,6 @@ class RoomTestRepositoryTest {
 
         //then
         assertThat(findRoom).extracting("title").contains("방이름이다");
-
     }
 
 }

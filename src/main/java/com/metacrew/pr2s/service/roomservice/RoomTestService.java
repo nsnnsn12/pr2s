@@ -5,6 +5,7 @@ import com.metacrew.pr2s.dto.RoomDto;
 import com.metacrew.pr2s.entity.Address;
 import com.metacrew.pr2s.entity.File;
 import com.metacrew.pr2s.entity.Room;
+import com.metacrew.pr2s.repository.roomrepository.RoomRepository;
 import com.metacrew.pr2s.repository.roomrepository.RoomTestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class RoomTestService{
 
     private final RoomTestRepository roomTestRepository;
 
+    private final RoomRepository roomRepository;
     /**
      * Room 엔티티를 제목(방 명)을 입력받아 방을 조회한다
      * @author nahyun
@@ -28,14 +30,12 @@ public class RoomTestService{
      */
     public void  searchRoomByTitle(String title){
         List<Room> list = roomTestRepository.findByRoomTitle(title);
-
     }
 
     /**
-     * Room 엔티티를 입력받아 전체 방을 조회한다
+     * Room 전체 방을 조회한다
      * @author nahyun
      * @since 2022.07.02
-     * @param
      * @return List<Room>
      */
 
@@ -54,13 +54,14 @@ public class RoomTestService{
      */
     public Room registerRoom(RoomDto roomDto, Address address, File file){
         file=null;
-        //validateDuplicateRoom(roomDto.getId());
+        validateDuplicateRoom(roomDto.getId());
         Room room=Room.createRoomByRoomDto(roomDto,address,file);
-        return roomTestRepository.register(room);
+        return roomRepository.save(room);
+        //return roomTestRepository.register(room);
     }
 
     private void validateDuplicateRoom(Long roomId){
-        List<Room> result = roomTestRepository.findByRoomListLongId(roomId);
+        List<Room> result = roomRepository.findByRoomListLongId(roomId);
         if(result.size() > 0) throw new IllegalStateException("이미 존재하는 방입니다.");
     }
 
@@ -89,10 +90,10 @@ public class RoomTestService{
      * @param id
      * @return
      */
-//    public void deleteRoom(Long id){
-//        Room findRoom = roomTestRepository.findByRoomLongId(id);
-//        if(!findRoom.isDeleted()) findRoom.deleted();
-//      }
+    public void deleteRoom(Long id){
+        Room findRoom = roomTestRepository.findByRoomLongId(id);
+        if(!findRoom.isDeleted()) findRoom.deleted();
+      }
 
 
 }

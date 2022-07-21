@@ -4,6 +4,8 @@ import com.metacrew.pr2s.dto.RoomDto;
 import com.metacrew.pr2s.entity.Room;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -34,12 +36,14 @@ public class RoomTestRepository {
                 .getResultList();
     }
 
-    //id로 리스트조회
+
+    //id로 리스트조회 -> 근데 아이디는 하나아니냐?
     public List<Room> findByRoomListLongId(Long roomId){
         return em.createQuery("select r from Room r where r.roomId = :roomId",Room.class)
                 .setParameter("roomId",roomId)
                 .getResultList();
     }
+
 
     //id로 단건조회
     public Room findByRoomLongId(Long roomId){
