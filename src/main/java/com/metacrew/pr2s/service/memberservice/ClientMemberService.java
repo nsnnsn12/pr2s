@@ -45,7 +45,7 @@ public class ClientMemberService implements MemberService{
     }
 
     /**
-     * 입력받은 문자열이 Member 테이블의 loginId 컬럼과 중복된다면 예외를 던진다.
+     * 입력받은 login id가 이미 Member 테이블의 존재한다면 예외를 던진다.
      * @author sunggyu
      * @since 2022.07.07
      */
