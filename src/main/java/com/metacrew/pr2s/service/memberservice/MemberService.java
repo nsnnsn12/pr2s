@@ -31,7 +31,7 @@ public interface MemberService {
      * Member table id를 입력받아 MyPage 정보를 조회하여 리턴한다.
      * @param id Member table id
      * @return MyPageDto 마이페이지 정보
-     * @throws IllegalStateException 존재하지 않는 회원정보를 조회하는 경우
+     * @throws IllegalStateException 존재하지 않거나 삭제 처리된 회원정보를 조회하는 경우
      * @author sunggyu
      * @since 2022.07.07
      */
@@ -43,7 +43,7 @@ public interface MemberService {
      * @param myPageDto 회원 수정 정보.
      * @param id Member table id
      * @return Member table id
-     * @throws IllegalStateException 존재하지 않는 회원정보를 수정하려는 경우
+     * @throws IllegalStateException 존재하지 않거나 삭제 처리된 회원정보를 수정하려는 경우
      * @author sunggyu
      * @since 2022.07.07
      */

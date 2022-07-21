@@ -44,11 +44,6 @@ public class ClientMemberService implements MemberService{
         return memberRepository.save(member);
     }
 
-    /**
-     * 입력받은 login id가 이미 Member 테이블의 존재한다면 예외를 던진다.
-     * @author sunggyu
-     * @since 2022.07.07
-     */
     private void validateDuplicateLoginId(String loginId){
         Optional<Member> findMember = memberRepository.findByLoginId(loginId);
         if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 로그인 ID입니다.");
@@ -67,6 +62,7 @@ public class ClientMemberService implements MemberService{
     @Override
     public Long updateForMyPage(MyPageDto myPageDto, Long id){
         Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
+        if(member.isDeleted()) throw new IllegalStateException("존재하지 않는 회원정보입니다.");
         member.updateForMyPage(myPageDto);
         return member.getId();
     }

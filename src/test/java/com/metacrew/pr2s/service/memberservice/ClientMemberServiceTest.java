@@ -172,7 +172,7 @@ class ClientMemberServiceTest {
     }
 
     @Test
-    @DisplayName("회원탈퇴된 회원의 관한 마이페이지 정보 조회")
+    @DisplayName("회원탈퇴한 회원의 관한 마이페이지 정보 조회")
     void getMyPageInfoByDeletedMember() {
         // given
         List<Member> list = memberRepository.findAll();
@@ -212,6 +212,21 @@ class ClientMemberServiceTest {
     void updateForMyPageByNonMemberId() {
         // then
         assertThatThrownBy(() -> clientMemberService.updateForMyPage(new MyPageDto(), -1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
+    @DisplayName("회원탈퇴한 회원의 관한 마이페이지 수정")
+    void updateForMyPageByDeletedMember() {
+        // given
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // then
+        assertThatThrownBy(() -> clientMemberService.updateForMyPage(new MyPageDto(), findMember.getId()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("존재하지 않는 회원정보입니다.");
     }
