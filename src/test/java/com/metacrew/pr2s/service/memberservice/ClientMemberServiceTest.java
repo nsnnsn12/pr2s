@@ -309,12 +309,47 @@ class ClientMemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원탈퇴한 회원정보로 가입 요청")
+    void requestJoinOfInstitution5() {
+        // given
+        List<Institution> institutions = institutionRepository.findAll();
+
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+
+        // when
+        assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(findMember.getId(), institutions.get(0).getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
     @DisplayName("기관 정보 없이 기관 가입 요청")
     void requestJoinOfInstitution3() {
         //given
         List<Member> list = memberRepository.findAll();
         // when
         assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getId(), 1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("기관정보가 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("기관탈퇴한 기관정보로 기관 가입 요청")
+    void requestJoinOfInstitution6() {
+        // given
+        List<Member> list = memberRepository.findAll();
+
+        List<Institution> institutions = institutionRepository.findAll();
+        Institution institution = institutions.get(0);
+        institution.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // when
+        assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institution.getId()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("기관정보가 존재하지 않습니다.");
     }
