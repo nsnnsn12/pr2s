@@ -36,15 +36,6 @@ public class RoomTestRepository {
                 .getResultList();
     }
 
-
-    //id로 리스트조회 -> 근데 아이디는 하나아니냐?
-    public List<Room> findByRoomListLongId(Long roomId){
-        return em.createQuery("select r from Room r where r.roomId = :roomId",Room.class)
-                .setParameter("roomId",roomId)
-                .getResultList();
-    }
-
-
     //id로 단건조회
     public Room findByRoomLongId(Long roomId){
         return em.find(Room.class,roomId);
