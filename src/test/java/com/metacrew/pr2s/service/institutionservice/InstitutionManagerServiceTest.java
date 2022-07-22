@@ -47,20 +47,65 @@ class InstitutionManagerServiceTest {
         Institution insertedInstitution = institutionManagerService.joinPr2s(getTestInstitutionDtoByInsertTestData(), getTestWorkdaysDtoByInsertTestData(), getTestAddressDtoByInsertTestData());
 
         // when
-        Institution updatedInstitution = institutionManagerService.updateInstitutionInfo(getTestInstitutionDtoByUpdateTestData()
-                ,getTestWorkdaysDtoByUpdateTestData(), getTestAddressDtoByUpdateTestData(), insertedInstitution.getId());
+        InstitutionCreateDto testInstitutionDtoByUpdateTestData = getTestInstitutionDtoByUpdateTestData();
+        WorkdaysDto testWorkdaysDtoByUpdateTestData = getTestWorkdaysDtoByUpdateTestData();
+        AddressDto testAddressDtoByUpdateTestData = getTestAddressDtoByUpdateTestData();
+
+        Institution updatedInstitution = institutionManagerService.updateInstitutionInfo(testInstitutionDtoByUpdateTestData
+                ,testWorkdaysDtoByUpdateTestData, testAddressDtoByUpdateTestData, insertedInstitution.getId());
 
         // then
         Institution findInstitution = institutionRepository.findById(updatedInstitution.getId()).orElseThrow(IllegalArgumentException::new);
 
-        assertThat(insertedInstitution.getId()).isEqualTo(updatedInstitution.getId());
-        assertThat(updatedInstitution.getName()).isEqualTo("수정테스트1");
-        assertThat(updatedInstitution.getTelNumber()).isEqualTo("010-2345-6789");
+        assertThat(findInstitution.getId()).isEqualTo(insertedInstitution.getId());
+        assertThat(findInstitution.getName()).isEqualTo(testInstitutionDtoByUpdateTestData.getName());
+        assertThat(findInstitution.getTelNumber()).isEqualTo(testInstitutionDtoByUpdateTestData.getTelNumber());
         /// TODO: 2022-07-16 Period 타입 분리 후 비교 테스트 필요
-        assertThat(findInstitution.getWorkdays().getIsTuesday()).isEqualTo(true);
-        assertThat(findInstitution.getWorkdays().getIsThursday()).isEqualTo(true);
-        assertThat(findInstitution.getAddress().getRn()).isEqualTo("수정비고");
-        assertThat(findInstitution.getAddress().getZipNo()).isEqualTo("48940");
+        assertThat(findInstitution.getWorkdays().getIsMonday()).isEqualTo(testWorkdaysDtoByUpdateTestData.getIsMonday());
+        assertThat(findInstitution.getWorkdays().getIsTuesday()).isEqualTo(testWorkdaysDtoByUpdateTestData.getIsTuesday());
+        assertThat(findInstitution.getWorkdays().getIsWednesday()).isEqualTo(testWorkdaysDtoByUpdateTestData.getIsWednesday());
+        assertThat(findInstitution.getWorkdays().getIsThursday()).isEqualTo(testWorkdaysDtoByUpdateTestData.getIsThursday());
+        assertThat(findInstitution.getWorkdays().getIsFriday()).isEqualTo(testWorkdaysDtoByUpdateTestData.getIsFriday());
+        assertThat(findInstitution.getAddress().getRn()).isEqualTo(testAddressDtoByUpdateTestData.getRn());
+        assertThat(findInstitution.getAddress().getZipNo()).isEqualTo(testAddressDtoByUpdateTestData.getZipNo());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 기관 수정 테스트")
+    public void updateNotExistInstitution() {
+        // given
+        InstitutionCreateDto testInstitutionDtoByUpdateTestData = getTestInstitutionDtoByUpdateTestData();
+        WorkdaysDto testWorkdaysDtoByUpdateTestData = getTestWorkdaysDtoByUpdateTestData();
+        AddressDto testAddressDtoByUpdateTestData = getTestAddressDtoByUpdateTestData();
+
+        // when
+        assertThatThrownBy(() -> institutionManagerService
+                .updateInstitutionInfo(testInstitutionDtoByUpdateTestData
+                        ,testWorkdaysDtoByUpdateTestData
+                        , testAddressDtoByUpdateTestData
+                        , -1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("존재하지 않는 기관입니다.");
+    }
+
+    @Test
+    @DisplayName("삭제 처리된 기관 수정 테스트")
+    public void updateDeletedInstitution() {
+        // given
+        Institution insertedInstitution = institutionManagerService.joinPr2s(getTestInstitutionDtoByInsertTestData(), getTestWorkdaysDtoByInsertTestData(), getTestAddressDtoByInsertTestData());
+        insertedInstitution.deleted();
+
+        // when
+        InstitutionCreateDto testInstitutionDtoByUpdateTestData = getTestInstitutionDtoByUpdateTestData();
+        WorkdaysDto testWorkdaysDtoByUpdateTestData = getTestWorkdaysDtoByUpdateTestData();
+        AddressDto testAddressDtoByUpdateTestData = getTestAddressDtoByUpdateTestData();
+
+        assertThatThrownBy(() -> institutionManagerService
+                .updateInstitutionInfo(testInstitutionDtoByUpdateTestData
+                        ,testWorkdaysDtoByUpdateTestData
+                        , testAddressDtoByUpdateTestData
+                        , insertedInstitution.getId())
+        ).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("삭제 처리된 기관입니다.");
     }
 
     @Test

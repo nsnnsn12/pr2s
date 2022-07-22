@@ -59,11 +59,11 @@ public class InstitutionManagerService implements InstitutionService {
         validateInstitution(institutionCreateDto, workdaysDto, addressDto);
 
         // 2. 기관 조회
-        Institution findInstitution = institutionRepository.findById(updateInstitutionId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
+        Institution findInstitution = getValidInstitution(updateInstitutionId);
 
         // 3. 기관 정보 수정
         Workdays findWorkdays = workdaysRepository.findById(findInstitution.getWorkdays().getId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 운영 요일입니다."));
-        Address findAddress = addressRepository.findById(findInstitution.getAddress().getId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관 주소 정보입니다."));
+        Address findAddress = getValidAddress(findInstitution.getAddress().getId());
         findWorkdays.updateWorkdays(workdaysDto);
         findAddress.updateAddressByAddressDto(addressDto);
 
@@ -85,9 +85,7 @@ public class InstitutionManagerService implements InstitutionService {
 
     /**
      * 삽입 및 수정하려는 기관 정보 유효성 검사
-     * Dto 값들이 null 이거나
-     * 유효하지않은 정보가 들어있다면
-     * 예외를 던진다.
+     * 필요 시 구현
      * @author hyeonwoo
      * @since 2022.07.01
      * @param institutionCreateDto 삽입 및 변경할 기관정보
@@ -95,10 +93,32 @@ public class InstitutionManagerService implements InstitutionService {
      * @param addressDto 삽입 및 변경할 기관의 주소 정보
      */
     public void validateInstitution(InstitutionCreateDto institutionCreateDto, WorkdaysDto workdaysDto, AddressDto addressDto) {
-        if(institutionCreateDto == null || workdaysDto == null || addressDto == null) {
-            throw new IllegalStateException("입력 정보가 유효하지 않습니다.");
-        }
-        
         // 추후 유효성 검사 필요 시 작성
+    }
+
+    /**
+     * 기관 id로 유효한 기관 조회
+     * @author hyeonwoo
+     * @since 2022.07.22
+     * @param institutionId 조회할 기관 Id
+     * @return 조회한 기관 엔터티
+     */
+    public Institution getValidInstitution(Long institutionId) {
+        Institution findInstitution = institutionRepository.findById(institutionId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
+        if (findInstitution.isDeleted()) throw new IllegalArgumentException("삭제 처리된 기관입니다.");
+        return findInstitution;
+    }
+
+    /**
+     * 주소 id로 유효한 주소 조회
+     * @author hyeonwoo
+     * @since 2022.07.22
+     * @param addressId 조회할 주소 Id
+     * @return 조회한 주소 엔터티
+     */
+    public Address getValidAddress(Long addressId) {
+        Address findAddress = addressRepository.findById(addressId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관 주소 정보입니다."));
+        if(findAddress.isDeleted()) throw new IllegalArgumentException("삭제 처리된 주소입니다.");
+        return findAddress;
     }
 }
