@@ -4,7 +4,6 @@ import com.metacrew.pr2s.dto.*;
 import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.JoinInfo;
 import com.metacrew.pr2s.entity.Member;
-import com.metacrew.pr2s.entity.Workdays;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
@@ -58,10 +57,10 @@ class ClientMemberServiceTest {
 
             Member member = clientMemberService.join(joinMemberDto, addressDto);
 
-            InstitutionDto institutionDto = new InstitutionDto();
-            institutionDto.setName("우리은행"+i);
-            institutionDto.setTelNumber("010-1234-1234");
-            Institution institution = institutionService.joinPr2s(institutionDto, workdaysDto, addressDto);
+            InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
+            institutionCreateDto.setName("우리은행"+i);
+            institutionCreateDto.setTelNumber("010-1234-1234");
+            Institution institution = institutionService.joinPr2s(institutionCreateDto, workdaysDto, addressDto);
             institutionRepository.save(institution);
         }
         List<Member> list = memberRepository.findAll();

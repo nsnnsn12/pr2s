@@ -20,7 +20,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class InstitutionDto {
+public class InstitutionCreateDto {
     private String name;
     private String telNumber;
     private Period period;
@@ -31,7 +31,7 @@ public class InstitutionDto {
      * @since 2022.07.07
      * @param institution 기관정보
      */
-    public InstitutionDto(Institution institution) {
+    public InstitutionCreateDto(Institution institution) {
         this.name = institution.getName();
         this.telNumber = institution.getTelNumber();
         this.period = institution.getPeriod();

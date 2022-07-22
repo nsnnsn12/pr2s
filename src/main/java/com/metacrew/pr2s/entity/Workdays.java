@@ -1,6 +1,5 @@
 package com.metacrew.pr2s.entity;
 
-import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
 import com.metacrew.pr2s.entity.base.BaseTimeEntity;
 import lombok.AccessLevel;
