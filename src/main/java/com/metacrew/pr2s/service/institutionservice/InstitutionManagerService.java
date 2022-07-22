@@ -62,8 +62,10 @@ public class InstitutionManagerService implements InstitutionService {
         Institution findInstitution = institutionRepository.findById(updateInstitutionId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관입니다."));
 
         // 3. 기관 정보 수정
-        Workdays workdays = Workdays.createWorkdays(workdaysDto);
-        Address address = Address.createAddressByAddressDto(addressDto);
+        Workdays findWorkdays = workdaysRepository.findById(findInstitution.getWorkdays().getId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 운영 요일입니다."));
+        Address findAddress = addressRepository.findById(findInstitution.getAddress().getId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 기관 주소 정보입니다."));
+        findWorkdays.updateWorkdays(workdaysDto);
+        findAddress.updateAddressByAddressDto(addressDto);
 
         findInstitution.updateInstitution(institutionCreateDto);
 

@@ -144,4 +144,39 @@ public class Address extends BaseEntity {
 
         return address;
     }
+    /**
+     * AddressDto의 정보로 Address 수정
+     * @author hyeonwoo
+     * @since 2022.07.22
+     * @param addressDto 엔티티로 변환할 값
+     */
+    public void updateAddressByAddressDto(AddressDto addressDto){
+        this.roadFullAddr = addressDto.getRoadFullAddr();
+        this.roadAddrPart1 = addressDto.getRoadAddrPart1();
+        this.roadAddrPart2 = addressDto.getRoadAddrPart2();
+        this.jibunAddr = addressDto.getJibunAddr();
+        this.engAddr = addressDto.getEngAddr();
+        this.zipNo = addressDto.getZipNo();
+        this.addrDetail = addressDto.getAddrDetail();
+        this.admCd = addressDto.getAdmCd();
+        this.rnMgtSn = addressDto.getRnMgtSn();
+        this.bdMgtSn = addressDto.getBdMgtSn();
+        this.detBdNmList = addressDto.getDetBdNmList();
+        this.bdNm = addressDto.getBdNm();
+        this.bdKdcd = addressDto.getBdKdcd();
+        this.siNm = addressDto.getSiNm();
+        this.sggNm = addressDto.getSggNm();
+        this.emdNm = addressDto.getEmdNm();
+        this.liNm = addressDto.getLiNm();
+        this.rn = addressDto.getRn();
+        this.udrtYn = addressDto.getUdrtYn();
+        this.buldMnnm = addressDto.getBuldMnnm();
+        this.buldSlno = addressDto.getBuldSlno();
+        this.mtYn = addressDto.getMtYn();
+        this.lnbrMnnm = addressDto.getLnbrMnnm();
+        this.lnbrSlno = addressDto.getLnbrSlno();
+        this.emdNo = addressDto.getEmdNo();
+        this.entX = addressDto.getEntX();
+        this.entY = addressDto.getEntY();
+    }
 }

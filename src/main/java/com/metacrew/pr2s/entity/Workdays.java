@@ -61,4 +61,20 @@ public class Workdays extends BaseTimeEntity {
         workdays.isSunday = workdaysDto.getIsSunday();
         return workdays;
     }
+
+    /**
+     * 기관 정보 Dto 로 운영 요일 엔터티 수정
+     * @author hyeonwoo
+     * @since 2022.07.22
+     * @param workdaysDto 엔티티로 변환할 값
+     */
+    public void updateWorkdays(WorkdaysDto workdaysDto){
+        this.isMonday = workdaysDto.getIsMonday();
+        this.isTuesday = workdaysDto.getIsTuesday();
+        this.isWednesday = workdaysDto.getIsWednesday();
+        this.isThursday = workdaysDto.getIsThursday();
+        this.isFriday = workdaysDto.getIsFriday();
+        this.isSaturday = workdaysDto.getIsSaturday();
+        this.isSunday = workdaysDto.getIsSunday();
+    }
 }

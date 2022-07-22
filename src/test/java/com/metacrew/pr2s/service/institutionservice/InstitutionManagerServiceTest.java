@@ -44,11 +44,7 @@ class InstitutionManagerServiceTest {
     @DisplayName("기관 수정 테스트")
     public void updateInstitutionInfoTest() {
         // given
-        InstitutionCreateDto institutionCreateDto = getTestInstitutionDtoByInsertTestData();
-        Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByInsertTestData());
-        Address address = Address.createAddressByAddressDto(getTestAddressDtoByInsertTestData());
-
-        Institution insertedInstitution = institutionRepository.save(Institution.createInstitution(institutionCreateDto, workdays, address));
+        Institution insertedInstitution = institutionManagerService.joinPr2s(getTestInstitutionDtoByInsertTestData(), getTestWorkdaysDtoByInsertTestData(), getTestAddressDtoByInsertTestData());
 
         // when
         Institution updatedInstitution = institutionManagerService.updateInstitutionInfo(getTestInstitutionDtoByUpdateTestData()
@@ -61,10 +57,10 @@ class InstitutionManagerServiceTest {
         assertThat(updatedInstitution.getName()).isEqualTo("수정테스트1");
         assertThat(updatedInstitution.getTelNumber()).isEqualTo("010-2345-6789");
         /// TODO: 2022-07-16 Period 타입 분리 후 비교 테스트 필요
-        assertThat(updatedInstitution.getWorkdays().getIsTuesday()).isEqualTo(true);
-        assertThat(updatedInstitution.getWorkdays().getIsThursday()).isEqualTo(true);
-        assertThat(updatedInstitution.getAddress().getRn()).isEqualTo("수정비고");
-        assertThat(updatedInstitution.getAddress().getZipNo()).isEqualTo("48940");
+        assertThat(findInstitution.getWorkdays().getIsTuesday()).isEqualTo(true);
+        assertThat(findInstitution.getWorkdays().getIsThursday()).isEqualTo(true);
+        assertThat(findInstitution.getAddress().getRn()).isEqualTo("수정비고");
+        assertThat(findInstitution.getAddress().getZipNo()).isEqualTo("48940");
     }
 
     @Test
