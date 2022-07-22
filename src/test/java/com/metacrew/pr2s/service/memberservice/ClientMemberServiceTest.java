@@ -1,9 +1,8 @@
 package com.metacrew.pr2s.service.memberservice;
 
 import com.metacrew.pr2s.dto.*;
-import com.metacrew.pr2s.entity.Institution;
-import com.metacrew.pr2s.entity.JoinInfo;
-import com.metacrew.pr2s.entity.Member;
+import com.metacrew.pr2s.entity.*;
+import com.metacrew.pr2s.repository.FileRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
@@ -37,6 +36,9 @@ class ClientMemberServiceTest {
     private WorkdaysRepository workdaysRepository;
     @Autowired
     private InstitutionService institutionService;
+
+    @Autowired
+    private FileRepository fileRepository;
     @Autowired
     EntityManager entityManager;
 
@@ -55,7 +57,7 @@ class ClientMemberServiceTest {
             AddressDto addressDto = new AddressDto();
             addressDto.setSggNm("서울시 마포구"+1);
 
-            Member member = clientMemberService.join(joinMemberDto, addressDto);
+            Member member = clientMemberService.join(joinMemberDto, addressDto, null);
 
             InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
             institutionCreateDto.setName("우리은행"+i);
@@ -70,13 +72,13 @@ class ClientMemberServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입")
+    @DisplayName("회원가입시 프로필을 등록하지 않은 경우")
     void join() {
         // given
         JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
 
         AddressDto addressDto = getAddressDtoByTestData();
-        Member member = clientMemberService.join(joinMemberDto, addressDto);
+        Member member = clientMemberService.join(joinMemberDto, addressDto, null);
         entityManager.flush();
         entityManager.clear();
 
@@ -92,7 +94,7 @@ class ClientMemberServiceTest {
     }
 
     @Test
-    @DisplayName("중복Id로 회원가입")
+    @DisplayName("중복Id로 회원가입하는 경우")
     void joinByDuplicatedLoginId() {
         // given
         List<Member> list = memberRepository.findAll();
@@ -103,8 +105,45 @@ class ClientMemberServiceTest {
         AddressDto addressDto = getAddressDtoByTestData();
 
         assertThatThrownBy(() -> {
-            Member member = clientMemberService.join(joinMemberDto, addressDto);
-        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("이미 존재하는 회원입니다.");
+            Member member = clientMemberService.join(joinMemberDto, addressDto, null);
+        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("이미 존재하는 로그인 ID입니다.");
+    }
+
+    @Test
+    @DisplayName("회원가입시 프로필을 등록하는 경우")
+    void joinExistedFile() {
+        // given
+        JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
+
+        AddressDto addressDto = getAddressDtoByTestData();
+        File testFile = getTestFile();
+        fileRepository.save(testFile);
+        Member member = clientMemberService.join(joinMemberDto, addressDto, testFile.getId());
+        entityManager.flush();
+        entityManager.clear();
+
+        // when
+        Member findMember = memberRepository.findById(member.getId()).orElseThrow(() -> new IllegalArgumentException("테스트 실패"));
+
+        // then
+        assertThat(findMember.getName()).isEqualTo(joinMemberDto.getName());
+        assertThat(findMember.getLoginId()).isEqualTo(joinMemberDto.getLoginId());
+        assertThat(findMember.getPassword()).isEqualTo(joinMemberDto.getPassword());
+        assertThat(findMember.getBirthDay()).isEqualTo(joinMemberDto.getBirthDay());
+        assertThat(findMember.getAddress().getSggNm()).isEqualTo(addressDto.getSggNm());
+    }
+
+    @Test
+    @DisplayName("회원가입시 존재하지 않는 파일의 대한 예외 처리")
+    void joinFileException() {
+        // given
+        JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
+
+        AddressDto addressDto = getAddressDtoByTestData();
+        // when
+        assertThatThrownBy(() -> {
+            Member member = clientMemberService.join(joinMemberDto, addressDto, -1L);
+        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("존재하지 않는 파일정보입니다.");
     }
 
     @Test
@@ -129,6 +168,21 @@ class ClientMemberServiceTest {
         // then
         assertThatThrownBy(() -> {
             MyPageDto myPageInfo = clientMemberService.getMyPageInfo(-1L);
+        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
+    @DisplayName("회원탈퇴한 회원의 관한 마이페이지 정보 조회")
+    void getMyPageInfoByDeletedMember() {
+        // given
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // then
+        assertThatThrownBy(() -> {
+            MyPageDto myPageInfo = clientMemberService.getMyPageInfo(findMember.getId());
         }).isInstanceOf(IllegalStateException.class).hasMessageContaining("존재하지 않는 회원정보입니다.");
     }
 
@@ -163,6 +217,21 @@ class ClientMemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원탈퇴한 회원의 관한 마이페이지 수정")
+    void updateForMyPageByDeletedMember() {
+        // given
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // then
+        assertThatThrownBy(() -> clientMemberService.updateForMyPage(new MyPageDto(), findMember.getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
     @DisplayName("회원탈퇴")
     void removeAccount() {
         // given
@@ -183,6 +252,21 @@ class ClientMemberServiceTest {
     void removeAccountByNonMemberId() {
         // then
         assertThatThrownBy(() -> clientMemberService.removeAccount( -1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
+    @DisplayName("회원탈퇴한 회원정보 탈퇴")
+    void removeAccountByDeletedMember() {
+        // given
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // then
+        assertThatThrownBy(() -> clientMemberService.removeAccount( findMember.getId()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("존재하지 않는 회원정보입니다.");
     }
@@ -225,12 +309,47 @@ class ClientMemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원탈퇴한 회원정보로 가입 요청")
+    void requestJoinOfInstitution5() {
+        // given
+        List<Institution> institutions = institutionRepository.findAll();
+
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+
+        // when
+        assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(findMember.getId(), institutions.get(0).getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
     @DisplayName("기관 정보 없이 기관 가입 요청")
     void requestJoinOfInstitution3() {
         //given
         List<Member> list = memberRepository.findAll();
         // when
         assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getId(), 1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("기관정보가 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("기관탈퇴한 기관정보로 기관 가입 요청")
+    void requestJoinOfInstitution6() {
+        // given
+        List<Member> list = memberRepository.findAll();
+
+        List<Institution> institutions = institutionRepository.findAll();
+        Institution institution = institutions.get(0);
+        institution.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // when
+        assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institution.getId()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("기관정보가 존재하지 않습니다.");
     }
@@ -286,6 +405,10 @@ class ClientMemberServiceTest {
         AddressDto addressDto = new AddressDto();
         addressDto.setSggNm("서울시 노원구");
         return addressDto;
+    }
+
+    public File getTestFile(){
+        return File.createFile("노성규", "/photo", null);
     }
 
     private MyPageDto getMyPageDto() {
