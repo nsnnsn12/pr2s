@@ -106,7 +106,7 @@ class ClientMemberServiceTest {
 
         assertThatThrownBy(() -> {
             Member member = clientMemberService.join(joinMemberDto, addressDto, null);
-        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("이미 존재하는 회원입니다.");
+        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("이미 존재하는 로그인 ID입니다.");
     }
 
     @Test
@@ -172,6 +172,21 @@ class ClientMemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원탈퇴한 회원의 관한 마이페이지 정보 조회")
+    void getMyPageInfoByDeletedMember() {
+        // given
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // then
+        assertThatThrownBy(() -> {
+            MyPageDto myPageInfo = clientMemberService.getMyPageInfo(findMember.getId());
+        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
     @DisplayName("마이페이지 정보 수정")
     void updateForMyPage() {
         //given
@@ -202,6 +217,21 @@ class ClientMemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원탈퇴한 회원의 관한 마이페이지 수정")
+    void updateForMyPageByDeletedMember() {
+        // given
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // then
+        assertThatThrownBy(() -> clientMemberService.updateForMyPage(new MyPageDto(), findMember.getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
     @DisplayName("회원탈퇴")
     void removeAccount() {
         // given
@@ -222,6 +252,21 @@ class ClientMemberServiceTest {
     void removeAccountByNonMemberId() {
         // then
         assertThatThrownBy(() -> clientMemberService.removeAccount( -1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
+    @DisplayName("회원탈퇴한 회원정보 탈퇴")
+    void removeAccountByDeletedMember() {
+        // given
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // then
+        assertThatThrownBy(() -> clientMemberService.removeAccount( findMember.getId()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("존재하지 않는 회원정보입니다.");
     }
@@ -264,12 +309,47 @@ class ClientMemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원탈퇴한 회원정보로 가입 요청")
+    void requestJoinOfInstitution5() {
+        // given
+        List<Institution> institutions = institutionRepository.findAll();
+
+        List<Member> list = memberRepository.findAll();
+        Member findMember = list.get(0);
+        findMember.deleted();
+        entityManager.flush();
+        entityManager.clear();
+
+        // when
+        assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(findMember.getId(), institutions.get(0).getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("존재하지 않는 회원정보입니다.");
+    }
+
+    @Test
     @DisplayName("기관 정보 없이 기관 가입 요청")
     void requestJoinOfInstitution3() {
         //given
         List<Member> list = memberRepository.findAll();
         // when
         assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getId(), 1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("기관정보가 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("기관탈퇴한 기관정보로 기관 가입 요청")
+    void requestJoinOfInstitution6() {
+        // given
+        List<Member> list = memberRepository.findAll();
+
+        List<Institution> institutions = institutionRepository.findAll();
+        Institution institution = institutions.get(0);
+        institution.deleted();
+        entityManager.flush();
+        entityManager.clear();
+        // when
+        assertThatThrownBy(() -> clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institution.getId()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("기관정보가 존재하지 않습니다.");
     }

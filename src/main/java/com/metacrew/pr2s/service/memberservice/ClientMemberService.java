@@ -33,7 +33,7 @@ public class ClientMemberService implements MemberService{
 
     @Override
     public Member join(JoinMemberDto joinMember, AddressDto addressDto, Long fileId){
-        validateDuplicateMember(joinMember.getLoginId());
+        validateDuplicateLoginId(joinMember.getLoginId());
         Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
         File file = null;
         if(fileId != null){
@@ -44,41 +44,50 @@ public class ClientMemberService implements MemberService{
         return memberRepository.save(member);
     }
 
-    /**
-     * 입력받은 login id가 이미 Member 테이블의 존재한다면 예외를 던진다.
-     * @author sunggyu
-     * @since 2022.07.07
-     */
-    private void validateDuplicateMember(String loginId){
+    private void validateDuplicateLoginId(String loginId){
         Optional<Member> findMember = memberRepository.findByLoginId(loginId);
-        if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 회원입니다.");
+        if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 로그인 ID입니다.");
     }
+
+    //존재하고 삭제되지 않은 회원정보 조회
+    public Member getExistedMember(Long id){
+        Member findMember = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
+        if(findMember.isDeleted()) throw new IllegalStateException("존재하지 않는 회원정보입니다.");
+        return findMember;
+    }
+
+    public Institution getExistedInstitution(Long id){
+        Institution institution = institutionRepository.findById(id)
+                .orElseThrow(()-> new IllegalStateException("기관정보가 존재하지 않습니다."));
+        if(institution.isDeleted()) throw new IllegalStateException("기관정보가 존재하지 않습니다.");
+        return institution;
+    }
+
+    // TODO: 2022-07-21 회원 인증 로직 추가 필요
+    // TODO: 2022-07-21 회원 인증에 따른 회원 중복 가입 여부 처리 필요
 
     @Override
     public MyPageDto getMyPageInfo(Long id) {
-        Member findMember = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
-        return new MyPageDto(findMember);
+        return new MyPageDto(getExistedMember(id));
     }
 
     @Override
     public Long updateForMyPage(MyPageDto myPageDto, Long id){
-        Member member = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
+        Member member = getExistedMember(id);
         member.updateForMyPage(myPageDto);
         return member.getId();
     }
 
     @Override
     public void removeAccount(Long id){
-        Member findMember = memberRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
+        Member findMember = getExistedMember(id);
         if(!findMember.isDeleted()) findMember.deleted();
     }
 
     @Override
     public Long requestJoinOfInstitution(Long memberId, Long institutionId){
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원정보입니다."));
-        Institution institution = institutionRepository.findById(institutionId)
-                .orElseThrow(()-> new IllegalStateException("기관정보가 존재하지 않습니다."));
+        Member member = getExistedMember(memberId);
+        Institution institution = getExistedInstitution(institutionId);
 
         //회원정보와 기관정보를 조회한다.
         //해당 가입 기관 정보가 존재하고 삭제처리가 되어 있지 않다면 등록할 수 없다.
