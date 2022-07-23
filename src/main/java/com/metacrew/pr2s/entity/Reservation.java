@@ -1,7 +1,7 @@
 package com.metacrew.pr2s.entity;
 
 import com.metacrew.pr2s.entity.base.BaseEntity;
-import com.metacrew.pr2s.entity.embedded.Period;
+import com.metacrew.pr2s.entity.embedded.DatePeriod;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public class Reservation extends BaseEntity {
     private Member member;
 
     @Embedded
-    private Period period;
+    private DatePeriod datePeriod;
 
     @Column
     private Boolean isReserveApproved;
