@@ -2,7 +2,7 @@ package com.metacrew.pr2s.entity;
 
 import com.metacrew.pr2s.dto.InstitutionCreateDto;
 import com.metacrew.pr2s.entity.base.BaseEntity;
-import com.metacrew.pr2s.entity.embedded.Period;
+import com.metacrew.pr2s.entity.embedded.TimePeriod;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,7 +45,7 @@ public class Institution extends BaseEntity {
     private File thumbnail;
 
     @Embedded
-    private Period period;
+    private TimePeriod period;
 
     /**
      * InstitutionDto -> Institution
@@ -60,7 +60,7 @@ public class Institution extends BaseEntity {
         Institution institution = new Institution();
         institution.name = institutionCreateDto.getName();
         institution.telNumber = institutionCreateDto.getTelNumber();
-        institution.period = institutionCreateDto.getPeriod();
+        institution.period = institutionCreateDto.getTimePeriod();
         institution.workdays = workdays;
         institution.address = address;
         /// TODO: 2022-07-16 썸네일 입력 필요
@@ -76,7 +76,7 @@ public class Institution extends BaseEntity {
     public void updateInstitution(InstitutionCreateDto institutionCreateDto ) {
         this.name = institutionCreateDto.getName();
         this.telNumber = institutionCreateDto.getTelNumber();
-        this.period = institutionCreateDto.getPeriod();
+        this.period = institutionCreateDto.getTimePeriod();
         /// TODO: 2022-07-16 썸네일 수정 필요
     }
 
