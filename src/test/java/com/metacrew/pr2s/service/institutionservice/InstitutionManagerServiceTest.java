@@ -6,12 +6,16 @@ import com.metacrew.pr2s.dto.WorkdaysDto;
 import com.metacrew.pr2s.entity.Address;
 import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.Workdays;
+import com.metacrew.pr2s.entity.embedded.TimePeriod;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -22,6 +26,8 @@ class InstitutionManagerServiceTest {
     private InstitutionManagerService institutionManagerService;
     @Autowired
     private InstitutionRepository institutionRepository;
+    @Autowired
+    EntityManager em;
 
     @Test
     @DisplayName("기관 삽입 테스트")
@@ -60,7 +66,8 @@ class InstitutionManagerServiceTest {
         assertThat(findInstitution.getId()).isEqualTo(insertedInstitution.getId());
         assertThat(findInstitution.getName()).isEqualTo(testInstitutionDtoByUpdateTestData.getName());
         assertThat(findInstitution.getTelNumber()).isEqualTo(testInstitutionDtoByUpdateTestData.getTelNumber());
-        /// TODO: 2022-07-16 Period 타입 분리 후 비교 테스트 필요
+        assertThat(findInstitution.getTimePeriod().getStartTime()).isEqualTo(testInstitutionDtoByUpdateTestData.getTimePeriod().getStartTime());
+        assertThat(findInstitution.getTimePeriod().getEndTime()).isEqualTo(testInstitutionDtoByUpdateTestData.getTimePeriod().getEndTime());
         assertThat(findInstitution.getWorkdays().getIsMonday()).isEqualTo(testWorkdaysDtoByUpdateTestData.getIsMonday());
         assertThat(findInstitution.getWorkdays().getIsTuesday()).isEqualTo(testWorkdaysDtoByUpdateTestData.getIsTuesday());
         assertThat(findInstitution.getWorkdays().getIsWednesday()).isEqualTo(testWorkdaysDtoByUpdateTestData.getIsWednesday());
@@ -80,10 +87,12 @@ class InstitutionManagerServiceTest {
 
         // when
         assertThatThrownBy(() -> institutionManagerService
-                .updateInstitutionInfo(testInstitutionDtoByUpdateTestData
-                        ,testWorkdaysDtoByUpdateTestData
+                .updateInstitutionInfo(
+                          testInstitutionDtoByUpdateTestData
+                        , testWorkdaysDtoByUpdateTestData
                         , testAddressDtoByUpdateTestData
-                        , -1L))
+                        , -1L
+                ))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("존재하지 않는 기관입니다.");
     }
@@ -101,8 +110,9 @@ class InstitutionManagerServiceTest {
         AddressDto testAddressDtoByUpdateTestData = getTestAddressDtoByUpdateTestData();
 
         assertThatThrownBy(() -> institutionManagerService
-                .updateInstitutionInfo(testInstitutionDtoByUpdateTestData
-                        ,testWorkdaysDtoByUpdateTestData
+                .updateInstitutionInfo(
+                          testInstitutionDtoByUpdateTestData
+                        , testWorkdaysDtoByUpdateTestData
                         , testAddressDtoByUpdateTestData
                         , insertedInstitution.getId())
         ).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("삭제 처리된 기관입니다.");
@@ -131,7 +141,7 @@ class InstitutionManagerServiceTest {
         InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
         institutionCreateDto.setName("테스트1");
         institutionCreateDto.setTelNumber("010-1234-5678");
-        /// TODO: 2022-07-16 Period 분리 후 입력 필요
+        institutionCreateDto.setTimePeriod(TimePeriod.createTimePeriod(LocalTime.of(10, 30), LocalTime.of(22, 0)));
         return institutionCreateDto;
     }
 
@@ -139,7 +149,7 @@ class InstitutionManagerServiceTest {
         InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
         institutionCreateDto.setName("수정테스트1");
         institutionCreateDto.setTelNumber("010-2345-6789");
-        /// TODO: 2022-07-16 Period 분리 후 입력 필요
+        institutionCreateDto.setTimePeriod(TimePeriod.createTimePeriod(LocalTime.of(9, 30), LocalTime.of(21, 0)));
         return institutionCreateDto;
     }
 

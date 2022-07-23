@@ -1,10 +1,5 @@
 package com.metacrew.pr2s.dto;
 
-import com.metacrew.pr2s.entity.Address;
-import com.metacrew.pr2s.entity.File;
-import com.metacrew.pr2s.entity.Institution;
-import com.metacrew.pr2s.entity.Workdays;
-import com.metacrew.pr2s.entity.base.BaseEntity;
 import com.metacrew.pr2s.entity.embedded.TimePeriod;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
