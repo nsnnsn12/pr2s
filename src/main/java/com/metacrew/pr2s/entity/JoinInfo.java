@@ -31,7 +31,7 @@ public class JoinInfo extends BaseEntity {
     private Institution institution;
 
     @Column
-    private Boolean isApproved;
+    private boolean isApproved;
 
     @Column
     private LocalDateTime joinDate;
@@ -40,12 +40,16 @@ public class JoinInfo extends BaseEntity {
     private LocalDateTime resignDate;
 
     @Column
-    private Boolean isForceResigned;
+    private boolean isForceResigned;
 
     public static JoinInfo createJoinInfo(Member member, Institution institution){
         JoinInfo joinInfo = new JoinInfo();
         joinInfo.member = member;
         joinInfo.institution = institution;
         return joinInfo;
+    }
+
+    public void accept(){
+        isApproved = true;
     }
 }

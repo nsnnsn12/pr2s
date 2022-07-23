@@ -101,7 +101,13 @@ public class TestDataLoader implements CommandLineRunner {
         List<Member> members = memberRepository.findAll();
         List<Institution> institutions = institutionRepository.findAll();
 
-        for (int i = 0; i < ADD_SIZE; i++) {
+        for (int i = 0; i < ADD_SIZE/2; i++) {
+            JoinInfo joinInfo = JoinInfo.createJoinInfo(members.get(i), institutions.get(i));
+            joinInfo.accept();
+            joinInfoRepository.save(joinInfo);
+        }
+
+        for (int i = ADD_SIZE/2; i < ADD_SIZE; i++) {
             JoinInfo joinInfo = JoinInfo.createJoinInfo(members.get(i), institutions.get(i));
             joinInfoRepository.save(joinInfo);
         }
