@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
+
 @Getter
 @Setter
 public class RoomDto {
@@ -14,7 +16,6 @@ public class RoomDto {
     private Long id;
     private Address address;
     private Institution institution;
-    private File file;
     private String title;
     private String description;
     private int maximumPersonCount;

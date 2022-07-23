@@ -1,8 +1,9 @@
 package com.metacrew.pr2s.service.roomservice;
 
 import com.metacrew.pr2s.dto.AddressDto;
+import com.metacrew.pr2s.dto.FileDto;
 import com.metacrew.pr2s.dto.RoomDto;
-import com.metacrew.pr2s.entity.Address;
+import com.metacrew.pr2s.entity.File;
 import com.metacrew.pr2s.entity.Room;
 import com.metacrew.pr2s.repository.AddressRepository;
 import com.metacrew.pr2s.repository.roomrepository.RoomRepository;
@@ -15,6 +16,9 @@ import org.springframework.test.annotation.Rollback;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,7 +47,9 @@ class RoomManagerServiceTest {
         roomDto.setDescription("초기화 방이다");
         roomDto.setMaximumPersonCount(50);
         AddressDto addressDto = getTestAddressDtoByTestData();
-        Room room = roomManagerService.register(roomDto,addressDto);
+        List<File> fileList = getFileList();
+
+        Room room = roomManagerService.register(roomDto,addressDto,fileList);
     }
 
 
@@ -53,8 +59,10 @@ class RoomManagerServiceTest {
         //given
         RoomDto roomDto = getRoomDtoTestData();
         AddressDto addressDto = getTestAddressDtoByTestData();
+        List<File> fileList = getFileList();
 
-        Room room = roomManagerService.register(roomDto,addressDto);
+
+        Room room = roomManagerService.register(roomDto,addressDto,fileList);
         em.flush();
         em.clear();
 
@@ -79,5 +87,26 @@ class RoomManagerServiceTest {
         addressDto.setRn("비고");
         return addressDto;
     }
+
+    public FileDto getTestFileDtoByTestData(String name){
+        FileDto fileDto  = new FileDto();
+        fileDto.setName(name);
+
+        return fileDto;
+    }
+
+    public List<File> getFileList(){
+        List<File> fileList = new ArrayList<>();
+
+
+        for (int i = 1; i < 3; i++) {
+            File file = File.createFileByFileDto(getTestFileDtoByTestData("제목"+i));
+            fileList.add(file);
+        }
+
+        return fileList;
+    }
+
+
 
 }

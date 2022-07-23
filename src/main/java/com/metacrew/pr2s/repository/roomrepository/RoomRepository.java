@@ -18,22 +18,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     //id로 리스트조회
    @Query("select r from Room r where r.id = :roomId")
    List<Room> findByRoomListLongId(Long roomId);
-
-   //title로 리스트조회
-    @Query("select r from Room r where r.title LIKE CONCAT('%',:title,'%')")
-    List<Room> findByRoomTitle(String title);
-
     //id로 단건 조회
     @Query("select r from Room r where r.id = :roomId")
     Room findByRoomId(Long roomId);
-
-    //전체 조회
-    @Query("select r from Room r")
-    List<Room> findAllRoom();
-
-    //가능인원수로 조회
-    @Query("select r from Room r where r.maximumPersonCount <= :maximumPersonCount")
-    List<Room> findByRoomLessThanMaxPerCnt(int maximumPersonCount);
-
-
 }

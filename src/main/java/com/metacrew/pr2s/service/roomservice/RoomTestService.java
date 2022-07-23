@@ -52,10 +52,10 @@ public class RoomTestService{
      * @param  roomDto
      * @return key값
      */
-    public Room registerRoom(RoomDto roomDto, Address address, File file){
-        file=null;
+    public Room registerRoom(RoomDto roomDto, Address address,List<File> fileList){
+        fileList=null;
         validateDuplicateRoom(roomDto.getId());
-        Room room=Room.createRoomByRoomDto(roomDto,address,file);
+        Room room=Room.createRoomByRoomDto(roomDto,address);
         return roomRepository.save(room);
         //return roomTestRepository.register(room);
     }

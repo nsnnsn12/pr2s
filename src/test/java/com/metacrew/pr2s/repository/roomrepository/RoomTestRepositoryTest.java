@@ -35,7 +35,7 @@ class RoomTestRepositoryTest {
     @DisplayName("등록 테스트")
     void register() {
         //given
-        Room room = Room.createRoomByRoomDto(roomDtoTestData(), null, null);
+        Room room = Room.createRoomByRoomDto(roomDtoTestData(), null);
         //roomTestRepository.register(room);
         roomRepository.save(room);
         entityManager.flush();
@@ -61,7 +61,7 @@ class RoomTestRepositoryTest {
     @DisplayName("제목을 이용한 조회 테스트")
     void findByRoomTitle(){
         //given
-        Room room = Room.createRoomByRoomDto(roomDtoTestData(), null, null);
+        Room room = Room.createRoomByRoomDto(roomDtoTestData(), null);
         roomRepository.save(room);
         entityManager.flush();
         entityManager.clear();
