@@ -1,13 +1,12 @@
 package com.metacrew.pr2s.repository.joininforepository;
 
 import com.metacrew.pr2s.dto.AddressDto;
-import com.metacrew.pr2s.dto.InstitutionDto;
+import com.metacrew.pr2s.dto.InstitutionCreateDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
 import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.repository.AddressRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
-import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysRepository;
 import org.junit.jupiter.api.Test;
@@ -71,10 +70,10 @@ class JoinInfoRepositoryTest {
         Address testAddress = Address.createAddressByAddressDto(getTestAddressDtoByTestData());
         addressRepository.save(testAddress);
 
-        InstitutionDto institutionDto = new InstitutionDto();
-        institutionDto.setName("우리은행");
-        institutionDto.setTelNumber("010-3013-8124");
-        return Institution.createInstitution(institutionDto,workdays, testAddress);
+        InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
+        institutionCreateDto.setName("우리은행");
+        institutionCreateDto.setTelNumber("010-3013-8124");
+        return Institution.createInstitution(institutionCreateDto,workdays, testAddress);
     }
 
     public WorkdaysDto getTestWorkdaysDtoByTestData() {
