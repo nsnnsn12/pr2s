@@ -45,7 +45,7 @@ public class Institution extends BaseEntity {
     private File thumbnail;
 
     @Embedded
-    private TimePeriod period;
+    private TimePeriod timePeriod;
 
     /**
      * InstitutionDto -> Institution
@@ -60,7 +60,7 @@ public class Institution extends BaseEntity {
         Institution institution = new Institution();
         institution.name = institutionCreateDto.getName();
         institution.telNumber = institutionCreateDto.getTelNumber();
-        institution.period = institutionCreateDto.getTimePeriod();
+        institution.timePeriod = institutionCreateDto.getTimePeriod();
         institution.workdays = workdays;
         institution.address = address;
         /// TODO: 2022-07-16 썸네일 입력 필요
@@ -73,10 +73,10 @@ public class Institution extends BaseEntity {
      * @since 2022.07.07
      * @param institutionCreateDto 변경할 기관 기본 정보
      */
-    public void updateInstitution(InstitutionCreateDto institutionCreateDto ) {
+    public void updateInstitution(InstitutionCreateDto institutionCreateDto) {
         this.name = institutionCreateDto.getName();
         this.telNumber = institutionCreateDto.getTelNumber();
-        this.period = institutionCreateDto.getTimePeriod();
+        this.timePeriod = institutionCreateDto.getTimePeriod();
         /// TODO: 2022-07-16 썸네일 수정 필요
     }
 

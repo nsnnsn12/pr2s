@@ -13,4 +13,9 @@ import java.time.LocalTime;
 public class TimePeriod {
     private LocalTime startTime;
     private LocalTime endTime;
+
+    public TimePeriod(LocalTime startTime, LocalTime endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 }
