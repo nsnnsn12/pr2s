@@ -1,7 +1,6 @@
 package com.metacrew.pr2s.service.roomservice;
 
 import com.metacrew.pr2s.dto.AddressDto;
-import com.metacrew.pr2s.dto.FileDto;
 import com.metacrew.pr2s.dto.RoomDto;
 import com.metacrew.pr2s.entity.Address;
 import com.metacrew.pr2s.entity.File;

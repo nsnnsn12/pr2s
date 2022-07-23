@@ -5,7 +5,6 @@ import com.metacrew.pr2s.entity.File;
 import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.Workdays;
 import com.metacrew.pr2s.entity.base.BaseEntity;
-import com.metacrew.pr2s.entity.embedded.Period;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

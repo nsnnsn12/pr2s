@@ -1,8 +1,6 @@
 package com.metacrew.pr2s.entity;
 
 import com.metacrew.pr2s.dto.AddressDto;
-import com.metacrew.pr2s.dto.FileDto;
-import com.metacrew.pr2s.dto.InstitutionDto;
 import com.metacrew.pr2s.dto.RoomDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,12 +55,4 @@ class RoomTest {
 
         return addressDto;
     }
-
-    public FileDto getTestFileDtoByInsertTestData(String name){
-        FileDto fileDto  = new FileDto();
-        fileDto.setName(name);
-
-        return fileDto;
-    }
-
 }
