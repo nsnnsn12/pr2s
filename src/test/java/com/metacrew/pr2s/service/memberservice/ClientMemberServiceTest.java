@@ -59,10 +59,10 @@ class ClientMemberServiceTest {
 
             Member member = clientMemberService.join(joinMemberDto, addressDto, null);
 
-            InstitutionDto institutionDto = new InstitutionDto();
-            institutionDto.setName("우리은행"+i);
-            institutionDto.setTelNumber("010-1234-1234");
-            Institution institution = institutionService.joinPr2s(institutionDto, workdaysDto, addressDto);
+            InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
+            institutionCreateDto.setName("우리은행"+i);
+            institutionCreateDto.setTelNumber("010-1234-1234");
+            Institution institution = institutionService.joinPr2s(institutionCreateDto, workdaysDto, addressDto);
             institutionRepository.save(institution);
         }
         List<Member> list = memberRepository.findAll();
