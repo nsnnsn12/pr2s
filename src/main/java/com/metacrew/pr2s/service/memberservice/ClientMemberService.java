@@ -6,7 +6,7 @@ import com.metacrew.pr2s.dto.MyPageDto;
 import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.repository.AddressRepository;
 import com.metacrew.pr2s.repository.FileRepository;
-import com.metacrew.pr2s.repository.joinforepository.JoinInfoRepository;
+import com.metacrew.pr2s.repository.joininforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import lombok.RequiredArgsConstructor;

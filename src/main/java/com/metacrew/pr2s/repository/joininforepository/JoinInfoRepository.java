@@ -1,4 +1,4 @@
-package com.metacrew.pr2s.repository.joinforepository;
+package com.metacrew.pr2s.repository.joininforepository;
 
 import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.JoinInfo;
@@ -12,6 +12,6 @@ import java.util.List;
  * @author hyeonwoo
  * @since 2022.06.26
  */
-public interface JoinInfoRepository extends JpaRepository<JoinInfo, Long>{
+public interface JoinInfoRepository extends JpaRepository<JoinInfo, Long>, JoinInfoQueryRepository {
     List<JoinInfo> findByMemberAndInstitutionAndIsDeleted(Member member, Institution institution, boolean isDeleted);
 }
