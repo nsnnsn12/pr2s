@@ -17,12 +17,14 @@ import com.metacrew.pr2s.service.memberservice.ClientMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
+@Profile("test")
 @Transactional
 @RequiredArgsConstructor
 public class TestDataLoader implements CommandLineRunner {
