@@ -41,36 +41,6 @@ class ClientMemberServiceTest {
     private FileRepository fileRepository;
     @Autowired
     EntityManager entityManager;
-
-    @BeforeEach
-    public void init(){
-        WorkdaysDto workdaysDto = new WorkdaysDto();
-        workdaysDto.setIsFriday(true);
-        workdaysDto.setIsMonday(true);
-        for(int i = 0; i < 2; i++){
-            JoinMemberDto joinMemberDto = new JoinMemberDto();
-            joinMemberDto.setName("박현우"+i);
-            joinMemberDto.setLoginId("kqrgusdn"+i);
-            joinMemberDto.setPassword("qkrgusdn"+i);
-            joinMemberDto.setBirthDay("1995010"+i);
-
-            AddressDto addressDto = new AddressDto();
-            addressDto.setSggNm("서울시 마포구"+1);
-
-            Member member = clientMemberService.join(joinMemberDto, addressDto, null);
-
-            InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
-            institutionCreateDto.setName("우리은행"+i);
-            institutionCreateDto.setTelNumber("010-1234-1234");
-            Institution institution = institutionService.joinPr2s(institutionCreateDto, workdaysDto, addressDto);
-            institutionRepository.save(institution);
-        }
-        List<Member> list = memberRepository.findAll();
-        List<Institution> institutions = institutionRepository.findAll();
-        Long joinInfoId = clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institutions.get(0).getId());
-
-    }
-
     @Test
     @DisplayName("회원가입시 프로필을 등록하지 않은 경우")
     void join() {
@@ -278,17 +248,10 @@ class ClientMemberServiceTest {
         List<Member> list = memberRepository.findAll();
         List<Institution> institutions = institutionRepository.findAll();
         List<JoinInfo> joinInfos = joinInfoRepository.findAll();
-        Long memberId = joinInfos.get(0).getMember().getId();
-        Long joinInfoId = 0L;
-        // when
-        for(int i = 0; i < list.size(); i++){
-            if(!list.get(i).getId().equals(memberId)){
-                joinInfoId = clientMemberService.requestJoinOfInstitution(list.get(i).getId(), institutions.get(i).getId());
-                break;
-            }
-        }
+        Long joinInfoId = clientMemberService.requestJoinOfInstitution(list.get(0).getId(), institutions.get(1).getId());
         entityManager.flush();
         entityManager.clear();
+        // when
         JoinInfo findJoinInfo = joinInfoRepository.findById(joinInfoId).orElseThrow((() -> new IllegalArgumentException("테스트 실패")));
         Member member = memberRepository.findById(findJoinInfo.getMember().getId()).orElseThrow((() -> new IllegalArgumentException("테스트 실패")));
         Institution institution = institutionRepository.findById(findJoinInfo.getInstitution().getId()).orElseThrow((() -> new IllegalArgumentException("테스트 실패")));
