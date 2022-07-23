@@ -141,7 +141,7 @@ class InstitutionManagerServiceTest {
         InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
         institutionCreateDto.setName("테스트1");
         institutionCreateDto.setTelNumber("010-1234-5678");
-        institutionCreateDto.setTimePeriod(new TimePeriod(LocalTime.of(10, 30), LocalTime.of(22, 0)));
+        institutionCreateDto.setTimePeriod(TimePeriod.createTimePeriod(LocalTime.of(10, 30), LocalTime.of(22, 0)));
         return institutionCreateDto;
     }
 
@@ -149,7 +149,7 @@ class InstitutionManagerServiceTest {
         InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
         institutionCreateDto.setName("수정테스트1");
         institutionCreateDto.setTelNumber("010-2345-6789");
-        institutionCreateDto.setTimePeriod(new TimePeriod(LocalTime.of(9, 30), LocalTime.of(21, 0)));
+        institutionCreateDto.setTimePeriod(TimePeriod.createTimePeriod(LocalTime.of(9, 30), LocalTime.of(21, 0)));
         return institutionCreateDto;
     }
 
