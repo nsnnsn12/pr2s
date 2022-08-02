@@ -6,7 +6,14 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
+  devtools:
+    livereload:
+      enabled: true
+  resources:
+    static-locations: file:src/main/resources/static/
   jpa:
     hibernate:
       ddl-auto: create
