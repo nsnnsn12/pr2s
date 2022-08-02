@@ -1,12 +1,14 @@
 <!doctype html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="~{/common/fragments/head :: fragment-head}">
+  <head>
+      <div th:replace="~{/common/fragments/head :: common-head}"></div>
+      <link href="test" rel="stylesheet">
   </head>
   <body>
     <!-- Navigation-->
     <div th:replace="~{/common/fragments/nav :: fragment-nav}"></div>
     <!-- Header-->
-    <div th:replace="~{/common/fragments/header :: fragment-header}"></div>
+    <div th:replace="~{/common/fragments/header :: common-header}"></div>
     <!-- Section-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
@@ -211,7 +213,7 @@
         </div>
     </section>
     <!-- Footer-->
-    <div th:replace="~{/common/fragments/footer :: fragment-footer}"></div>
+    <div th:replace="~{/common/fragments/footer :: common-footer}"></div>
     <!-- Core theme JS-->
     <script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
 </body>
