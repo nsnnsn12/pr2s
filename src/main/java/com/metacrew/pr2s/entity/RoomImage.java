@@ -25,4 +25,14 @@ public class RoomImage {
     private Room room;
 
     // TODO: 2022-06-23 File 엔티티 객체 매핑 필요
+
+    public static RoomImage createRoomImage(Room room, File file){
+        RoomImage roomImage = new RoomImage();
+        roomImage.id=file.getId();
+        roomImage.room = room;
+        //파일
+
+        return roomImage;
+    }
+
 }
