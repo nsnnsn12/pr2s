@@ -31,22 +31,24 @@
                     <div class="text-center">
                       <h1 class="h2 text-gray-900 mb-4">게스트 로그인</h1>
                     </div>
-                    <form class="user">
+                    <form class="user" action="/member/login" method="post">
                       <div class="form-group">
                         <input
                           type="email"
                           class="form-control form-control-user"
-                          id="exampleInputEmail"
+                          id="inputEmail"
+                          name="email"
                           aria-describedby="emailHelp"
-                          placeholder="Enter Email Address..."
+                          placeholder="이메일 입력"
                         />
                       </div>
                       <div class="form-group">
                         <input
                           type="password"
                           class="form-control form-control-user"
-                          id="exampleInputPassword"
-                          placeholder="Password"
+                          id="inputPassword"
+                          name="password"
+                          placeholder="비밀번호 입력"
                         />
                       </div>
                       <div class="form-group">
@@ -61,13 +63,13 @@
                           >
                         </div>
                       </div>
-                      <a
-                        href="index.html"
+                      <button
+                        type="submit"
                         class="btn btn-user btn-block"
                         style="background-color: #00ead3; color: #000"
                       >
                         로그인
-                      </a>
+                      </button>
                       <hr />
                       <a
                         href="index.html"

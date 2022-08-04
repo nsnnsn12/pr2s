@@ -48,6 +48,12 @@ public class ClientMemberService implements MemberService{
         Optional<Member> findMember = memberRepository.findByLoginId(loginId);
         if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 로그인 ID입니다.");
     }
+    
+    // 로그인 검사
+    public boolean validateLoginCheck(String loginId, String password){
+        Member findMember = memberRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 아이디입니다."));
+        return findMember.getPassword().equals(password);
+    }
 
     //존재하고 삭제되지 않은 회원정보 조회
     public Member getExistedMember(Long id){

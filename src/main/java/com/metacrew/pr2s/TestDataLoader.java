@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Component
-@Profile("test")
 @Transactional
 @RequiredArgsConstructor
 public class TestDataLoader implements CommandLineRunner {
@@ -54,7 +53,7 @@ public class TestDataLoader implements CommandLineRunner {
         for(int i = 0; i < ADD_SIZE; i++){
             JoinMemberDto joinMemberDto = new JoinMemberDto();
             joinMemberDto.setName("박현우"+i);
-            joinMemberDto.setLoginId("kqrgusdn"+i);
+            joinMemberDto.setLoginId("kqrgusdn"+i + "@naver.com");
             joinMemberDto.setPassword("qkrgusdn"+i);
             joinMemberDto.setBirthDay("1995010"+i);
             Member joinMember = Member.createJoinMember(joinMemberDto, addresses.get(i), files.get(i));
