@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class File extends BaseEntity {
+public class FileInfo extends BaseEntity {
     @Id
     @Column(name = "file_id") @GeneratedValue
     private Long id;
@@ -31,11 +31,11 @@ public class File extends BaseEntity {
     @Column
     private FileType fileType;
 
-    public static File createFile(String name, String path, FileType fileType){
-        File file = new File();
-        file.path = path;
-        file.name = name;
-        file.fileType = fileType;
-        return file;
+    public static FileInfo createFile(String name, String path, FileType fileType){
+        FileInfo fileInfo = new FileInfo();
+        fileInfo.path = path;
+        fileInfo.name = name;
+        fileInfo.fileType = fileType;
+        return fileInfo;
     }
 }

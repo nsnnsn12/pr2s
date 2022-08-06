@@ -1,11 +1,8 @@
 package com.metacrew.pr2s.service.roomservice;
 
 import com.metacrew.pr2s.dto.RoomDto;
-import com.metacrew.pr2s.entity.Address;
-import com.metacrew.pr2s.entity.File;
 import com.metacrew.pr2s.entity.Room;
 import com.metacrew.pr2s.repository.roomrepository.RoomTestRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

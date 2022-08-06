@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
-class FileTest {
+class FileInfoTest {
     @Test
     @DisplayName("파일 객체 생성")
     void createFile() {
@@ -15,10 +15,10 @@ class FileTest {
         String source = "/photo";
         FileType fileType = null;
         // when
-        File file = File.createFile(name, source, fileType);
+        FileInfo fileInfo = FileInfo.createFile(name, source, fileType);
         // then
-        assertThat(file.getName()).isEqualTo(name);
-        assertThat(file.getPath()).isEqualTo(source);
-        assertThat(file.getFileType()).isEqualTo(fileType);
+        assertThat(fileInfo.getName()).isEqualTo(name);
+        assertThat(fileInfo.getPath()).isEqualTo(source);
+        assertThat(fileInfo.getFileType()).isEqualTo(fileType);
     }
 }

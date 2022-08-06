@@ -1,6 +1,6 @@
 package com.metacrew.pr2s.repository;
 
-import com.metacrew.pr2s.entity.File;
+import com.metacrew.pr2s.entity.FileInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author hyeonwoo
  * @since 2022.06.26
  */
-public interface FileRepository extends JpaRepository<File, Long>{
+public interface FileRepository extends JpaRepository<FileInfo, Long>{
 }

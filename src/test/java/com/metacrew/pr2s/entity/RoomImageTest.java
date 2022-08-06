@@ -2,7 +2,6 @@ package com.metacrew.pr2s.entity;
 
 import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.RoomDto;
-import com.metacrew.pr2s.entity.enums.FileType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,16 +18,16 @@ public class RoomImageTest {
         //given
         RoomDto roomDto = getTestRoomDtoByInsertTestData();
         Address address = Address.createAddressByAddressDto(getTestAddressDtoByInsertTestData());
-        List<File> fileList = new ArrayList<>();
+        List<FileInfo> fileInfoList = new ArrayList<>();
 
         for (int i = 1; i < 3; i++) {
-            File file = File.createFile("name", "source",null);
-            fileList.add(file);
+            FileInfo fileInfo = FileInfo.createFile("name", "source",null);
+            fileInfoList.add(fileInfo);
         }
 
         //when
         Room room = Room.createRoomByRoomDto(roomDto, address);
-        RoomImage roomImage = RoomImage.createRoomImage(room,fileList.get(0));
+        RoomImage roomImage = RoomImage.createRoomImage(room, fileInfoList.get(0));
 
         //then
         assertThat(room.getTitle()).isEqualTo("방타이틀");

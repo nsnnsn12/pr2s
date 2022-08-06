@@ -3,19 +3,15 @@ package com.metacrew.pr2s.service.roomservice;
 import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.RoomDto;
 import com.metacrew.pr2s.entity.Address;
-import com.metacrew.pr2s.entity.File;
-import com.metacrew.pr2s.entity.Institution;
+import com.metacrew.pr2s.entity.FileInfo;
 import com.metacrew.pr2s.entity.Room;
 import com.metacrew.pr2s.repository.AddressRepository;
-import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.roomrepository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 관리자가 방을 관리하기 위한 서비스 로직을 가지고 있는 클래스이다.
@@ -40,7 +36,7 @@ public class RoomManagerService implements RoomService{
      * @return 등록한 방 key 값.
      */
     @Override
-    public Room register(RoomDto roomDto, AddressDto addressDto, List<File> fileList) {
+    public Room register(RoomDto roomDto, AddressDto addressDto, List<FileInfo> fileInfoList) {
 
 
         Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));

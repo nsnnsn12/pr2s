@@ -26,9 +26,9 @@ public class RoomImage {
 
     // TODO: 2022-06-23 File 엔티티 객체 매핑 필요
 
-    public static RoomImage createRoomImage(Room room, File file){
+    public static RoomImage createRoomImage(Room room, FileInfo fileInfo){
         RoomImage roomImage = new RoomImage();
-        roomImage.id=file.getId();
+        roomImage.id= fileInfo.getId();
         roomImage.room = room;
         //파일
 

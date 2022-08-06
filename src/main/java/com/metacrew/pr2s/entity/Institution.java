@@ -42,7 +42,7 @@ public class Institution extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
-    private File thumbnail;
+    private FileInfo thumbnail;
 
     @Embedded
     private TimePeriod timePeriod;

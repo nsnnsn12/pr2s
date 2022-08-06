@@ -12,10 +12,7 @@ import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.joininforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysRepository;
-import com.metacrew.pr2s.service.institutionservice.InstitutionService;
-import com.metacrew.pr2s.service.memberservice.ClientMemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -50,14 +47,14 @@ public class TestDataLoader implements CommandLineRunner {
 
     public void addMembers(){
         List<Address> addresses = addressRepository.findAll();
-        List<File> files = fileRepository.findAll();
+        List<FileInfo> fileInfos = fileRepository.findAll();
         for(int i = 0; i < ADD_SIZE; i++){
             JoinMemberDto joinMemberDto = new JoinMemberDto();
             joinMemberDto.setName("박현우"+i);
             joinMemberDto.setLoginId("kqrgusdn"+i);
             joinMemberDto.setPassword("qkrgusdn"+i);
             joinMemberDto.setBirthDay("1995010"+i);
-            Member joinMember = Member.createJoinMember(joinMemberDto, addresses.get(i), files.get(i));
+            Member joinMember = Member.createJoinMember(joinMemberDto, addresses.get(i), fileInfos.get(i));
             memberRepository.save(joinMember);
         }
     }
@@ -84,8 +81,8 @@ public class TestDataLoader implements CommandLineRunner {
 
     public void addFiles(){
         for(int i = 0; i < ADD_SIZE; i++){
-            File file = File.createFile("file" + i, "/path/" + i, FileType.img);
-            fileRepository.save(file);
+            FileInfo fileInfo = FileInfo.createFile("file" + i, "/path/" + i, FileType.img);
+            fileRepository.save(fileInfo);
         }
     }
 

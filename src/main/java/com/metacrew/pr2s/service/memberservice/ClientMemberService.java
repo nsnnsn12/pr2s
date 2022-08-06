@@ -35,12 +35,12 @@ public class ClientMemberService implements MemberService{
     public Member join(JoinMemberDto joinMember, AddressDto addressDto, Long fileId){
         validateDuplicateLoginId(joinMember.getLoginId());
         Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
-        File file = null;
+        FileInfo fileInfo = null;
         if(fileId != null){
-            file = fileRepository.findById(fileId).orElseThrow(() -> new IllegalStateException("존재하지 않는 파일정보입니다."));
+            fileInfo = fileRepository.findById(fileId).orElseThrow(() -> new IllegalStateException("존재하지 않는 파일정보입니다."));
         }
 
-        Member member = Member.createJoinMember(joinMember, address, file);
+        Member member = Member.createJoinMember(joinMember, address, fileInfo);
         return memberRepository.save(member);
     }
 

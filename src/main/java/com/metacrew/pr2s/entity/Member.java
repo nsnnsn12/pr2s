@@ -29,7 +29,7 @@ public class Member extends BaseEntity {
 
     @JoinColumn(name = "file_id")
     @OneToOne(fetch = FetchType.LAZY)
-    private File imageFile;
+    private FileInfo imageFileInfo;
 
     @Column
     private String email;
@@ -70,7 +70,7 @@ public class Member extends BaseEntity {
      * @param joinMemberDto 엔티티로 변환할 값
      * @return Member 엔티티로 변환한 값
      */
-    public static Member createJoinMember(JoinMemberDto joinMemberDto, Address address, File file){
+    public static Member createJoinMember(JoinMemberDto joinMemberDto, Address address, FileInfo fileInfo){
         Member member = new Member();
         member.email = joinMemberDto.getEmail();
         member.telNo = joinMemberDto.getTelNo();
@@ -79,7 +79,7 @@ public class Member extends BaseEntity {
         member.name = joinMemberDto.getName();
         member.birthDay = joinMemberDto.getBirthDay();
         member.gender = joinMemberDto.getGender();
-        member.imageFile = file;
+        member.imageFileInfo = fileInfo;
         member.address = address;
         return member;
     }
