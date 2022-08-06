@@ -32,7 +32,7 @@ public class HelloController {
         return "common/body/main";
     }
 
-    @PostMapping("/")
+    @PostMapping("/testfile2")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
@@ -40,7 +40,7 @@ public class HelloController {
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return "redirect:/";
+        return "redirect:/common/body/main";
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

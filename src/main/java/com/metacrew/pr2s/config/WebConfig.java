@@ -1,6 +1,8 @@
 package com.metacrew.pr2s.config;
 
 import com.metacrew.pr2s.interceptor.FileInterceptor;
+import com.metacrew.pr2s.service.storage.StorageService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -16,5 +18,13 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new FileInterceptor())
                 .addPathPatterns("/*");
+    }
+
+    @Bean
+    CommandLineRunner init(StorageService storageService) {
+        return (args) -> {
+            storageService.deleteAll();
+            storageService.init();
+        };
     }
 }
