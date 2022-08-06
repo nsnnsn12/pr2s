@@ -22,7 +22,7 @@ public class FileInterceptor implements HandlerInterceptor {
             log.info("파일 정보가 들어있는 URI입니다.");
             MultipartHttpServletRequest multipartHttpServletRequest =  (MultipartHttpServletRequest) request;
             Iterator<String> fileNames = multipartHttpServletRequest.getFileNames();
-
+            // TODO: 2022-08-06 파일업로드 service 로직 필요
             List<String> fileIds = new ArrayList<>();
             fileNames.forEachRemaining(file -> fileIds.add(file.toLowerCase(Locale.ROOT)));
             request.setAttribute("fileIds", fileIds);
