@@ -19,7 +19,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public String login(@RequestParam("email") String loginId, @RequestParam("password") String password) {
-        if(!clientMemberService.validateLoginCheck(loginId, password)) return "user/body/login";
+        if(!clientMemberService.validLoginCheck(loginId, password)) return "user/body/login";
         return "redirect:/hello";
     }
 }

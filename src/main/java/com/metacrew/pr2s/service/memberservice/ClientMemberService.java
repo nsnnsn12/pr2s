@@ -50,7 +50,7 @@ public class ClientMemberService implements MemberService{
     }
     
     // 로그인 검사
-    public boolean validateLoginCheck(String loginId, String password){
+    public boolean validLoginCheck(String loginId, String password){
         Member findMember = memberRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 아이디입니다."));
         return findMember.getPassword().equals(password);
     }
