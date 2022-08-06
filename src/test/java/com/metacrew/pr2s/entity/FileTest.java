@@ -18,7 +18,7 @@ class FileTest {
         File file = File.createFile(name, source, fileType);
         // then
         assertThat(file.getName()).isEqualTo(name);
-        assertThat(file.getSource()).isEqualTo(source);
+        assertThat(file.getPath()).isEqualTo(source);
         assertThat(file.getFileType()).isEqualTo(fileType);
     }
 }
