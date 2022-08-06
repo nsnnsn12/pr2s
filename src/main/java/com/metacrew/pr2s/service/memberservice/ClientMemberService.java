@@ -51,8 +51,9 @@ public class ClientMemberService implements MemberService{
     
     // 로그인 검사
     public boolean validLoginCheck(String loginId, String password){
-        Member findMember = memberRepository.findByLoginId(loginId).orElseThrow(() -> new IllegalStateException("존재하지 않는 아이디입니다."));
-        return findMember.getPassword().equals(password);
+        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
+
+        return findMember.map(member -> member.getPassword().equals(password)).orElse(false);
     }
 
     //존재하고 삭제되지 않은 회원정보 조회
