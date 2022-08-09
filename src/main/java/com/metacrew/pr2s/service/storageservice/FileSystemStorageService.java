@@ -35,24 +35,18 @@ public class FileSystemStorageService implements StorageService{
     }
 
     @Override
-    public String store(MultipartFile file, String type) {
+    public String store(MultipartFile file, String path) {
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file.");
             }
 
             String fileName = UUID.randomUUID().toString()+file.getOriginalFilename();
-            //타입이 하는 일
-            //타입에 따라 validation과 파일 경로가 달라진다.
-            //validation 종류 : 파일 크기, 파일 갯수, 파일 확장자
-            //파일 타입에 따른 경로 선택
-            //들어온 키값에 따란 파일 경로를 선택한다.
-            //키값은 들어온 url에 따라 키값을 선택한다.
-            //url -> 키값 -> 파일 경로
-            Path destinationFile = this.locations.get(type).resolve(
-                            Paths.get(fileName))
-                    .normalize().toAbsolutePath();
-            if (!destinationFile.getParent().equals(this.locations.get(type).toAbsolutePath())) {
+            Path subPath = Path.of(path);
+            Path destinationFile = rootLocation.resolve(subPath)
+                                                .resolve(Paths.get(fileName))
+                                                .normalize().toAbsolutePath();
+            if (!destinationFile.getParent().equals(rootLocation.resolve(subPath).toAbsolutePath())) {
                 // This is a security check
                 throw new StorageException("Cannot store file outside current directory.");
             }
@@ -82,7 +76,6 @@ public class FileSystemStorageService implements StorageService{
         }
 
     }
-    */
     @Override
     public Path load(String filename, String type) {
         return this.locations.get(type).resolve(filename);
@@ -106,6 +99,8 @@ public class FileSystemStorageService implements StorageService{
             throw new StorageFileNotFoundException("Could not read file: " + filename, e);
         }
     }
+
+    */
 
     @Override
     public void deleteAll() {

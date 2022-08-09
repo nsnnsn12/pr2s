@@ -26,6 +26,11 @@ public class FileInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         log.info("URI정보 : {}", requestURI);
         if(isFileUri(requestURI)){
+            //해당 메소드에서는 루트 path를 기준으로 입력받은 파라미터를 기준으로 파일을 저장하기만 한다.
+            //파일의 path를 결정하고 validation하는 것은 다른 쪽에서 해야 하는 것 아닌가?
+            //그럼 path와 validation을 어디서 정해야 하는가?
+            //url에 따라 validation과 파일 경로가 달라진다.
+            //그말은 intercepter에서 결정해야 한다.
             log.info("파일 정보가 들어있는 URI입니다.");
             MultipartHttpServletRequest multipartHttpServletRequest =  (MultipartHttpServletRequest) request;
             MultipartFile file = multipartHttpServletRequest.getFile("file");

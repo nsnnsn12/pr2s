@@ -39,7 +39,7 @@ public class HelloController {
         log.info(fileInfoDto.toString());
         fileInfoDto.setFileType(file.getContentType());
         fileInfoDto.setName(file.getOriginalFilename());
-        String fileName = storageService.store(file, "admin");
+        String fileName = storageService.store(file, "upload_board");
         fileInfoDto.setRealName(fileName);
         log.info(fileInfoDto.toString());
         redirectAttributes.addFlashAttribute("message",

@@ -21,13 +21,13 @@ public interface StorageService {
      * @since 2022.08.09
      * @author sunggyu
      */
-    String store(MultipartFile file, String type);
+    String store(MultipartFile file, String path);
 
     //Stream<Path> loadAll();
 
-    Path load(String filename, String type);
+    //Path load(String filename, String type);
 
-    Resource loadAsResource(String filename, String type);
+    //Resource loadAsResource(String filename, String type);
 
     void deleteAll();
 
