@@ -28,4 +28,10 @@ logging.level:
 # org.hibernate.type: trace
 
 storage:
+  rootLocation: files
   location: test_upload
+  locations:
+    admin: upload_admin
+    board: upload_board
+    client: upload_client
+    test: upload_test

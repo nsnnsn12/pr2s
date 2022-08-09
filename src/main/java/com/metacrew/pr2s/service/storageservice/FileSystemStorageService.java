@@ -1,6 +1,5 @@
-package com.metacrew.pr2s.service.storage;
+package com.metacrew.pr2s.service.storageservice;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -16,6 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -23,26 +24,37 @@ import java.util.stream.Stream;
 @Slf4j
 public class FileSystemStorageService implements StorageService{
     private final Path rootLocation;
-
+    private final Map<String, Path> locations;
     @Autowired
     public FileSystemStorageService(StorageProperties properties) {
-        this.rootLocation = Paths.get(properties.getLocation());
+        rootLocation = Paths.get(properties.getRootLocation());
+        locations = new HashMap<>();
+        for (Map.Entry<String, String> entry : properties.getLocations().entrySet()) {
+            locations.put(entry.getKey(), Paths.get(properties.getRootLocation(), entry.getValue()));
+        }
     }
 
     @Override
-    public String store(MultipartFile file) {
+    public String store(MultipartFile file, String type) {
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file.");
             }
+
             String fileName = UUID.randomUUID().toString()+file.getOriginalFilename();
-            Path destinationFile = this.rootLocation.resolve(
+            //타입이 하는 일
+            //타입에 따라 validation과 파일 경로가 달라진다.
+            //validation 종류 : 파일 크기, 파일 갯수, 파일 확장자
+            //파일 타입에 따른 경로 선택
+            //들어온 키값에 따란 파일 경로를 선택한다.
+            //키값은 들어온 url에 따라 키값을 선택한다.
+            //url -> 키값 -> 파일 경로
+            Path destinationFile = this.locations.get(type).resolve(
                             Paths.get(fileName))
                     .normalize().toAbsolutePath();
-            if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
+            if (!destinationFile.getParent().equals(this.locations.get(type).toAbsolutePath())) {
                 // This is a security check
-                throw new StorageException(
-                        "Cannot store file outside current directory.");
+                throw new StorageException("Cannot store file outside current directory.");
             }
             try (InputStream inputStream = file.getInputStream()) {
                 log.info(destinationFile.toString());
@@ -57,6 +69,7 @@ public class FileSystemStorageService implements StorageService{
         }
     }
 
+    /*
     @Override
     public Stream<Path> loadAll() {
         try {
@@ -69,16 +82,16 @@ public class FileSystemStorageService implements StorageService{
         }
 
     }
-
+    */
     @Override
-    public Path load(String filename) {
-        return rootLocation.resolve(filename);
+    public Path load(String filename, String type) {
+        return this.locations.get(type).resolve(filename);
     }
 
     @Override
-    public Resource loadAsResource(String filename) {
+    public Resource loadAsResource(String filename, String type) {
         try {
-            Path file = load(filename);
+            Path file = load(filename, type);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
@@ -102,7 +115,11 @@ public class FileSystemStorageService implements StorageService{
     @Override
     public void init() {
         try {
-            Files.createDirectories(rootLocation);
+            for (Map.Entry<String, Path> entry : locations.entrySet()) {
+                String s = entry.getKey();
+                Path path = entry.getValue();
+                Files.createDirectories(path);
+            }
         }
         catch (IOException e) {
             throw new StorageException("Could not initialize storage", e);

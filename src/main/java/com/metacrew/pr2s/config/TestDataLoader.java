@@ -1,4 +1,4 @@
-package com.metacrew.pr2s;
+package com.metacrew.pr2s.config;
 
 import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.InstitutionCreateDto;

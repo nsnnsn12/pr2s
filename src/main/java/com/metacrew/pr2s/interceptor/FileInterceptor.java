@@ -1,6 +1,11 @@
 package com.metacrew.pr2s.interceptor;
 
+import com.metacrew.pr2s.service.storageservice.StorageService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -12,7 +17,9 @@ import java.util.List;
 import java.util.Locale;
 
 @Slf4j
+@RequiredArgsConstructor
 public class FileInterceptor implements HandlerInterceptor {
+    private final StorageService storageService;
     static final String[] FILE_URI = {"/testfile"};
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -21,11 +28,10 @@ public class FileInterceptor implements HandlerInterceptor {
         if(isFileUri(requestURI)){
             log.info("파일 정보가 들어있는 URI입니다.");
             MultipartHttpServletRequest multipartHttpServletRequest =  (MultipartHttpServletRequest) request;
-            Iterator<String> fileNames = multipartHttpServletRequest.getFileNames();
+            MultipartFile file = multipartHttpServletRequest.getFile("file");
+            String fileName = storageService.store(file, "admin");
             // TODO: 2022-08-06 파일업로드 service 로직 필요
-            List<String> fileIds = new ArrayList<>();
-            fileNames.forEachRemaining(file -> fileIds.add(file.toLowerCase(Locale.ROOT)));
-            request.setAttribute("fileIds", fileIds);
+            request.setAttribute("fileIds", 1L);
             //MultipartHttpServletRequest multipartHttpServletRequest =  (MultipartHttpServletRequest) request;
         }
         //request.
