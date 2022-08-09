@@ -27,6 +27,7 @@ public class FileSystemStorageService implements StorageService{
     private final Map<String, Path> locations;
     @Autowired
     public FileSystemStorageService(StorageProperties properties) {
+        // TODO: 2022-08-09 프로퍼티 수정 필요
         rootLocation = Paths.get(properties.getRootLocation());
         locations = new HashMap<>();
         for (Map.Entry<String, String> entry : properties.getLocations().entrySet()) {
