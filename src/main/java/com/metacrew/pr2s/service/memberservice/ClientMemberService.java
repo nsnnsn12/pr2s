@@ -5,7 +5,7 @@ import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.MyPageDto;
 import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.repository.AddressRepository;
-import com.metacrew.pr2s.repository.FileRepository;
+import com.metacrew.pr2s.repository.FileInfoRepository;
 import com.metacrew.pr2s.repository.joininforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
@@ -29,7 +29,7 @@ public class ClientMemberService implements MemberService{
     private final AddressRepository addressRepository;
     private final InstitutionRepository institutionRepository;
     private final JoinInfoRepository joinInfoRepository;
-    private final FileRepository fileRepository;
+    private final FileInfoRepository fileInfoRepository;
 
     @Override
     public Member join(JoinMemberDto joinMember, AddressDto addressDto, Long fileId){
@@ -37,7 +37,7 @@ public class ClientMemberService implements MemberService{
         Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
         FileInfo fileInfo = null;
         if(fileId != null){
-            fileInfo = fileRepository.findById(fileId).orElseThrow(() -> new IllegalStateException("존재하지 않는 파일정보입니다."));
+            fileInfo = fileInfoRepository.findById(fileId).orElseThrow(() -> new IllegalStateException("존재하지 않는 파일정보입니다."));
         }
 
         Member member = Member.createJoinMember(joinMember, address, fileInfo);

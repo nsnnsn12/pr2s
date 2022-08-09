@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author hyeonwoo
  * @since 2022.06.26
  */
-public interface FileRepository extends JpaRepository<FileInfo, Long>{
+public interface FileInfoRepository extends JpaRepository<FileInfo, Long>{
 }

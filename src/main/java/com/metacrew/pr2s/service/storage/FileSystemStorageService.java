@@ -1,6 +1,7 @@
 package com.metacrew.pr2s.service.storage;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -15,9 +16,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
+@Slf4j
 public class FileSystemStorageService implements StorageService{
     private final Path rootLocation;
 
@@ -27,13 +30,14 @@ public class FileSystemStorageService implements StorageService{
     }
 
     @Override
-    public void store(MultipartFile file) {
+    public String store(MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file.");
             }
+            String fileName = UUID.randomUUID().toString()+file.getOriginalFilename();
             Path destinationFile = this.rootLocation.resolve(
-                            Paths.get(file.getOriginalFilename()))
+                            Paths.get(fileName))
                     .normalize().toAbsolutePath();
             if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
                 // This is a security check
@@ -41,9 +45,12 @@ public class FileSystemStorageService implements StorageService{
                         "Cannot store file outside current directory.");
             }
             try (InputStream inputStream = file.getInputStream()) {
+                log.info(destinationFile.toString());
                 Files.copy(inputStream, destinationFile,
                         StandardCopyOption.REPLACE_EXISTING);
             }
+
+            return fileName;
         }
         catch (IOException e) {
             throw new StorageException("Failed to store file.", e);

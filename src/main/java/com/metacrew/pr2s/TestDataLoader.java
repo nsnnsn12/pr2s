@@ -7,7 +7,7 @@ import com.metacrew.pr2s.dto.WorkdaysDto;
 import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.entity.enums.FileType;
 import com.metacrew.pr2s.repository.AddressRepository;
-import com.metacrew.pr2s.repository.FileRepository;
+import com.metacrew.pr2s.repository.FileInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.joininforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
@@ -29,8 +29,10 @@ public class TestDataLoader implements CommandLineRunner {
     private final InstitutionRepository institutionRepository;
     private final JoinInfoRepository joinInfoRepository;
     private final WorkdaysRepository workdaysRepository;
-    private final FileRepository fileRepository;
+    private final FileInfoRepository fileInfoRepository;
     private final AddressRepository addressRepository;
+
+
 
     static final int ADD_SIZE = 10;
     public void run(String... args)  {
@@ -47,7 +49,7 @@ public class TestDataLoader implements CommandLineRunner {
 
     public void addMembers(){
         List<Address> addresses = addressRepository.findAll();
-        List<FileInfo> fileInfos = fileRepository.findAll();
+        List<FileInfo> fileInfos = fileInfoRepository.findAll();
         for(int i = 0; i < ADD_SIZE; i++){
             JoinMemberDto joinMemberDto = new JoinMemberDto();
             joinMemberDto.setName("박현우"+i);
@@ -82,7 +84,7 @@ public class TestDataLoader implements CommandLineRunner {
     public void addFiles(){
         for(int i = 0; i < ADD_SIZE; i++){
             FileInfo fileInfo = FileInfo.createFile("file" + i, "/path/" + i, FileType.img);
-            fileRepository.save(fileInfo);
+            fileInfoRepository.save(fileInfo);
         }
     }
 

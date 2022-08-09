@@ -19,12 +19,4 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new FileInterceptor())
                 .addPathPatterns("/*");
     }
-
-    @Bean
-    CommandLineRunner init(StorageService storageService) {
-        return (args) -> {
-            storageService.deleteAll();
-            storageService.init();
-        };
-    }
 }

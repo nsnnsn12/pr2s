@@ -1,5 +1,6 @@
 package com.metacrew.pr2s.controller;
 
+import com.metacrew.pr2s.dto.FileInfoDto;
 import com.metacrew.pr2s.service.storage.StorageFileNotFoundException;
 import com.metacrew.pr2s.service.storage.StorageService;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +34,15 @@ public class HelloController {
     }
 
     @PostMapping("/testfile2")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
-
-        storageService.store(file);
+    public String handleFileUpload(@RequestParam("file") MultipartFile file
+            , RedirectAttributes redirectAttributes
+            , @ModelAttribute FileInfoDto fileInfoDto) {
+        log.info(fileInfoDto.toString());
+        fileInfoDto.setFileType(file.getContentType());
+        fileInfoDto.setName(file.getOriginalFilename());
+        String fileName = storageService.store(file);
+        fileInfoDto.setRealName(fileName);
+        log.info(fileInfoDto.toString());
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
