@@ -26,4 +26,9 @@ public class MemberController {
         }
         return "redirect:/hello";
     }
+
+    @GetMapping("/register")
+    public String register(){
+        return "user/body/register";
+    }
 }
