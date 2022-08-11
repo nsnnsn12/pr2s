@@ -28,4 +28,4 @@ logging.level:
 # org.hibernate.type: trace
 
 storage:
-  location: test_upload
+  rootLocation: files

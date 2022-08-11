@@ -1,8 +1,9 @@
 package com.metacrew.pr2s.controller;
 
 import com.metacrew.pr2s.dto.FileInfoDto;
-import com.metacrew.pr2s.service.storage.StorageFileNotFoundException;
-import com.metacrew.pr2s.service.storage.StorageService;
+import com.metacrew.pr2s.service.storageservice.FilePath;
+import com.metacrew.pr2s.service.storageservice.StorageFileNotFoundException;
+import com.metacrew.pr2s.service.storageservice.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -34,18 +34,17 @@ public class HelloController {
     }
 
     @PostMapping("/testfile2")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file
-            , RedirectAttributes redirectAttributes
-            , @ModelAttribute FileInfoDto fileInfoDto) {
+    public String handleFileUpload(RedirectAttributes redirectAttributes
+            , @ModelAttribute FileInfoDto fileInfoDto
+            , MultipartFile file) {
         log.info(fileInfoDto.toString());
         fileInfoDto.setFileType(file.getContentType());
         fileInfoDto.setName(file.getOriginalFilename());
-        String fileName = storageService.store(file);
+        String fileName = storageService.store(file, FilePath.upload_test);
         fileInfoDto.setRealName(fileName);
         log.info(fileInfoDto.toString());
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
-
         return "redirect:/common/body/main";
     }
 

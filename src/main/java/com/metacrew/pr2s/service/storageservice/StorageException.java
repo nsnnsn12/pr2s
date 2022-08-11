@@ -1,4 +1,4 @@
-package com.metacrew.pr2s.service.storage;
+package com.metacrew.pr2s.service.storageservice;
 
 public class StorageException extends RuntimeException {
 

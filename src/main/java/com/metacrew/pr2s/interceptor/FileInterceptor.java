@@ -1,6 +1,12 @@
 package com.metacrew.pr2s.interceptor;
 
+import com.metacrew.pr2s.service.storageservice.FilePath;
+import com.metacrew.pr2s.service.storageservice.StorageService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -12,20 +18,26 @@ import java.util.List;
 import java.util.Locale;
 
 @Slf4j
+@RequiredArgsConstructor
 public class FileInterceptor implements HandlerInterceptor {
+    private final StorageService storageService;
     static final String[] FILE_URI = {"/testfile"};
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         log.info("URI정보 : {}", requestURI);
         if(isFileUri(requestURI)){
+            //해당 메소드에서는 루트 path를 기준으로 입력받은 파라미터를 기준으로 파일을 저장하기만 한다.
+            //파일의 path를 결정하고 validation하는 것은 다른 쪽에서 해야 하는 것 아닌가?
+            //그럼 path와 validation을 어디서 정해야 하는가?
+            //url에 따라 validation과 파일 경로가 달라진다.
+            //그말은 intercepter에서 결정해야 한다.
             log.info("파일 정보가 들어있는 URI입니다.");
             MultipartHttpServletRequest multipartHttpServletRequest =  (MultipartHttpServletRequest) request;
-            Iterator<String> fileNames = multipartHttpServletRequest.getFileNames();
+            MultipartFile file = multipartHttpServletRequest.getFile("file");
+            String fileName = storageService.store(file, FilePath.upload_test);
             // TODO: 2022-08-06 파일업로드 service 로직 필요
-            List<String> fileIds = new ArrayList<>();
-            fileNames.forEachRemaining(file -> fileIds.add(file.toLowerCase(Locale.ROOT)));
-            request.setAttribute("fileIds", fileIds);
+            request.setAttribute("fileIds", 1L);
             //MultipartHttpServletRequest multipartHttpServletRequest =  (MultipartHttpServletRequest) request;
         }
         //request.
