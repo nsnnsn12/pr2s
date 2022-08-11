@@ -21,7 +21,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class FileInterceptor implements HandlerInterceptor {
     private final StorageService storageService;
-    static final String[] FILE_URI = {"/testfile"};
+    private final FileUriProperties fileUriProperties;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
@@ -52,7 +52,8 @@ public class FileInterceptor implements HandlerInterceptor {
     }
 
     public boolean isFileUri(String requestURI){
-        for(String fileUri : FILE_URI){
+        for(String fileUri : fileUriProperties.getUris()){
+            log.info("파일Uri:{}", fileUri);
             if(fileUri.equals(requestURI)) return true;
         }
         return false;
