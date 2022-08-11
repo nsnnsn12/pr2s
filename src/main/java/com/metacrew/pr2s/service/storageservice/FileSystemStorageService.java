@@ -24,40 +24,44 @@ import java.util.stream.Stream;
 @Slf4j
 public class FileSystemStorageService implements StorageService{
     private final Path rootLocation;
-    private final Map<String, Path> locations;
     @Autowired
     public FileSystemStorageService(StorageProperties properties) {
         // TODO: 2022-08-09 프로퍼티 수정 필요
         rootLocation = Paths.get(properties.getRootLocation());
-        locations = new HashMap<>();
-        for (Map.Entry<String, String> entry : properties.getLocations().entrySet()) {
-            locations.put(entry.getKey(), Paths.get(properties.getRootLocation(), entry.getValue()));
-        }
     }
 
     @Override
-    public String store(MultipartFile file, String path) {
+    public String store(MultipartFile file, FilePath path) {
         try {
+            String result;
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file.");
             }
 
+            String[] fileNames = file.getOriginalFilename().split("/");
+            if(fileNames.length > 1){
+                throw new StorageException("Cannot store folder.");
+            }
             String fileName = UUID.randomUUID().toString()+file.getOriginalFilename();
-            Path subPath = Path.of(path);
+            log.info("파일이름확인{}",fileName);
+            Path subPath = Path.of(path.toString());
             Path destinationFile = rootLocation.resolve(subPath)
                                                 .resolve(Paths.get(fileName))
                                                 .normalize().toAbsolutePath();
+            log.info("경로확인{}",destinationFile);
             if (!destinationFile.getParent().equals(rootLocation.resolve(subPath).toAbsolutePath())) {
                 // This is a security check
                 throw new StorageException("Cannot store file outside current directory.");
             }
             try (InputStream inputStream = file.getInputStream()) {
                 log.info(destinationFile.toString());
+                log.info("파일이름:{}", destinationFile.getFileName());
+                result = destinationFile.getFileName().toString();
                 Files.copy(inputStream, destinationFile,
                         StandardCopyOption.REPLACE_EXISTING);
             }
 
-            return fileName;
+            return result;
         }
         catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
@@ -111,10 +115,10 @@ public class FileSystemStorageService implements StorageService{
     @Override
     public void init() {
         try {
-            for (Map.Entry<String, Path> entry : locations.entrySet()) {
-                String s = entry.getKey();
-                Path path = entry.getValue();
-                Files.createDirectories(path);
+            for(FilePath filePath : FilePath.values()){
+                Path subPath = Path.of(filePath.toString());
+                Path destinationFile = rootLocation.resolve(subPath);
+                Files.createDirectories(destinationFile);
             }
         }
         catch (IOException e) {

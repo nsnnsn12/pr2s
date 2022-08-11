@@ -1,6 +1,7 @@
 package com.metacrew.pr2s.controller;
 
 import com.metacrew.pr2s.dto.FileInfoDto;
+import com.metacrew.pr2s.service.storageservice.FilePath;
 import com.metacrew.pr2s.service.storageservice.StorageFileNotFoundException;
 import com.metacrew.pr2s.service.storageservice.StorageService;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class HelloController {
         log.info(fileInfoDto.toString());
         fileInfoDto.setFileType(file.getContentType());
         fileInfoDto.setName(file.getOriginalFilename());
-        String fileName = storageService.store(file, "upload_board");
+        String fileName = storageService.store(file, FilePath.upload_test);
         fileInfoDto.setRealName(fileName);
         log.info(fileInfoDto.toString());
         redirectAttributes.addFlashAttribute("message",

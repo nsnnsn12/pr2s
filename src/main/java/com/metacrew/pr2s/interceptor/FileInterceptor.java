@@ -1,5 +1,6 @@
 package com.metacrew.pr2s.interceptor;
 
+import com.metacrew.pr2s.service.storageservice.FilePath;
 import com.metacrew.pr2s.service.storageservice.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,7 @@ public class FileInterceptor implements HandlerInterceptor {
             log.info("파일 정보가 들어있는 URI입니다.");
             MultipartHttpServletRequest multipartHttpServletRequest =  (MultipartHttpServletRequest) request;
             MultipartFile file = multipartHttpServletRequest.getFile("file");
-            String fileName = storageService.store(file, "admin");
+            String fileName = storageService.store(file, FilePath.upload_test);
             // TODO: 2022-08-06 파일업로드 service 로직 필요
             request.setAttribute("fileIds", 1L);
             //MultipartHttpServletRequest multipartHttpServletRequest =  (MultipartHttpServletRequest) request;
