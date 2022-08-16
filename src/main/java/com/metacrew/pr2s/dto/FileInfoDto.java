@@ -15,4 +15,5 @@ public class FileInfoDto {
     private String path;
     private String fileType;
     private String realName;
+    private long size;
 }

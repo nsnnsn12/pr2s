@@ -1,6 +1,9 @@
 package com.metacrew.pr2s.interceptor;
 
 import com.metacrew.pr2s.config.custom.annotation.FileRequestMapping;
+import com.metacrew.pr2s.dto.FileInfoDto;
+import com.metacrew.pr2s.entity.FileInfo;
+import com.metacrew.pr2s.repository.FileInfoRepository;
 import com.metacrew.pr2s.service.storageservice.FilePath;
 import com.metacrew.pr2s.service.storageservice.StorageService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ import java.util.*;
 public class FileInterceptor implements HandlerInterceptor {
     private final StorageService storageService;
     private final FileUriProperties fileUriProperties;
+    private final FileInfoRepository fileInfoRepository;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if(!(handler instanceof HandlerMethod)){
@@ -32,12 +36,6 @@ public class FileInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        /*
-            1. 파일 최대 갯수 확인
-            2. 각 파일 타입 확인
-            3. 각 파일 사이즈 확인
-            4. 각 파일 확인이 끝난 경우 업로드 후 파일 키값 세팅
-         */
         String[] validContentTypes = fileRequestMapping.mediaTypes();
         for(String str : validContentTypes){
             log.info("미디어타입:{}", str);
@@ -52,8 +50,11 @@ public class FileInterceptor implements HandlerInterceptor {
         MultipartHttpServletRequest multipartHttpServletRequest =  (MultipartHttpServletRequest) request;
         Iterator<String> fileNames = multipartHttpServletRequest.getFileNames();
         List<MultipartFile> multipartFiles = getMultipartFiles(fileNames, multipartHttpServletRequest);
-
-        if(multipartFiles.size() == 0) return true;
+        List<Long> fileIds = new ArrayList<>();
+        if(multipartFiles.size() == 0){
+            request.setAttribute("fileIds", fileIds);
+            return true;
+        }
 
         if(maxCount < multipartFiles.size()){
             throw new IllegalStateException("업로드 가능한 파일 갯수를 초과하였습니다");
@@ -68,13 +69,17 @@ public class FileInterceptor implements HandlerInterceptor {
                 throw new IllegalStateException("업로드 가능한 미디어 타입이 아닙니다.");
             }
         }
-
         for(MultipartFile file : multipartFiles){
-            log.info("파일 사이즈 : {}, 파일 타입 : {}", file.getSize(), file.getContentType());
-            String fileName = storageService.store(file, filePath);
+            String fileName = file.getOriginalFilename();
+            String fileRealName = storageService.store(file, filePath);
+            String path = filePath.toString();
+            long fileSize = file.getSize();
+            String contentType = file.getContentType();
+            FileInfo fileInfo = FileInfo.createFile(fileName, fileRealName, path, contentType, fileSize);
+            FileInfo save = fileInfoRepository.save(fileInfo);
+            fileIds.add(save.getId());
         }
-        // TODO: 2022-08-06 파일업로드 service 로직 필요
-        request.setAttribute("fileIds", 1L);
+        request.setAttribute("fileIds", fileIds);
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 

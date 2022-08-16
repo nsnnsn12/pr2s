@@ -39,8 +39,10 @@ public class HelloController {
             , uploadPath = FilePath.upload_admin
             , mediaTypes = {MediaType.TEXT_PLAIN_VALUE, MediaType.IMAGE_JPEG_VALUE}
             , maxCount = 2)
-    public String handleFileUpload(@RequestAttribute Long fileIds) {
-        log.info("파일 id 확인:{}", fileIds);
+    public String handleFileUpload(@RequestAttribute List<Long> fileIds) {
+        for(Long id: fileIds){
+            log.info("파일 id 확인:{}", fileIds);
+        }
         return "redirect:/common/body/main";
     }
 }
