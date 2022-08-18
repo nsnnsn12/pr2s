@@ -29,7 +29,3 @@ logging.level:
 
 storage:
   rootLocation: files
-
-file-uri:
-  uris[0]: /test-file
-  uris[1]: /test-file2

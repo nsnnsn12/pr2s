@@ -1,4 +1,4 @@
-package com.metacrew.pr2s.config.custom.annotation;
+package com.metacrew.pr2s.config.annotation;
 
 import com.metacrew.pr2s.service.storageservice.FilePath;
 import org.springframework.core.annotation.AliasFor;

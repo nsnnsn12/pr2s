@@ -1,18 +1,13 @@
 package com.metacrew.pr2s.controller;
 
-import com.metacrew.pr2s.config.custom.annotation.FileRequestMapping;
-import com.metacrew.pr2s.dto.FileInfoDto;
+import com.metacrew.pr2s.config.annotation.FileRequestMapping;
 import com.metacrew.pr2s.service.storageservice.FilePath;
-import com.metacrew.pr2s.service.storageservice.StorageFileNotFoundException;
 import com.metacrew.pr2s.service.storageservice.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 

@@ -1,15 +1,12 @@
-package com.metacrew.pr2s.interceptor;
+package com.metacrew.pr2s.config.interceptor;
 
-import com.metacrew.pr2s.config.custom.annotation.FileRequestMapping;
-import com.metacrew.pr2s.dto.FileInfoDto;
+import com.metacrew.pr2s.config.annotation.FileRequestMapping;
 import com.metacrew.pr2s.entity.FileInfo;
 import com.metacrew.pr2s.repository.FileInfoRepository;
 import com.metacrew.pr2s.service.storageservice.FilePath;
 import com.metacrew.pr2s.service.storageservice.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -23,7 +20,6 @@ import java.util.*;
 @RequiredArgsConstructor
 public class FileInterceptor implements HandlerInterceptor {
     private final StorageService storageService;
-    private final FileUriProperties fileUriProperties;
     private final FileInfoRepository fileInfoRepository;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
