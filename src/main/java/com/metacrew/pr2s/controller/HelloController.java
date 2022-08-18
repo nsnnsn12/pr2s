@@ -1,11 +1,13 @@
 package com.metacrew.pr2s.controller;
 
+import com.metacrew.pr2s.config.custom.annotation.FileRequestMapping;
 import com.metacrew.pr2s.dto.FileInfoDto;
 import com.metacrew.pr2s.service.storageservice.FilePath;
 import com.metacrew.pr2s.service.storageservice.StorageFileNotFoundException;
 import com.metacrew.pr2s.service.storageservice.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,23 +35,14 @@ public class HelloController {
         return "common/body/main";
     }
 
-    @PostMapping("/testfile2")
-    public String handleFileUpload(RedirectAttributes redirectAttributes
-            , @ModelAttribute FileInfoDto fileInfoDto
-            , MultipartFile file) {
-        log.info(fileInfoDto.toString());
-        fileInfoDto.setFileType(file.getContentType());
-        fileInfoDto.setName(file.getOriginalFilename());
-        String fileName = storageService.store(file, FilePath.upload_test);
-        fileInfoDto.setRealName(fileName);
-        log.info(fileInfoDto.toString());
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
+    @FileRequestMapping(value = "/testfile2"
+            , uploadPath = FilePath.upload_admin
+            , mediaTypes = {MediaType.TEXT_PLAIN_VALUE, MediaType.IMAGE_JPEG_VALUE}
+            , maxCount = 2)
+    public String handleFileUpload(@RequestAttribute List<Long> fileIds) {
+        for(Long id: fileIds){
+            log.info("파일 id 확인:{}", fileIds);
+        }
         return "redirect:/common/body/main";
-    }
-
-    @ExceptionHandler(StorageFileNotFoundException.class)
-    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-        return ResponseEntity.notFound().build();
     }
 }
