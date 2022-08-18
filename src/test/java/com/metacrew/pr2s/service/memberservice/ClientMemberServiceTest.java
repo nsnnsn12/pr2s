@@ -48,7 +48,7 @@ class ClientMemberServiceTest {
         JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
 
         AddressDto addressDto = getAddressDtoByTestData();
-        Member member = clientMemberService.join(joinMemberDto, addressDto, null);
+        Member member = clientMemberService.join(joinMemberDto, 1L, 11L);
         entityManager.flush();
         entityManager.clear();
 
@@ -57,7 +57,7 @@ class ClientMemberServiceTest {
 
         // then
         assertThat(findMember.getName()).isEqualTo(joinMemberDto.getName());
-        assertThat(findMember.getLoginId()).isEqualTo(joinMemberDto.getLoginId());
+        assertThat(findMember.getEmail()).isEqualTo(joinMemberDto.getEmail());
         assertThat(findMember.getPassword()).isEqualTo(joinMemberDto.getPassword());
         assertThat(findMember.getBirthDay()).isEqualTo(joinMemberDto.getBirthDay());
         assertThat(findMember.getAddress().getSggNm()).isEqualTo(addressDto.getSggNm());
@@ -68,15 +68,15 @@ class ClientMemberServiceTest {
     void joinByDuplicatedLoginId() {
         // given
         List<Member> list = memberRepository.findAll();
-        String duplicatedLoginId = list.get(0).getLoginId();
+        String duplicatedEmail = list.get(0).getEmail();
         JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
-        joinMemberDto.setLoginId(duplicatedLoginId);
+        joinMemberDto.setEmail(duplicatedEmail);
 
         AddressDto addressDto = getAddressDtoByTestData();
 
         assertThatThrownBy(() -> {
-            Member member = clientMemberService.join(joinMemberDto, addressDto, null);
-        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("이미 존재하는 로그인 ID입니다.");
+            Member member = clientMemberService.join(joinMemberDto, 1L, 11L);
+        }).isInstanceOf(IllegalStateException.class).hasMessageContaining("이미 존재하는 이메일입니다.");
     }
 
     @Test
@@ -88,7 +88,7 @@ class ClientMemberServiceTest {
         AddressDto addressDto = getAddressDtoByTestData();
         File testFile = getTestFile();
         fileRepository.save(testFile);
-        Member member = clientMemberService.join(joinMemberDto, addressDto, testFile.getId());
+        Member member = clientMemberService.join(joinMemberDto, 1L, testFile.getId());
         entityManager.flush();
         entityManager.clear();
 
@@ -97,7 +97,7 @@ class ClientMemberServiceTest {
 
         // then
         assertThat(findMember.getName()).isEqualTo(joinMemberDto.getName());
-        assertThat(findMember.getLoginId()).isEqualTo(joinMemberDto.getLoginId());
+        assertThat(findMember.getEmail()).isEqualTo(joinMemberDto.getEmail());
         assertThat(findMember.getPassword()).isEqualTo(joinMemberDto.getPassword());
         assertThat(findMember.getBirthDay()).isEqualTo(joinMemberDto.getBirthDay());
         assertThat(findMember.getAddress().getSggNm()).isEqualTo(addressDto.getSggNm());
@@ -112,7 +112,7 @@ class ClientMemberServiceTest {
         AddressDto addressDto = getAddressDtoByTestData();
         // when
         assertThatThrownBy(() -> {
-            Member member = clientMemberService.join(joinMemberDto, addressDto, -1L);
+            Member member = clientMemberService.join(joinMemberDto, 1L, -1L);
         }).isInstanceOf(IllegalStateException.class).hasMessageContaining("존재하지 않는 파일정보입니다.");
     }
 
@@ -358,7 +358,7 @@ class ClientMemberServiceTest {
     public JoinMemberDto getJoinMemberDtoByTestData(){
         JoinMemberDto joinMemberDto = new JoinMemberDto();
         joinMemberDto.setName("노성규");
-        joinMemberDto.setLoginId("shtjdrb");
+        joinMemberDto.setEmail("shtjdrb");
         joinMemberDto.setPassword("shtjdrb123");
         joinMemberDto.setBirthDay("19950914");
         return joinMemberDto;
@@ -366,7 +366,7 @@ class ClientMemberServiceTest {
 
     public AddressDto getAddressDtoByTestData(){
         AddressDto addressDto = new AddressDto();
-        addressDto.setSggNm("서울시 노원구");
+        addressDto.setSggNm("서울시 마포구0");
         return addressDto;
     }
 

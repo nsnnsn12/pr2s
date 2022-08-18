@@ -6,6 +6,11 @@ import com.metacrew.pr2s.entity.enums.Gender;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 /**
  * 회원 가입 시 필요한 정보를 담고 있는 DTO
  * @author sunggyu
@@ -13,11 +18,17 @@ import lombok.Setter;
  */
 @Getter @Setter
 public class JoinMemberDto {
+    @NotBlank(message = "이메일은 필수 입력 값입니다.")
+    @Email(message = "이메일 형식에 맞지 않습니다.")
     private String email;
     private String telNo;
-    private String loginId;
+
+    @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
     private String password;
+
+    @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String name;
+    private String nickname;
     private String birthDay;
     private Gender gender;
 }

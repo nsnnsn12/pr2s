@@ -16,7 +16,7 @@ class JoinInfoTest {
         // given
         JoinMemberDto joinMemberDto = new JoinMemberDto();
         joinMemberDto.setName("노성규");
-        joinMemberDto.setLoginId("shtjdrb");
+        joinMemberDto.setEmail("shtjdrb");
         joinMemberDto.setPassword("shtjdrb123");
         joinMemberDto.setBirthDay("19950914");
         Member member = Member.createJoinMember(joinMemberDto, null, null);

@@ -25,7 +25,7 @@ class MemberRepositoryTest {
         Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData(), null, null);
         Member member = memberRepository.save(joinMember);
         // when
-        Optional<Member> findMember = memberRepository.findByLoginId("shtjdrb");
+        Optional<Member> findMember = memberRepository.findByEmail("shtjdrb");
         // then
         assertThat(findMember.isPresent()).isEqualTo(true);
     }
@@ -33,7 +33,7 @@ class MemberRepositoryTest {
     public JoinMemberDto getJoinMemberDtoByTestData(){
         JoinMemberDto joinMemberDto = new JoinMemberDto();
         joinMemberDto.setName("노성규");
-        joinMemberDto.setLoginId("shtjdrb");
+        joinMemberDto.setEmail("shtjdrb");
         joinMemberDto.setPassword("shtjdrb123");
         joinMemberDto.setBirthDay("19950914");
         return joinMemberDto;

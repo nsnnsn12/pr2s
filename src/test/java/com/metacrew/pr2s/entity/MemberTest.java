@@ -13,7 +13,7 @@ class MemberTest {
         JoinMemberDto joinMemberDto = new JoinMemberDto();
         joinMemberDto.setName("노성규");
         joinMemberDto.setPassword("1234");
-        joinMemberDto.setLoginId("shtjdrb");
+        joinMemberDto.setEmail("shtjdrb");
         joinMemberDto.setEmail("gkdlshtjdrb@naver.com");
         joinMemberDto.setTelNo("01012341234");
 
@@ -23,7 +23,7 @@ class MemberTest {
         //then
         assertThat(member.getName()).isEqualTo("노성규");
         assertThat(member.getPassword()).isEqualTo("1234");
-        assertThat(member.getLoginId()).isEqualTo("shtjdrb");
+        assertThat(member.getEmail()).isEqualTo("shtjdrb");
         assertThat(member.getEmail()).isEqualTo("gkdlshtjdrb@naver.com");
         assertThat(member.getTelNo()).isEqualTo("01012341234");
         assertThat(member.getAddress()).isNull();

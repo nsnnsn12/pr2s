@@ -15,6 +15,16 @@
     <link th:href="@{/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/css/bootstrap/sb-admin-2.min.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/css/bootstrap/sweetalert2.min.css}" rel="stylesheet" type="text/css"/>
+    <style>
+      .green-color {
+        color:lightgreen;
+        font-weight: bold;
+      }
+      .yellow {
+        color:yellow;
+        font-weight: bold;
+      }
+    </style>
   </head>
 
   <body class="bg-gradient-gray">
@@ -28,21 +38,24 @@
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">회원가입</h1>
                 </div>
-                <form class="user">
+                <form class="register" th:action="@{/auth/register}" method="post" modelAttribute="joinMemberDto">
                   <div class="form-group row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
                       <input
                         type="text"
                         class="form-control form-control-user"
-                        id="exampleFirstName"
+                        id="name"
+                        name="name"
                         placeholder="이름"
                       />
+                      <span th:text="${valid_name}"></span>
                     </div>
                     <div class="col-sm-6">
                       <input
                         type="text"
                         class="form-control form-control-user"
-                        id="exampleLastName"
+                        id="nickname"
+                        name="nickname"
                         placeholder="닉네임"
                       />
                     </div>
@@ -51,24 +64,29 @@
                     <input
                       type="email"
                       class="form-control form-control-user"
-                      id="exampleInputEmail"
+                      id="email"
+                      name="email"
                       placeholder="이메일"
                     />
+                    <span th:text="${valid_email}"></span>
                   </div>
                   <div class="form-group row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
                       <input
                         type="password"
                         class="form-control form-control-user"
-                        id="exampleInputPassword"
+                        id="password"
+                        name="password"
                         placeholder="비밀번호"
                       />
+                      <span th:text="${valid_password}"></span>
                     </div>
                     <div class="col-sm-6">
                       <input
                         type="password"
                         class="form-control form-control-user"
-                        id="exampleRepeatPassword"
+                        id="repeatPassword"
+                        name="repeatPassword"
                         placeholder="비밀번호 확인"
                       />
                     </div>
@@ -85,29 +103,26 @@
                       >
                     </div>
                   </div>
-                  <a
-                    href="login.html"
+                  <input type="hidden" id="addressId" name="addressId" value="1">
+                  <input type="hidden" id="fileId" name="fileId" value="11">
+                  <button
+                    type="submit"
                     class="btn btn-user btn-block"
                     style="background-color: #00ead3; color: #000"
                   >
                     회원가입
-                  </a>
+                  </button>
                   <hr />
                   <a href="index.html" class="btn btn-outline-dark btn-block">
-                    <i  class="fab fa-naver fa-fw" style="color: lightgreen; font-weight: bold"></i> 네이버로 시작하기
+                    <i class="fab fa-naver fa-fw green-color" ></i> 네이버로 시작하기
                   </a>
                   <a href="index.html" class="btn btn-outline-dark btn-block">
-                    <i class="fab fa-kakao fa-fw" style="color: yellow; font-weight: bold"></i> 카카오로 로그인
+                    <i class="fab fa-kakao fa-fw yellow"></i> 카카오로 시작하기
                   </a>
                 </form>
                 <hr />
                 <div class="text-center">
-                    <a class="small" href="forgot-password.html"
-                      >비밀번호찾기</a
-                    >
-                </div>
-                <div class="text-center">
-                    <a class="small" href="login.html"
+                    <a class="small" href="/auth/login"
                       >이미 가입하셨다면? 로그인하기!</a
                     >
                 </div>

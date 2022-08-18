@@ -37,11 +37,13 @@ public class Member extends BaseEntity {
     private String telNo;
 
     @Column
-    private String loginId;
-    @Column
     private String password;
+
     @Column
     private String name;
+
+    @Column
+    private String nickname;
 
     @Column
     private String birthDay;
@@ -74,9 +76,9 @@ public class Member extends BaseEntity {
         Member member = new Member();
         member.email = joinMemberDto.getEmail();
         member.telNo = joinMemberDto.getTelNo();
-        member.loginId = joinMemberDto.getLoginId();
         member.password = joinMemberDto.getPassword();
         member.name = joinMemberDto.getName();
+        member.nickname = joinMemberDto.getNickname();
         member.birthDay = joinMemberDto.getBirthDay();
         member.gender = joinMemberDto.getGender();
         member.imageFile = file;
