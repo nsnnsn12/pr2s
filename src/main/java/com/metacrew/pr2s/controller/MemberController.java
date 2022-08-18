@@ -3,10 +3,12 @@ package com.metacrew.pr2s.controller;
 import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.service.memberservice.ClientMemberService;
+import com.metacrew.pr2s.validator.CheckEmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -18,6 +20,15 @@ import java.util.Map;
 public class MemberController {
     @Autowired
     private ClientMemberService clientMemberService;
+    @Autowired
+    private  CheckEmailValidator checkEmailValidator;
+
+    /* 커스텀 유효성 검증을 위해 추가 */
+    @InitBinder
+    public void validatorBinder(WebDataBinder binder) {
+        //binder.addValidators(checkNicknameValidator);
+        binder.addValidators(checkEmailValidator);
+    }
 
     @GetMapping("/login")
     public String loginPage(){
