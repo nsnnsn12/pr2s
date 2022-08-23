@@ -2,7 +2,9 @@
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
   <head>
       <div th:replace="~{/common/fragments/head :: common-head}"></div>
-      <link href="test" rel="stylesheet">
+      <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js"></script>
+      <!-- or link to the CDN -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide.min.css">
   </head>
   <body>
     <!-- Navigation-->
@@ -25,9 +27,38 @@
             <div class="col-lg-6">
                 <!-- Featured blog post-->
                 <div class="card mb-4">
+                    <div class="card-header">
+                        <div class="d-inline">
+                            <span class="align-middle text-primary fw-bold">사진등록</span>
+                        </div>
+                        <a class="btn btn-sm btn-primary text-white float-end" href="#!">사진 추가</a>
+                    </div>
                     <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x650/dee2e6/6c757d.jpg" alt="..." /></a>
                     <div class="card-body">
-                        <a class="btn btn-primary text-white" href="#!">사진 추가</a>
+                        <div id="thumbnail-carousel" class="splide">
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                    <li class="splide__slide">
+                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
+                                    </li>
+                                    <li class="splide__slide">
+                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
+                                    </li>
+                                    <li class="splide__slide">
+                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
+                                    </li>
+                                    <li class="splide__slide">
+                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
+                                    </li>
+                                    <li class="splide__slide">
+                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
+                                    </li>
+                                    <li class="splide__slide">
+                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -83,15 +114,18 @@
     <!-- datepicker -->
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
-            integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
-          integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../../datepicker/jquery-ui.css" th:href="@{/datepicker/jquery-ui.css}">
+    <script>
+      document.addEventListener( 'DOMContentLoaded', function () {
+          new Splide( '#thumbnail-carousel', {
+                type : 'loop',
+                fixedWidth : 100,
+                fixedHeight: 60,
+                gap        : 10,
+                rewind     : true,
+                pagination : false,
+          } ).mount();
+        } );
+    </script>
+
 </body>
 </html>
