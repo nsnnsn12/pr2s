@@ -26,36 +26,21 @@
             <!-- Blog entries-->
             <div class="col-lg-6">
                 <!-- Featured blog post-->
-                <div class="card mb-4">
+                <div class="card mb-4" x-data>
                     <div class="card-header">
                         <div class="d-inline">
                             <span class="align-middle text-primary fw-bold">사진등록</span>
                         </div>
-                        <a class="btn btn-sm btn-primary text-white float-end" href="#!">사진 추가</a>
+                        <label class="btn btn-sm btn-primary text-white float-end" for="input-file">
+                            사진 추가
+                        </label>
+                        <input type="file" id="input-file" class="d-none" @change="addFile"/>
                     </div>
-                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x650/dee2e6/6c757d.jpg" alt="..." /></a>
+                    <a href="#!"><img class="card-img-top" :src="$store.fileSrc.src" width="850" height="450" /></a>
                     <div class="card-body">
                         <div id="thumbnail-carousel" class="splide">
                             <div class="splide__track">
                                 <ul class="splide__list">
-                                    <li class="splide__slide">
-                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
-                                    </li>
-                                    <li class="splide__slide">
-                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
-                                    </li>
-                                    <li class="splide__slide">
-                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
-                                    </li>
-                                    <li class="splide__slide">
-                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
-                                    </li>
-                                    <li class="splide__slide">
-                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
-                                    </li>
-                                    <li class="splide__slide">
-                                        <img src="https://dummyimage.com/150x150/dee2e6/6c757d.jpg" class="w-100 h-100" alt="">
-                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -109,22 +94,78 @@
     </div>
     <!-- Footer-->
     <div th:replace="~{/common/fragments/footer :: common-footer}"></div>
-    <!-- Core theme JS-->
-    <script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
-    <!-- datepicker -->
-
 
     <script>
-      document.addEventListener( 'DOMContentLoaded', function () {
-          new Splide( '#thumbnail-carousel', {
-                type : 'loop',
+        const fileInfos = new Array();
+        var index = 0;
+        const splide = new Splide( '#thumbnail-carousel', {
+                type : 'slide',
                 fixedWidth : 100,
-                fixedHeight: 60,
                 gap        : 10,
-                rewind     : true,
-                pagination : false,
-          } ).mount();
+                focus    : 'center',
+          } );
+
+        document.addEventListener( 'DOMContentLoaded', function () {
+          splide.mount();
         } );
+
+        function addFile(e) {
+            if(fileInfos.length >= 10) {
+                alert("파일을 10개 이상 등록할 수 없습니다.");
+                return;
+            }
+            const [file] = e.target.files;
+            let fileInfo = {file : file, key : index++};
+
+            if(file){
+                let src = URL.createObjectURL(file);
+                console.log(fileInfo);
+                fileInfos.push(fileInfo);
+                splide.add( `<li class="splide__slide">
+                                <div class="card">
+                                    <div class="card-header p-0">
+                                        <button type="button" class="btn-close float-end" x-on:click="removeFile(${fileInfo.key})" style="width: 0.25em; height: 0.25em;"></button>
+                                    </div>
+                                    <a href="#!" x-on:click="onFile(${fileInfo.key})"><img src="${src}" width="100" height="100" alt=""></a>
+                                </div>
+                            </li>` );
+                Alpine.store('fileSrc').change(src);
+            }
+        }
+
+        function removeFile(key){
+            let step;
+            for (step = 0; step < fileInfos.length; step++) {
+                if(fileInfos[step].key == key){
+                    fileInfos.splice(step, 1);
+                    splide.remove(step);
+                    return;
+                }
+            }
+        }
+
+        function onFile(key){
+            let step;
+            let filesSrc;
+            for (step = 0; step < fileInfos.length; step++) {
+                if(fileInfos[step].key == key){
+                    filesSrc = URL.createObjectURL(fileInfos[step].file);
+                    Alpine.store('fileSrc').change(filesSrc);
+                    console.log(filesSrc);
+                    return;
+                }
+            }
+        }
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('fileSrc', {
+                src: 'https://dummyimage.com/850x650/dee2e6/6c757d.jpg',
+
+                change(src) {
+                    this.src = src
+                }
+            })
+        })
     </script>
 
 </body>
