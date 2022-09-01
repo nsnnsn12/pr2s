@@ -40,4 +40,9 @@ public class HelloController {
         }
         return "redirect:/common/body/main";
     }
+
+    @GetMapping("/test")
+    public String roomRegister(){
+        return "manager/body/room_register";
+    }
 }
