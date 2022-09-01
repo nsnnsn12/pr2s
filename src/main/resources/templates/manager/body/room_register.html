@@ -5,6 +5,8 @@
       <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js"></script>
       <!-- or link to the CDN -->
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide.min.css">
+      <script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+
   </head>
   <body>
     <!-- Navigation-->
@@ -31,12 +33,12 @@
                         <div class="d-inline">
                             <span class="align-middle text-primary fw-bold">사진등록</span>
                         </div>
-                        <label class="btn btn-sm btn-primary text-white float-end" for="input-file">
+                        <label :class="$store.fileInfo.fileCount < 10 ? 'btn btn-sm btn-primary text-white float-end' : 'btn btn-sm btn-primary text-white float-end disabled'" for="input-file">
                             사진 추가
                         </label>
-                        <input type="file" id="input-file" class="d-none" @change="addFile"/>
+                        <input type="file" multiple id="input-file" class="d-none" @change="addFile"/>
                     </div>
-                    <a href="#!"><img class="card-img-top" :src="$store.fileSrc.src" width="850" height="450" /></a>
+                    <a href="#!"><img class="card-img-top" :src="$store.fileInfo.src" width="850" height="450" /></a>
                     <div class="card-body">
                         <div id="thumbnail-carousel" class="splide">
                             <div class="splide__track">
@@ -51,34 +53,18 @@
             <div class="col-lg-6">
                 <!-- Search widget-->
                 <div class="card mb-4">
-                    <div class="card-header">Search</div>
+                    <div class="card-header text-primary fw-bold">제목</div>
                     <div class="card-body">
-                        <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                            <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                        <div>
+                            <input class="form-control" type="text" />
                         </div>
                     </div>
                 </div>
                 <!-- Categories widget-->
                 <div class="card mb-4">
-                    <div class="card-header">Categories</div>
+                    <div class="card-header text-primary fw-bold">공간 소개</div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="#!">Web Design</a></li>
-                                    <li><a href="#!">HTML</a></li>
-                                    <li><a href="#!">Freebies</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-sm-6">
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="#!">JavaScript</a></li>
-                                    <li><a href="#!">CSS</a></li>
-                                    <li><a href="#!">Tutorials</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <div id="editor"></div>
                     </div>
                 </div>
                 <!-- Side widget-->
@@ -110,26 +96,32 @@
         } );
 
         function addFile(e) {
-            if(fileInfos.length >= 10) {
-                alert("파일을 10개 이상 등록할 수 없습니다.");
+            const files = e.target.files;
+            console.log(files);
+            if(fileInfos.length + files.length > 10) {
+                alert("파일을 10개 초과하여 등록할 수 없습니다.");
                 return;
             }
-            const [file] = e.target.files;
-            let fileInfo = {file : file, key : index++};
 
-            if(file){
-                let src = URL.createObjectURL(file);
-                console.log(fileInfo);
-                fileInfos.push(fileInfo);
-                splide.add( `<li class="splide__slide">
+            if(files.length > 0){
+                let step;
+                let src;
+                for (step = 0; step < files.length; step++) {
+                    const file = files.item(step);
+                    let fileInfo = {file : file, key : index++};
+                    src = URL.createObjectURL(file);
+                    fileInfos.push(fileInfo);
+                    splide.add( `<li class="splide__slide">
                                 <div class="card">
                                     <div class="card-header p-0">
-                                        <button type="button" class="btn-close float-end" x-on:click="removeFile(${fileInfo.key})" style="width: 0.25em; height: 0.25em;"></button>
+                                        <button type="button" class="btn-close float-end" @click="removeFile(${fileInfo.key})" style="width: 0.25em; height: 0.25em;"></button>
                                     </div>
                                     <a href="#!" x-on:click="onFile(${fileInfo.key})"><img src="${src}" width="100" height="100" alt=""></a>
                                 </div>
                             </li>` );
-                Alpine.store('fileSrc').change(src);
+                }
+                Alpine.store('fileInfo').change(src);
+                Alpine.store('fileInfo').fileCount = fileInfos.length;
             }
         }
 
@@ -139,6 +131,8 @@
                 if(fileInfos[step].key == key){
                     fileInfos.splice(step, 1);
                     splide.remove(step);
+                    Alpine.store('fileInfo').fileCount = fileInfos.length;
+                    onFile(fileInfos[0].key);
                     return;
                 }
             }
@@ -150,7 +144,7 @@
             for (step = 0; step < fileInfos.length; step++) {
                 if(fileInfos[step].key == key){
                     filesSrc = URL.createObjectURL(fileInfos[step].file);
-                    Alpine.store('fileSrc').change(filesSrc);
+                    Alpine.store('fileInfo').change(filesSrc);
                     console.log(filesSrc);
                     return;
                 }
@@ -158,14 +152,21 @@
         }
 
         document.addEventListener('alpine:init', () => {
-            Alpine.store('fileSrc', {
+            Alpine.store('fileInfo', {
                 src: 'https://dummyimage.com/850x650/dee2e6/6c757d.jpg',
-
+                fileCount : 0,
                 change(src) {
                     this.src = src
                 }
             })
         })
+
+        ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+
     </script>
 
 </body>
