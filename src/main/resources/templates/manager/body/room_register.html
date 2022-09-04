@@ -2,11 +2,22 @@
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
   <head>
       <div th:replace="~{/common/fragments/head :: common-head}"></div>
-      <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js"></script>
       <!-- or link to the CDN -->
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide.min.css">
-      <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/super-build/ckeditor.js"></script>
-
+      <script defer src="https://cdn.ckeditor.com/ckeditor5/35.1.0/super-build/ckeditor.js" th:src="@{/ckeditor5/ckeditor.js}"></script>
+      <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js"></script>
+      <script defer th:src="@{/js/manager/room_register.js}"></script>
+      <script>
+          document.addEventListener('alpine:init', () => {
+            Alpine.store('fileInfo', {
+                src: 'https://dummyimage.com/850x650/dee2e6/6c757d.jpg',
+                fileCount : 0,
+                change(src) {
+                    this.src = src
+                }
+            })
+        })
+      </script>
   </head>
   <body>
         <style>
@@ -90,229 +101,5 @@
     </div>
     <!-- Footer-->
     <div th:replace="~{/common/fragments/footer :: common-footer}"></div>
-
-    <script>
-        const fileInfos = new Array();
-        var index = 0;
-        const splide = new Splide( '#thumbnail-carousel', {
-                type : 'slide',
-                fixedWidth : 100,
-                gap        : 10,
-                focus    : 'center',
-          } );
-
-        document.addEventListener( 'DOMContentLoaded', function () {
-          splide.mount();
-        } );
-
-        function addFile(e) {
-            const files = e.target.files;
-            console.log(files);
-            if(fileInfos.length + files.length > 10) {
-                alert("파일을 10개 초과하여 등록할 수 없습니다.");
-                return;
-            }
-
-            if(files.length > 0){
-                let step;
-                let src;
-                for (step = 0; step < files.length; step++) {
-                    const file = files.item(step);
-                    let fileInfo = {file : file, key : index++};
-                    src = URL.createObjectURL(file);
-                    fileInfos.push(fileInfo);
-                    splide.add( `<li class="splide__slide">
-                                <div class="card">
-                                    <div class="card-header p-0">
-                                        <button type="button" class="btn-close float-end" @click="removeFile(${fileInfo.key})" style="width: 0.25em; height: 0.25em;"></button>
-                                    </div>
-                                    <a href="#!" x-on:click="onFile(${fileInfo.key})"><img src="${src}" width="100" height="100" alt=""></a>
-                                </div>
-                            </li>` );
-                }
-                Alpine.store('fileInfo').change(src);
-                Alpine.store('fileInfo').fileCount = fileInfos.length;
-            }
-        }
-
-        function removeFile(key){
-            let step;
-            for (step = 0; step < fileInfos.length; step++) {
-                if(fileInfos[step].key == key){
-                    fileInfos.splice(step, 1);
-                    splide.remove(step);
-                    Alpine.store('fileInfo').fileCount = fileInfos.length;
-                    onFile(fileInfos[0].key);
-                    return;
-                }
-            }
-        }
-
-        function onFile(key){
-            let step;
-            let filesSrc;
-            for (step = 0; step < fileInfos.length; step++) {
-                if(fileInfos[step].key == key){
-                    filesSrc = URL.createObjectURL(fileInfos[step].file);
-                    Alpine.store('fileInfo').change(filesSrc);
-                    console.log(filesSrc);
-                    return;
-                }
-            }
-        }
-
-        document.addEventListener('alpine:init', () => {
-            Alpine.store('fileInfo', {
-                src: 'https://dummyimage.com/850x650/dee2e6/6c757d.jpg',
-                fileCount : 0,
-                change(src) {
-                    this.src = src
-                }
-            })
-        })
-
-
-    </script>
-
-    <script>
-            // This sample still does not showcase all CKEditor 5 features (!)
-            // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
-            CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
-                // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
-                toolbar: {
-                    items: [
-                        'findAndReplace', 'selectAll', '|',
-                        'heading', '|',
-                        'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
-                        'bulletedList', 'numberedList', 'todoList', '|',
-                        'outdent', 'indent', '|',
-                        'undo', 'redo',
-                        '-',
-                        'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-                        'alignment', '|'
-                    ],
-                    shouldNotGroupWhenFull: true
-                },
-                // Changing the language of the interface requires loading the language file using the <script> tag.
-                // language: 'es',
-                list: {
-                    properties: {
-                        styles: true,
-                        startIndex: true,
-                        reversed: true
-                    }
-                },
-                // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-                heading: {
-                    options: [
-                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-                    ]
-                },
-                // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-                placeholder: 'Welcome to CKEditor 5!',
-                // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-                fontFamily: {
-                    options: [
-                        'default',
-                        'Arial, Helvetica, sans-serif',
-                        'Courier New, Courier, monospace',
-                        'Georgia, serif',
-                        'Lucida Sans Unicode, Lucida Grande, sans-serif',
-                        'Tahoma, Geneva, sans-serif',
-                        'Times New Roman, Times, serif',
-                        'Trebuchet MS, Helvetica, sans-serif',
-                        'Verdana, Geneva, sans-serif'
-                    ],
-                    supportAllValues: true
-                },
-                // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-                fontSize: {
-                    options: [ 10, 12, 14, 'default', 18, 20, 22 ],
-                    supportAllValues: true
-                },
-                // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
-                // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
-                htmlSupport: {
-                    allow: [
-                        {
-                            name: /.*/,
-                            attributes: true,
-                            classes: true,
-                            styles: true
-                        }
-                    ]
-                },
-                // Be careful with enabling previews
-                // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
-                htmlEmbed: {
-                    showPreviews: true
-                },
-                // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
-                link: {
-                    decorators: {
-                        addTargetToExternalLinks: true,
-                        defaultProtocol: 'https://',
-                        toggleDownloadable: {
-                            mode: 'manual',
-                            label: 'Downloadable',
-                            attributes: {
-                                download: 'file'
-                            }
-                        }
-                    }
-                },
-                // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
-                mention: {
-                    feeds: [
-                        {
-                            marker: '@',
-                            feed: [
-                                '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
-                                '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
-                                '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
-                                '@sugar', '@sweet', '@topping', '@wafer'
-                            ],
-                            minimumCharacters: 1
-                        }
-                    ]
-                },
-                // The "super-build" contains more premium features that require additional configuration, disable them below.
-                // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-                removePlugins: [
-                    // These two are commercial, but you can try them out without registering to a trial.
-                    // 'ExportPdf',
-                    // 'ExportWord',
-                    'CKBox',
-                    'CKFinder',
-                    'EasyImage',
-                    // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-                    // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-                    // Storing images as Base64 is usually a very bad idea.
-                    // Replace it on production website with other solutions:
-                    // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-                    // 'Base64UploadAdapter',
-                    'RealTimeCollaborativeComments',
-                    'RealTimeCollaborativeTrackChanges',
-                    'RealTimeCollaborativeRevisionHistory',
-                    'PresenceList',
-                    'Comments',
-                    'TrackChanges',
-                    'TrackChangesData',
-                    'RevisionHistory',
-                    'Pagination',
-                    'WProofreader',
-                    // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-                    // from a local file system (file://) - load this site via HTTP server if you enable MathType
-                    'MathType'
-                ]
-            });
-        </script>
-
 </body>
 </html>

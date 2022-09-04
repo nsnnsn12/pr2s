@@ -12,19 +12,10 @@
 
     <title>회원가입</title>
     <!-- Custom styles for this template-->
-    <link th:href="@{/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css"/>
-    <link th:href="@{/css/bootstrap/sb-admin-2.min.css}" rel="stylesheet" type="text/css"/>
-    <link th:href="@{/css/bootstrap/sweetalert2.min.css}" rel="stylesheet" type="text/css"/>
-    <style>
-      .green-color {
-        color:lightgreen;
-        font-weight: bold;
-      }
-      .yellow {
-        color:yellow;
-        font-weight: bold;
-      }
-    </style>
+    <div th:replace="~{/common/fragments/head :: common-head}"></div>
+    <link th:href="@{/sweetalert2/sweetalert2.min.css}" rel="stylesheet" type="text/css"/>
+
+    <script defer src="js/sweetalert2/sweetalert2.min.js" th:src="@{/sweetalert2/sweetalert2.min.js}"></script>
   </head>
 
   <body class="bg-gradient-gray">
@@ -133,10 +124,9 @@
         </div>
       </div>
     </div>
-    <!-- Custom scripts for all pages-->
-    <script src="js/bootstrap/sb-admin-2.min.js" th:src="@{/js/bootstrap/sb-admin-2.min.js}"></script>
-    <script src="js/bootstrap/sweetalert2.min.js" th:src="@{/js/bootstrap/sweetalert2.min.js}"></script>
 
+    <!-- Footer-->
+    <div th:replace="~{/common/fragments/footer :: common-footer}"></div>
     <script th:inline="javascript">
       console.log("helloScript");
       function registerCheck() {
