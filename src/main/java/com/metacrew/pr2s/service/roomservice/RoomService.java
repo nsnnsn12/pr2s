@@ -2,7 +2,7 @@ package com.metacrew.pr2s.service.roomservice;
 
 import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.RoomDto;
-import com.metacrew.pr2s.entity.File;
+import com.metacrew.pr2s.entity.FileInfo;
 import com.metacrew.pr2s.entity.Room;
 
 import java.util.List;
@@ -25,6 +25,6 @@ public interface RoomService {
      * @author nahyun
      * @since 2022.07.16
      */
-    Room register(RoomDto roomDto, AddressDto addressDto, List<File> fileList);
+    Room register(RoomDto roomDto, AddressDto addressDto, List<FileInfo> fileInfoList);
 
 }

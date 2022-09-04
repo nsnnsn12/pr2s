@@ -5,7 +5,7 @@ import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.MyPageDto;
 import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.repository.AddressRepository;
-import com.metacrew.pr2s.repository.FileRepository;
+import com.metacrew.pr2s.repository.FileInfoRepository;
 import com.metacrew.pr2s.repository.joininforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
@@ -33,23 +33,23 @@ public class ClientMemberService implements MemberService{
     private final AddressRepository addressRepository;
     private final InstitutionRepository institutionRepository;
     private final JoinInfoRepository joinInfoRepository;
-    private final FileRepository fileRepository;
+    private final FileInfoRepository fileInfoRepository;
 
     @Override
     public Member join(JoinMemberDto joinMember, Long addressId, Long fileId){
         validateDuplicateEmail(joinMember.getEmail());
-        
-        File file = null;
+
+        FileInfo fileInfo = null;
         if(fileId != null){
-            file = fileRepository.findById(fileId).orElseThrow(() -> new IllegalStateException("존재하지 않는 파일정보입니다."));
+            fileInfo = fileInfoRepository.findById(fileId).orElseThrow(() -> new IllegalStateException("존재하지 않는 파일정보입니다."));
         }
-        
+
         Address address = null;
         if(addressId != null){
             address = addressRepository.findById(addressId).orElseThrow(() -> new IllegalStateException("존재하지 않는 주소정보입니다."));
         }
 
-        Member member = Member.createJoinMember(joinMember, address, file);
+        Member member = Member.createJoinMember(joinMember, address, fileInfo);
         return memberRepository.save(member);
     }
 
@@ -57,7 +57,7 @@ public class ClientMemberService implements MemberService{
         Optional<Member> findMember = memberRepository.findByEmail(email);
         if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 이메일입니다.");
     }
-    
+
     // 로그인 검사
     public boolean validLoginCheck(String email, String password){
         Optional<Member> findMember = memberRepository.findByEmail(email);

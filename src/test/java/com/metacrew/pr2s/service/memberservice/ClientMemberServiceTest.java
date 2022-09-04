@@ -2,13 +2,12 @@ package com.metacrew.pr2s.service.memberservice;
 
 import com.metacrew.pr2s.dto.*;
 import com.metacrew.pr2s.entity.*;
-import com.metacrew.pr2s.repository.FileRepository;
+import com.metacrew.pr2s.repository.FileInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.joininforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysRepository;
 import com.metacrew.pr2s.service.institutionservice.InstitutionService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ class ClientMemberServiceTest {
     private InstitutionService institutionService;
 
     @Autowired
-    private FileRepository fileRepository;
+    private FileInfoRepository fileInfoRepository;
     @Autowired
     EntityManager entityManager;
     @Test
@@ -86,9 +85,9 @@ class ClientMemberServiceTest {
         JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
 
         AddressDto addressDto = getAddressDtoByTestData();
-        File testFile = getTestFile();
-        fileRepository.save(testFile);
-        Member member = clientMemberService.join(joinMemberDto, 1L, testFile.getId());
+        FileInfo testFileInfo = getTestFile();
+        fileInfoRepository.save(testFileInfo);
+        Member member = clientMemberService.join(joinMemberDto, 1L, testFileInfo.getId());
         entityManager.flush();
         entityManager.clear();
 
@@ -370,8 +369,8 @@ class ClientMemberServiceTest {
         return addressDto;
     }
 
-    public File getTestFile(){
-        return File.createFile("노성규", "/photo", null);
+    public FileInfo getTestFile(){
+        return FileInfo.createFile("노성규", "/photo", null);
     }
 
     private MyPageDto getMyPageDto() {

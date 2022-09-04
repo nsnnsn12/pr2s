@@ -4,10 +4,6 @@ import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.RoomDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-
-import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +18,7 @@ class RoomTest {
         //given
         RoomDto roomDto = getTestRoomDtoByInsertTestData();
         Address address = Address.createAddressByAddressDto(getTestAddressDtoByInsertTestData());
-        List<File> fileList = new ArrayList<>();
+        List<FileInfo> fileInfoList = new ArrayList<>();
 //
 //        for (int i = 1; i < 3; i++) {
 //            File file = File.createFileByFileDto(getTestFileDtoByInsertTestData("제목"+i));

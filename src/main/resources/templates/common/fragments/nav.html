@@ -1,31 +1,56 @@
 <!doctype html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
-<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="fragment-nav">
-    <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="#!">Start aaa</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">All Products</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                        <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+    <nav class="navbar navbar-light bg-light justify-content-end" th:fragment="fragment-nav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand fw-bold text-primary" href="#!">PR2S</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span></button>
+
+            <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">My Page</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#" style="color: #65C18C;" >Home</a>
+                        </li>
+                        <li class="nav-item" >
+                            <a class="nav-link" href="#" >Notice</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Rooms</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Information
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">서비스 소개</a></li>
+                                <li><a class="dropdown-item" href="#">이용약관</a></li>
+                                <li><a class="dropdown-item" href="#">개인정보처리방침</a></li>
+                                <li><a class="dropdown-item" href="#">운영정책</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item mt-5">
+                            <div class="btn-group w-100" role="group" aria-label="Basic example">
+                                <button class="btn btn-light border" type="button">Login</button>
+                                <button class="btn btn-light border" type="button">Join</button>
+                            </div>
+                        </li>
+                        <li class="nav-item mt-5">
+                            <div class="btn-group w-100" role="group" aria-label="Basic example">
+                                <button class="btn btn-light border w-50" type="button">Logout</button>
+                                <button class="btn btn-light border w-50" type="button">호스트로 등록하기</button>
+                            </div>
+                        </li>
                     </ul>
-                </li>
-            </ul>
-            <form class="d-flex">
-                <button class="btn btn-outline-dark" type="submit">
-                    <i class="bi-cart-fill me-1"></i>
-                    Cart
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                </button>
-            </form>
+                </div>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 </html>
