@@ -2803,6 +2803,7 @@ readers do not read off random characters that represent icons */
   content: "\f3d2"; }
 
 .fa-naver:before {
+    font-color: red;
     content: 'N'; }
 
 .fa-neos:before {
@@ -4600,6 +4601,11 @@ readers do not read off random characters that represent icons */
 .fab {
   font-family: 'Font Awesome 5 Brands';
   font-weight: 400; }
+
+.fan {
+  font-family: 'Font Awesome 5 Brands';
+  font-weight: 400; }
+
 @font-face {
   font-family: 'Font Awesome 5 Free';
   font-style: normal;
@@ -4623,3 +4629,4 @@ readers do not read off random characters that represent icons */
 .fas {
   font-family: 'Font Awesome 5 Free';
   font-weight: 900; }
+

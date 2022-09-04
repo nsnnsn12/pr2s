@@ -12,8 +12,12 @@ import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -32,21 +36,33 @@ public class ClientMemberService implements MemberService{
     private final FileInfoRepository fileInfoRepository;
 
     @Override
-    public Member join(JoinMemberDto joinMember, AddressDto addressDto, Long fileId){
-        validateDuplicateLoginId(joinMember.getLoginId());
-        Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
+    public Member join(JoinMemberDto joinMember, Long addressId, Long fileId){
+        validateDuplicateEmail(joinMember.getEmail());
+
         FileInfo fileInfo = null;
         if(fileId != null){
             fileInfo = fileInfoRepository.findById(fileId).orElseThrow(() -> new IllegalStateException("존재하지 않는 파일정보입니다."));
+        }
+
+        Address address = null;
+        if(addressId != null){
+            address = addressRepository.findById(addressId).orElseThrow(() -> new IllegalStateException("존재하지 않는 주소정보입니다."));
         }
 
         Member member = Member.createJoinMember(joinMember, address, fileInfo);
         return memberRepository.save(member);
     }
 
-    private void validateDuplicateLoginId(String loginId){
-        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
-        if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 로그인 ID입니다.");
+    private void validateDuplicateEmail(String email){
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 이메일입니다.");
+    }
+
+    // 로그인 검사
+    public boolean validLoginCheck(String email, String password){
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+
+        return findMember.map(member -> member.getPassword().equals(password)).orElse(false);
     }
 
     //존재하고 삭제되지 않은 회원정보 조회
@@ -116,5 +132,17 @@ public class ClientMemberService implements MemberService{
     public void cancelRequestedJoinOfInstitution(Long id) {
         JoinInfo joinInfo = joinInfoRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입정보입니다."));
         if(!joinInfo.isDeleted()) joinInfo.deleted();
+    }
+
+    // 회원가입 시, 유효성 체크
+    public Map<String, String> validateHandling(Errors errors) {
+        Map<String, String> validatorResult = new HashMap<>();
+
+        for (FieldError error : errors.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+
+        return validatorResult;
     }
 }

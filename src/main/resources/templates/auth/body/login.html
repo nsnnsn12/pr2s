@@ -14,6 +14,7 @@
     <!-- Custom styles for this template-->
     <link th:href="@{/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/css/bootstrap/sb-admin-2.min.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/css/bootstrap/sweetalert2.min.css}" rel="stylesheet" type="text/css"/>
   </head>
 
   <body class="bg-gradient-gray">
@@ -31,22 +32,24 @@
                     <div class="text-center">
                       <h1 class="h2 text-gray-900 mb-4">게스트 로그인</h1>
                     </div>
-                    <form class="user">
+                    <form class="login" action="/auth/login" method="post">
                       <div class="form-group">
                         <input
                           type="email"
                           class="form-control form-control-user"
-                          id="exampleInputEmail"
+                          id="inputEmail"
+                          name="email"
                           aria-describedby="emailHelp"
-                          placeholder="Enter Email Address..."
+                          placeholder="이메일 입력"
                         />
                       </div>
                       <div class="form-group">
                         <input
                           type="password"
                           class="form-control form-control-user"
-                          id="exampleInputPassword"
-                          placeholder="Password"
+                          id="inputPassword"
+                          name="password"
+                          placeholder="비밀번호 입력"
                         />
                       </div>
                       <div class="form-group">
@@ -61,13 +64,13 @@
                           >
                         </div>
                       </div>
-                      <a
-                        href="index.html"
+                      <button
+                        type="submit"
                         class="btn btn-user btn-block"
                         style="background-color: #00ead3; color: #000"
                       >
                         로그인
-                      </a>
+                      </button>
                       <hr />
                       <a
                         href="index.html"
@@ -75,7 +78,7 @@
                       >
                         <i
                           class="fab fa-naver fa-fw"
-                          style="color: lightgreen; font-weight: bold"
+                          style="color: lightgreen; font-weight: bold;"
                         ></i>
                         네이버로 로그인
                       </a>
@@ -85,7 +88,7 @@
                       >
                         <i
                           class="fab fa-kakao fa-fw"
-                          style="color: yellow; font-weight: bold"
+                          style="color: yellow; font-weight: bold;"
                         ></i>
                         카카오로 로그인
                       </a>
@@ -97,7 +100,7 @@
                       >
                     </div>
                     <div class="text-center">
-                      <a class="small" href="register.html">회원가입</a>
+                      <a class="small" href="/auth/register">회원가입</a>
                     </div>
                   </div>
                 </div>
@@ -109,5 +112,19 @@
     </div>
     <!-- Custom scripts for all pages-->
     <script src="js/bootstrap/sb-admin-2.min.js" th:src="@{/js/bootstrap/sb-admin-2.min.js}"></script>
+    <script src="js/bootstrap/sweetalert2.min.js" th:src="@{/js/bootstrap/sweetalert2.min.js}"></script>
+
+    <script th:inline="javascript">
+      var isValidLogin = [[${param.isValidLogin}]];
+      if(isValidLogin !== null) {
+        if(!JSON.parse(isValidLogin[0])) {
+          swal.fire(
+            '로그인 오류',
+            '아이디 또는 패스워드가 일치하지 않습니다.',
+            'error'
+          );
+        }
+      }
+    </script>
   </body>
 </html>
