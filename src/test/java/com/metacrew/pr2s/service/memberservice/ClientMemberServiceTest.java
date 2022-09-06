@@ -47,7 +47,7 @@ class ClientMemberServiceTest {
         JoinMemberDto joinMemberDto = getJoinMemberDtoByTestData();
 
         AddressDto addressDto = getAddressDtoByTestData();
-        Member member = clientMemberService.join(joinMemberDto, 1L, 11L);
+        Member member = clientMemberService.join(joinMemberDto, 11L);
         entityManager.flush();
         entityManager.clear();
 
@@ -72,7 +72,7 @@ class ClientMemberServiceTest {
         AddressDto addressDto = getAddressDtoByTestData();
 
         assertThatThrownBy(() -> {
-            Member member = clientMemberService.join(joinMemberDto, 1L, 11L);
+            Member member = clientMemberService.join(joinMemberDto,  11L);
         }).isInstanceOf(IllegalStateException.class).hasMessageContaining("이미 존재하는 이메일입니다.");
     }
 
@@ -85,7 +85,7 @@ class ClientMemberServiceTest {
         AddressDto addressDto = getAddressDtoByTestData();
         FileInfo testFileInfo = getTestFile();
         fileInfoRepository.save(testFileInfo);
-        Member member = clientMemberService.join(joinMemberDto, 1L, testFileInfo.getId());
+        Member member = clientMemberService.join(joinMemberDto, testFileInfo.getId());
         entityManager.flush();
         entityManager.clear();
 
@@ -107,7 +107,7 @@ class ClientMemberServiceTest {
         AddressDto addressDto = getAddressDtoByTestData();
         // when
         assertThatThrownBy(() -> {
-            Member member = clientMemberService.join(joinMemberDto, 1L, -1L);
+            Member member = clientMemberService.join(joinMemberDto, -1L);
         }).isInstanceOf(IllegalStateException.class).hasMessageContaining("존재하지 않는 파일정보입니다.");
     }
 

@@ -36,17 +36,12 @@ public class ClientMemberService implements MemberService{
     private final FileInfoRepository fileInfoRepository;
 
     @Override
-    public Member join(JoinMemberDto joinMember, Long addressId, Long fileId){
+    public Member join(JoinMemberDto joinMember, Long fileId){
         validateDuplicateEmail(joinMember.getEmail());
 
         FileInfo fileInfo = null;
         if(fileId != null){
             fileInfo = fileInfoRepository.findById(fileId).orElseThrow(() -> new IllegalStateException("존재하지 않는 파일정보입니다."));
-        }
-
-        Address address = null;
-        if(addressId != null){
-            address = addressRepository.findById(addressId).orElseThrow(() -> new IllegalStateException("존재하지 않는 주소정보입니다."));
         }
 
         Member member = Member.createJoinMember(joinMember, fileInfo);

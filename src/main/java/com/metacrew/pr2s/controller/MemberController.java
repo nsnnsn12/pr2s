@@ -50,7 +50,7 @@ public class MemberController {
     }
 
     @PostMapping("/register")
-    public String register(Model model, @Valid JoinMemberDto joinMemberDto, Errors errors, Long addressId, Long fileId){
+    public String register(Model model, @Valid JoinMemberDto joinMemberDto, Errors errors, Long fileId){
         if(errors.hasErrors()){
             model.addAttribute("joinMemberDto",joinMemberDto);
 
@@ -62,7 +62,7 @@ public class MemberController {
 
             return "auth/body/register";
         }
-        clientMemberService.join(joinMemberDto, addressId, fileId);
+        clientMemberService.join(joinMemberDto, fileId);
         return "redirect:/auth/login";
     }
 }
