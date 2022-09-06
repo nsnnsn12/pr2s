@@ -16,7 +16,6 @@ public class MyPageDto {
     private String name;
     private String email;
     private String telNo;
-    private String birthDay;
     /**
      * Member ->  MyPageDto
      * @author sunggyu
@@ -27,6 +26,5 @@ public class MyPageDto {
         name = member.getName();
         email = member.getEmail();
         telNo = member.getTelNo();
-        birthDay = member.getBirthDay();
     }
 }

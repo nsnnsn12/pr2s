@@ -22,7 +22,7 @@ class MemberRepositoryTest {
     @DisplayName("로그인 아이디를 이용한 조회 테스트")
     void findByLoginId() {
         // given
-        Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData(), null, null);
+        Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData(), null);
         Member member = memberRepository.save(joinMember);
         // when
         Optional<Member> findMember = memberRepository.findByEmail("shtjdrb");
@@ -35,7 +35,6 @@ class MemberRepositoryTest {
         joinMemberDto.setName("노성규");
         joinMemberDto.setEmail("shtjdrb");
         joinMemberDto.setPassword("shtjdrb123");
-        joinMemberDto.setBirthDay("19950914");
         return joinMemberDto;
     }
 }

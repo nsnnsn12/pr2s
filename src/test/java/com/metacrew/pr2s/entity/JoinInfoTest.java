@@ -18,8 +18,7 @@ class JoinInfoTest {
         joinMemberDto.setName("노성규");
         joinMemberDto.setEmail("shtjdrb");
         joinMemberDto.setPassword("shtjdrb123");
-        joinMemberDto.setBirthDay("19950914");
-        Member member = Member.createJoinMember(joinMemberDto, null, null);
+        Member member = Member.createJoinMember(joinMemberDto, null);
 
         Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
 

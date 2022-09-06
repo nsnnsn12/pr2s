@@ -23,10 +23,6 @@ public class Member extends BaseEntity {
     @Column(name = "member_id") @GeneratedValue
     private Long id;
 
-    @JoinColumn(name = "address_id")
-    @OneToOne(fetch = FetchType.LAZY)
-    private Address address;
-
     @JoinColumn(name = "file_id")
     @OneToOne(fetch = FetchType.LAZY)
     private FileInfo imageFileInfo;
@@ -45,12 +41,6 @@ public class Member extends BaseEntity {
     @Column
     private String nickname;
 
-    @Column
-    private String birthDay;
-
-    @Enumerated(EnumType.STRING)
-    @Column
-    private Gender gender;
 
     /**
      * 수정해야 할 마이페이지 정보를 입력받아 수정한다.
@@ -62,7 +52,6 @@ public class Member extends BaseEntity {
         name = myPageDto.getName();
         email = myPageDto.getEmail();
         telNo = myPageDto.getTelNo();
-        birthDay = myPageDto.getBirthDay();
     }
 
     /**
@@ -72,17 +61,14 @@ public class Member extends BaseEntity {
      * @param joinMemberDto 엔티티로 변환할 값
      * @return Member 엔티티로 변환한 값
      */
-    public static Member createJoinMember(JoinMemberDto joinMemberDto, Address address, FileInfo fileInfo){
+    public static Member createJoinMember(JoinMemberDto joinMemberDto, FileInfo fileInfo){
         Member member = new Member();
         member.email = joinMemberDto.getEmail();
         member.telNo = joinMemberDto.getTelNo();
         member.password = joinMemberDto.getPassword();
         member.name = joinMemberDto.getName();
         member.nickname = joinMemberDto.getNickname();
-        member.birthDay = joinMemberDto.getBirthDay();
-        member.gender = joinMemberDto.getGender();
         member.imageFileInfo = fileInfo;
-        member.address = address;
         return member;
     }
 }

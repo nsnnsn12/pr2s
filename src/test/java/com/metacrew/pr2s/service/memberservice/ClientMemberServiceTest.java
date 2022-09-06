@@ -58,8 +58,6 @@ class ClientMemberServiceTest {
         assertThat(findMember.getName()).isEqualTo(joinMemberDto.getName());
         assertThat(findMember.getEmail()).isEqualTo(joinMemberDto.getEmail());
         assertThat(findMember.getPassword()).isEqualTo(joinMemberDto.getPassword());
-        assertThat(findMember.getBirthDay()).isEqualTo(joinMemberDto.getBirthDay());
-        assertThat(findMember.getAddress().getSggNm()).isEqualTo(addressDto.getSggNm());
     }
 
     @Test
@@ -98,8 +96,6 @@ class ClientMemberServiceTest {
         assertThat(findMember.getName()).isEqualTo(joinMemberDto.getName());
         assertThat(findMember.getEmail()).isEqualTo(joinMemberDto.getEmail());
         assertThat(findMember.getPassword()).isEqualTo(joinMemberDto.getPassword());
-        assertThat(findMember.getBirthDay()).isEqualTo(joinMemberDto.getBirthDay());
-        assertThat(findMember.getAddress().getSggNm()).isEqualTo(addressDto.getSggNm());
     }
 
     @Test
@@ -128,7 +124,6 @@ class ClientMemberServiceTest {
         assertThat(myPageInfo.getName()).isEqualTo(findMember.getName());
         assertThat(myPageInfo.getEmail()).isEqualTo(findMember.getEmail());
         assertThat(myPageInfo.getTelNo()).isEqualTo(findMember.getTelNo());
-        assertThat(myPageInfo.getBirthDay()).isEqualTo(findMember.getBirthDay());
     }
 
     @Test
@@ -172,7 +167,6 @@ class ClientMemberServiceTest {
         findMember = memberRepository.findById(findMember.getId()).orElseThrow(() -> new IllegalArgumentException("테스트 실패"));
         assertThat(findMember.getEmail()).isEqualTo(myPageDto.getEmail());
         assertThat(findMember.getName()).isEqualTo(myPageDto.getName());
-        assertThat(findMember.getBirthDay()).isEqualTo(myPageDto.getBirthDay());
         assertThat(findMember.getTelNo()).isEqualTo(myPageDto.getTelNo());
     }
 
@@ -359,7 +353,6 @@ class ClientMemberServiceTest {
         joinMemberDto.setName("노성규");
         joinMemberDto.setEmail("shtjdrb");
         joinMemberDto.setPassword("shtjdrb123");
-        joinMemberDto.setBirthDay("19950914");
         return joinMemberDto;
     }
 
@@ -378,7 +371,6 @@ class ClientMemberServiceTest {
         myPageDto.setEmail("gkdlshtjdrb@naver.com");
         myPageDto.setName("박현우");
         myPageDto.setTelNo("01012341234");
-        myPageDto.setBirthDay("19950101");
         return myPageDto;
     }
 }

@@ -49,7 +49,7 @@ public class ClientMemberService implements MemberService{
             address = addressRepository.findById(addressId).orElseThrow(() -> new IllegalStateException("존재하지 않는 주소정보입니다."));
         }
 
-        Member member = Member.createJoinMember(joinMember, address, fileInfo);
+        Member member = Member.createJoinMember(joinMember, fileInfo);
         return memberRepository.save(member);
     }
 

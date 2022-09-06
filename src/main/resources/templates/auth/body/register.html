@@ -28,7 +28,7 @@
               <h1 class="h4 text-gray-900 mb-4">회원가입</h1>
             </div>
             <div class="d-flex justify-content-center mb-3">
-              <a href="index.html" class="w-100 btn btn-outline-primary text-secondary py-3">
+              <a href="index.html" class="w-100 btn btn-outline-primary text-secondary py-2">
                 <span>
                   <img src="..." th:src="@{/image/kakaologo.png}" class="rounded me-2" style="height: 1.5em; width: 1.5em;">
                   <span class="align-middle fw-bold">카카오로 시작하기</span>
@@ -36,13 +36,14 @@
               </a>
             </div>
             <div class="d-flex justify-content-center mb-3">
-              <a href="index.html" class="w-100 btn btn-outline-primary text-secondary py-3">
+              <a href="index.html" class="w-100 btn btn-outline-primary text-secondary py-2">
                 <span>
                   <img src="..." th:src="@{/image/naver_icon.png}" class="rounded me-2" style="height: 1.5em; width: 1.5em;">
                   <span class="align-middle fw-bold">네이버로 시작하기</span>
                 </span>
               </a>
             </div>
+            <hr />
             <form th:action="@{/auth/register}" method="post" th:object="${joinMemberDto}">
               <div class="form-group row mb-3">
                 <div class="col-sm-6 mb-3 mb-sm-0">
@@ -124,13 +125,12 @@
               </div>
               <input type="hidden" id="addressId" name="addressId" value="1">
               <input type="hidden" id="fileId" name="fileId" value="11">
-              <div class = "d-flex justify-content-center">
-                <button type="submit" class="btn btn-outline-primary">
+              <div class = "d-flex justify-content-center mb-3">
+                <button type="submit" class="w-100 btn btn-outline-primary">
                   회원가입
                 </button>
               </div>
             </form>
-            <hr />
             <div class="text-center">
                 <a class="small" href="/auth/login"
                   >이미 가입하셨다면? 로그인하기!</a
