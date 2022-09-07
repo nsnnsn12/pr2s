@@ -16,6 +16,10 @@
     <link th:href="@{/sweetalert2/sweetalert2.min.css}" rel="stylesheet" type="text/css"/>
 
     <script defer src="js/sweetalert2/sweetalert2.min.js" th:src="@{/sweetalert2/sweetalert2.min.js}"></script>
+
+    <style>
+      .fs-7 {font-size: 0.8rem !important;}
+    </style>
   </head>
 
   <body class="bg-gradient-gray">
@@ -45,82 +49,44 @@
             </div>
             <hr />
             <form th:action="@{/auth/register}" method="post" th:object="${joinMemberDto}">
-              <div class="form-group row mb-3">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                  <input
-                    type="text"
-                    class="form-control form-control-user"
-                    id="name"
-                    name="name"
-                    placeholder="이름"
-                  />
-                  <span th:text="${valid_name}"></span>
-                </div>
-                <div class="col-sm-6">
-                  <input
-                    type="text"
-                    class="form-control form-control-user"
-                    id="nickname"
-                    name="nickname"
-                    placeholder="닉네임"
-                  />
-                </div>
+              <div class="mb-3">
+                <input type="text" th:field="*{name}" class="form-control" placeholder="이름"/>
+                <p th:each="err : ${#fields.errors('name')}" th:text="'* '+${err}" class="mt-2 fw-bold text-danger fs-7"/>
               </div>
               <div class="form-group mb-3">
-                <input
-                  type="email"
-                  class="form-control form-control-user"
-                  id="email"
-                  name="email"
-                  placeholder="이메일"
-                />
-                <span th:text="${valid_email}"></span>
+                <input type="text" th:field="*{nickname}" class="form-control form-control-user" placeholder="닉네임" />
+                <p th:each="err : ${#fields.errors('nickname')}" th:text="'* '+${err}" class="mt-2 fw-bold text-danger fs-7"/>
+              </div>
+              <div class="form-group mb-3">
+                <input type="text" th:field="*{telNo}" class="form-control form-control-user" placeholder="전화번호" />
+                <p th:if="${#fields.hasErrors('telNo')}" th:text="'* ' + ${#fields.errors('telNo')[0]}" class="mt-2 fw-bold text-danger fs-7"/>
               </div>
               <div class="form-group row mb-3">
                 <div class="col-sm-6 mb-3 mb-sm-0">
-                  <input
-                    type="password"
-                    class="form-control form-control-user"
-                    id="password"
-                    name="password"
-                    placeholder="비밀번호"
-                  />
-                  <span th:text="${valid_password}"></span>
+                  <input type="password" th:field="*{password}" class="form-control form-control-user" placeholder="비밀번호" />
+                  <p th:each="err : ${#fields.errors('password')}" th:text="'* '+${err}" class="mt-2 fw-bold text-danger fs-7"/>
                 </div>
                 <div class="col-sm-6">
-                  <input
-                    type="password"
-                    class="form-control form-control-user"
-                    id="repeatPassword"
-                    name="repeatPassword"
-                    placeholder="비밀번호 확인"
-                  />
+                  <input type="password" th:field="*{repeatPassword}" class="form-control form-control-user" placeholder="비밀번호 확인"/>
+                  <p th:each="err : ${#fields.errors('repeatPassword')}" th:text="'* '+${err}" class="mt-2 fw-bold text-danger fs-7"/>
                 </div>
               </div>
               <div class="form-group row mb-3">
                 <div class="col-sm-8 mb-3 mb-sm-0">
-                  <input
-                          class="form-control form-control-user"
-                          id="number"
-                          placeholder="전화번호"
-                  />
+                  <input type="text" th:field="*{email}" class="form-control form-control-user" placeholder="이메일"/>
+                  <p th:each="err : ${#fields.errors('email')}" th:text="'* '+${err}" class="mt-2 fw-bold text-danger fs-7"/>
                 </div>
                 <div class="col-sm-4">
                   <button type="button" class="btn btn-outline-primary">
-                    휴대폰 인증
+                    이메일 인증
                   </button>
                 </div>
               </div>
-              <div class="form-group mb-3">
-                <div class="custom-control custom-checkbox small">
-                  <input
-                    type="checkbox"
-                    class="custom-control-input"
-                    id="customCheck"
-                  />
-                  <label class="custom-control-label" for="customCheck"
-                    >약관에 모두 동의</label
-                  >
+              <div class="form-group row mb-3">
+                <div class="col-sm-4">
+                  <input type="checkbox" class="custom-control-input" th:field="*{agreed}" />
+                  <label th:for="${#ids.next('agreed')}" >약관에 모두 동의</label>
+                  <p th:each="err : ${#fields.errors('agreed')}" th:text="'* '+${err}" class="mt-2 fw-bold text-danger fs-7"/>
                 </div>
               </div>
               <input type="hidden" id="addressId" name="addressId" value="1">
