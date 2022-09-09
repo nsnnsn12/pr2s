@@ -3,6 +3,7 @@ package com.metacrew.pr2s.dto;
 import com.metacrew.pr2s.entity.enums.Gender;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.*;
 
@@ -12,9 +13,10 @@ import javax.validation.constraints.*;
  * @since 2022.07.01
  */
 @Getter @Setter
+@ToString
 public class JoinMemberDto {
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
-    @Email(message = "이메일 형식에 맞지 않습니다.")
+    @Pattern(regexp = "^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$", message = "이메일 형식에 맞지 않습니다.")
     private String email;
 
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")
@@ -34,5 +36,5 @@ public class JoinMemberDto {
     private String repeatPassword;
 
     @AssertTrue(message = "약관에 동의해주세요")
-   private boolean agreed;
+    private boolean agreed;
 }

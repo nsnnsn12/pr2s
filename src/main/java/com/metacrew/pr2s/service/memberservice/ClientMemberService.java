@@ -10,6 +10,9 @@ import com.metacrew.pr2s.repository.joininforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -27,6 +30,7 @@ import java.util.Optional;
  */
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class ClientMemberService implements MemberService{
     private final MemberRepository memberRepository;
@@ -127,5 +131,16 @@ public class ClientMemberService implements MemberService{
     public void cancelRequestedJoinOfInstitution(Long id) {
         JoinInfo joinInfo = joinInfoRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입정보입니다."));
         if(!joinInfo.isDeleted()) joinInfo.deleted();
+    }
+
+    @Cacheable(cacheNames = "confirmRegister", key = "#uuid")
+    public JoinMemberDto getCacheJoinMember(String uuid) {
+        log.info("캐시가 존재하지 않으면 해당 메소드가 실행되면서 null이 리턴된다.");
+        return null;
+    }
+
+    @CachePut(cacheNames = "confirmRegister", key = "#uuid")
+    public JoinMemberDto putCacheJoinMember(JoinMemberDto joinMemberDto, String uuid) {
+        return joinMemberDto;
     }
 }
