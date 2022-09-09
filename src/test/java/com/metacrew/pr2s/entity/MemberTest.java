@@ -16,7 +16,7 @@ class MemberTest {
         joinMemberDto.setTelNo("01012341234");
 
         //when
-        Member member = Member.createJoinMember(joinMemberDto, null);
+        Member member = Member.createJoinMember(joinMemberDto);
 
         //then
         assertThat(member.getName()).isEqualTo("노성규");

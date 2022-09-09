@@ -35,7 +35,7 @@ class JoinInfoRepositoryTest {
     @Test
     public void findByMemberAndInstitutionAndIsDeletedTest(){
         //given
-        Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData(), null);
+        Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData());
         memberRepository.save(joinMember);
 
         Institution institution = getInstitutionTestData();

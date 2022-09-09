@@ -22,7 +22,7 @@ class MemberRepositoryTest {
     @DisplayName("로그인 아이디를 이용한 조회 테스트")
     void findByLoginId() {
         // given
-        Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData(), null);
+        Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData());
         Member member = memberRepository.save(joinMember);
         // when
         Optional<Member> findMember = memberRepository.findByEmail("shtjdrb");

@@ -61,14 +61,13 @@ public class Member extends BaseEntity {
      * @param joinMemberDto 엔티티로 변환할 값
      * @return Member 엔티티로 변환한 값
      */
-    public static Member createJoinMember(JoinMemberDto joinMemberDto, FileInfo fileInfo){
+    public static Member createJoinMember(JoinMemberDto joinMemberDto){
         Member member = new Member();
         member.email = joinMemberDto.getEmail();
         member.telNo = joinMemberDto.getTelNo();
         member.password = joinMemberDto.getPassword();
         member.name = joinMemberDto.getName();
         member.nickname = joinMemberDto.getNickname();
-        member.imageFileInfo = fileInfo;
         return member;
     }
 }

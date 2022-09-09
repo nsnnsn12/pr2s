@@ -74,7 +74,7 @@ public class MemberController {
         JoinMemberDto joinMemberDto = clientMemberService.getCacheJoinMember(uuid);
         if(joinMemberDto != null) {
             log.info("uuid를 이용한 캐싱 정보 확인 : {}", joinMemberDto.toString());
-            //clientMemberService.join(joinMemberDto, null);
+            //clientMemberService.join(joinMemberDto);
         }
         return "redirect:/auth/login";
     }
