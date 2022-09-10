@@ -13,7 +13,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.UUID;
 
@@ -74,7 +73,8 @@ public class MemberController {
         JoinMemberDto joinMemberDto = clientMemberService.getCacheJoinMember(uuid);
         if(joinMemberDto != null) {
             log.info("uuid를 이용한 캐싱 정보 확인 : {}", joinMemberDto.toString());
-            //clientMemberService.join(joinMemberDto);
+            clientMemberService.join(joinMemberDto);
+            //캐시 정보 삭제
         }
         return "redirect:/auth/login";
     }

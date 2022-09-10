@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -34,13 +36,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClientMemberService implements MemberService{
     private final MemberRepository memberRepository;
-    private final AddressRepository addressRepository;
     private final InstitutionRepository institutionRepository;
     private final JoinInfoRepository joinInfoRepository;
-    private final FileInfoRepository fileInfoRepository;
+
+    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
 
     @Override
     public Member join(JoinMemberDto joinMember){
+        joinMember.setPassword(passwordEncoder.encode(joinMember.getPassword()));
         Member member = Member.createJoinMember(joinMember);
         return memberRepository.save(member);
     }
