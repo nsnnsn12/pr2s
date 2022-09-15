@@ -11,6 +11,7 @@ import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -135,4 +136,7 @@ public class ClientMemberService implements MemberService{
     public JoinMemberDto putCacheJoinMember(JoinMemberDto joinMemberDto, String uuid) {
         return joinMemberDto;
     }
+
+    @CacheEvict(cacheNames = "confirmRegister", key = "#uuid")
+    public void removeCacheJoinMember(String uuid) {}
 }

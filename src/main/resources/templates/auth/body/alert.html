@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>회원인증</title>
+    <!-- Custom styles for this template-->
+    <div th:replace="~{/common/fragments/head :: common-head}"></div>
+    <link th:href="@{/sweetalert2/sweetalert2.min.css}" rel="stylesheet" type="text/css"/>
+
+    <script defer src="js/sweetalert2/sweetalert2.min.js" th:src="@{/sweetalert2/sweetalert2.min.js}"></script>
+
+  </head>
+
+  <body class="bg-gradient-gray">
+
+  <!-- Modal -->
+  <div class="modal fade show" id="staticBackdropLive" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLiveLabel" aria-modal="true" role="dialog" style="display: block;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p th:if="${agree}">회원인증이 완료되었습니다.</p>
+          <p th:if="${!agree}">유효하지 않는 인증입니다.</p>
+        </div>
+        <div class="modal-footer">
+          <a type="button" class="btn btn-outline-primary" href="/auth/login">로그인</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  </body>
+</html>
