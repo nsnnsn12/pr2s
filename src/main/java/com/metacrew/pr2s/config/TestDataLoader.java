@@ -54,8 +54,7 @@ public class TestDataLoader implements CommandLineRunner {
             joinMemberDto.setName("박현우"+i);
             joinMemberDto.setEmail("kqrgusdn"+i + "@naver.com");
             joinMemberDto.setPassword("qkrgusdn"+i);
-            joinMemberDto.setBirthDay("1995010"+i);
-            Member joinMember = Member.createJoinMember(joinMemberDto, addresses.get(i), fileInfos.get(i));
+            Member joinMember = Member.createJoinMember(joinMemberDto);
             memberRepository.save(joinMember);
         }
     }

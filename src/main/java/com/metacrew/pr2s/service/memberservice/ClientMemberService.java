@@ -10,6 +10,12 @@ import com.metacrew.pr2s.repository.joininforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -27,35 +33,21 @@ import java.util.Optional;
  */
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class ClientMemberService implements MemberService{
     private final MemberRepository memberRepository;
-    private final AddressRepository addressRepository;
     private final InstitutionRepository institutionRepository;
     private final JoinInfoRepository joinInfoRepository;
-    private final FileInfoRepository fileInfoRepository;
+
+    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
 
     @Override
-    public Member join(JoinMemberDto joinMember, Long addressId, Long fileId){
-        validateDuplicateEmail(joinMember.getEmail());
-
-        FileInfo fileInfo = null;
-        if(fileId != null){
-            fileInfo = fileInfoRepository.findById(fileId).orElseThrow(() -> new IllegalStateException("존재하지 않는 파일정보입니다."));
-        }
-
-        Address address = null;
-        if(addressId != null){
-            address = addressRepository.findById(addressId).orElseThrow(() -> new IllegalStateException("존재하지 않는 주소정보입니다."));
-        }
-
-        Member member = Member.createJoinMember(joinMember, address, fileInfo);
+    public Member join(JoinMemberDto joinMember){
+        joinMember.setPassword(passwordEncoder.encode(joinMember.getPassword()));
+        Member member = Member.createJoinMember(joinMember);
         return memberRepository.save(member);
-    }
-
-    private void validateDuplicateEmail(String email){
-        Optional<Member> findMember = memberRepository.findByEmail(email);
-        if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 이메일입니다.");
     }
 
     // 로그인 검사
@@ -134,15 +126,17 @@ public class ClientMemberService implements MemberService{
         if(!joinInfo.isDeleted()) joinInfo.deleted();
     }
 
-    // 회원가입 시, 유효성 체크
-    public Map<String, String> validateHandling(Errors errors) {
-        Map<String, String> validatorResult = new HashMap<>();
-
-        for (FieldError error : errors.getFieldErrors()) {
-            String validKeyName = String.format("valid_%s", error.getField());
-            validatorResult.put(validKeyName, error.getDefaultMessage());
-        }
-
-        return validatorResult;
+    @Cacheable(cacheNames = "confirmRegister", key = "#uuid")
+    public JoinMemberDto getCacheJoinMember(String uuid) {
+        log.info("캐시가 존재하지 않으면 해당 메소드가 실행되면서 null이 리턴된다.");
+        return null;
     }
+
+    @CachePut(cacheNames = "confirmRegister", key = "#uuid")
+    public JoinMemberDto putCacheJoinMember(JoinMemberDto joinMemberDto, String uuid) {
+        return joinMemberDto;
+    }
+
+    @CacheEvict(cacheNames = "confirmRegister", key = "#uuid")
+    public void removeCacheJoinMember(String uuid) {}
 }

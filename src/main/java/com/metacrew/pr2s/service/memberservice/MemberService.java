@@ -16,15 +16,13 @@ public interface MemberService {
      * 회원, 주소, 파일 정보를 입력받아 회원가입 처리를 하고 회원 정보를 리턴한다.
      *
      * @param joinMember 회원 정보.
-     * @param addressId 주소 정보
-     * @param fileId 파일 정보
      * @return 회원정보
      * @throws IllegalStateException 존재하지 않는 파일정보에 대해 요청할 경우
      * @throws IllegalStateException 이미 존재하는 login id를 사용하려는 경우
      * @since 2022.07.07
      * @author sunggyu
      */
-    Member join(JoinMemberDto joinMember, Long addressId, Long fileId);
+    Member join(JoinMemberDto joinMember);
 
     /**
      * 마이페이지 정보 조회

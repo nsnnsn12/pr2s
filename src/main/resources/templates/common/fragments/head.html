@@ -4,12 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
-    <link href="../css/bootstrap.min.css" th:href="@{/css/main.css}" rel="stylesheet">
-
-    <!-- alpinejs-->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="../css/bootstrap.min.css" th:href="@{/main.css}" rel="stylesheet">
+    <link th:href="@{/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css"/>
 
     <!-- Core theme JS-->
-    <script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+    <script defer th:src="@{/bootstrap/bootstrap.bundle.min.js}"></script>
+    
+    <!-- alpine JS-->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" th:src="@{/alpinejs/dist/cdn.min.js}"></script>
 </head>
 </html>
