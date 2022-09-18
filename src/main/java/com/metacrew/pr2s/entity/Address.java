@@ -43,6 +43,12 @@ public class Address extends BaseEntity {
     private String zipNo;
 
     @Column
+    private String udrtYn;
+
+    @Column
+    private String floor;
+
+    @Column
     private String addrDetail;
 
     @Column
@@ -77,9 +83,6 @@ public class Address extends BaseEntity {
 
     @Column
     private String rn;
-
-    @Column
-    private String udrtYn;
 
     @Column
     private String buldMnnm;
@@ -120,6 +123,8 @@ public class Address extends BaseEntity {
         address.jibunAddr = addressDto.getJibunAddr();
         address.engAddr = addressDto.getEngAddr();
         address.zipNo = addressDto.getZipNo();
+        address.udrtYn = addressDto.getUdrtYn();
+        address.floor = addressDto.getFloor();
         address.addrDetail = addressDto.getAddrDetail();
         address.admCd = addressDto.getAdmCd();
         address.rnMgtSn = addressDto.getRnMgtSn();
@@ -132,7 +137,6 @@ public class Address extends BaseEntity {
         address.emdNm = addressDto.getEmdNm();
         address.liNm = addressDto.getLiNm();
         address.rn = addressDto.getRn();
-        address.udrtYn = addressDto.getUdrtYn();
         address.buldMnnm = addressDto.getBuldMnnm();
         address.buldSlno = addressDto.getBuldSlno();
         address.mtYn = addressDto.getMtYn();
@@ -157,6 +161,8 @@ public class Address extends BaseEntity {
         this.jibunAddr = addressDto.getJibunAddr();
         this.engAddr = addressDto.getEngAddr();
         this.zipNo = addressDto.getZipNo();
+        this.udrtYn = addressDto.getUdrtYn();
+        this.floor = addressDto.getFloor();
         this.addrDetail = addressDto.getAddrDetail();
         this.admCd = addressDto.getAdmCd();
         this.rnMgtSn = addressDto.getRnMgtSn();
@@ -169,7 +175,6 @@ public class Address extends BaseEntity {
         this.emdNm = addressDto.getEmdNm();
         this.liNm = addressDto.getLiNm();
         this.rn = addressDto.getRn();
-        this.udrtYn = addressDto.getUdrtYn();
         this.buldMnnm = addressDto.getBuldMnnm();
         this.buldSlno = addressDto.getBuldSlno();
         this.mtYn = addressDto.getMtYn();
