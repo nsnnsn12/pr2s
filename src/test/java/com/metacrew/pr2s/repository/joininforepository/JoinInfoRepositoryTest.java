@@ -35,7 +35,7 @@ class JoinInfoRepositoryTest {
     @Test
     public void findByMemberAndInstitutionAndIsDeletedTest(){
         //given
-        Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData(), null, null);
+        Member joinMember = Member.createJoinMember(getJoinMemberDtoByTestData());
         memberRepository.save(joinMember);
 
         Institution institution = getInstitutionTestData();
@@ -57,9 +57,8 @@ class JoinInfoRepositoryTest {
     public JoinMemberDto getJoinMemberDtoByTestData(){
         JoinMemberDto joinMemberDto = new JoinMemberDto();
         joinMemberDto.setName("노성규");
-        joinMemberDto.setLoginId("shtjdrb");
+        joinMemberDto.setEmail("shtjdrb");
         joinMemberDto.setPassword("shtjdrb123");
-        joinMemberDto.setBirthDay("19950914");
         return joinMemberDto;
     }
 

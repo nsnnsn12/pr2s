@@ -10,10 +10,20 @@ import com.metacrew.pr2s.repository.joininforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -23,30 +33,28 @@ import java.util.Optional;
  */
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class ClientMemberService implements MemberService{
     private final MemberRepository memberRepository;
-    private final AddressRepository addressRepository;
     private final InstitutionRepository institutionRepository;
     private final JoinInfoRepository joinInfoRepository;
-    private final FileInfoRepository fileInfoRepository;
+
+    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
 
     @Override
-    public Member join(JoinMemberDto joinMember, AddressDto addressDto, Long fileId){
-        validateDuplicateLoginId(joinMember.getLoginId());
-        Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
-        FileInfo fileInfo = null;
-        if(fileId != null){
-            fileInfo = fileInfoRepository.findById(fileId).orElseThrow(() -> new IllegalStateException("존재하지 않는 파일정보입니다."));
-        }
-
-        Member member = Member.createJoinMember(joinMember, address, fileInfo);
+    public Member join(JoinMemberDto joinMember){
+        joinMember.setPassword(passwordEncoder.encode(joinMember.getPassword()));
+        Member member = Member.createJoinMember(joinMember);
         return memberRepository.save(member);
     }
 
-    private void validateDuplicateLoginId(String loginId){
-        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
-        if(findMember.isPresent()) throw new IllegalStateException("이미 존재하는 로그인 ID입니다.");
+    // 로그인 검사
+    public boolean validLoginCheck(String email, String password){
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+
+        return findMember.map(member -> member.getPassword().equals(password)).orElse(false);
     }
 
     //존재하고 삭제되지 않은 회원정보 조회
@@ -117,4 +125,18 @@ public class ClientMemberService implements MemberService{
         JoinInfo joinInfo = joinInfoRepository.findById(id).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입정보입니다."));
         if(!joinInfo.isDeleted()) joinInfo.deleted();
     }
+
+    @Cacheable(cacheNames = "confirmRegister", key = "#uuid")
+    public JoinMemberDto getCacheJoinMember(String uuid) {
+        log.info("캐시가 존재하지 않으면 해당 메소드가 실행되면서 null이 리턴된다.");
+        return null;
+    }
+
+    @CachePut(cacheNames = "confirmRegister", key = "#uuid")
+    public JoinMemberDto putCacheJoinMember(JoinMemberDto joinMemberDto, String uuid) {
+        return joinMemberDto;
+    }
+
+    @CacheEvict(cacheNames = "confirmRegister", key = "#uuid")
+    public void removeCacheJoinMember(String uuid) {}
 }

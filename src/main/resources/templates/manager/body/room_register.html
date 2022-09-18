@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+  <head>
+      <div th:replace="~{/common/fragments/head :: common-head}"></div>
+      <!-- or link to the CDN -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide.min.css">
+      <script defer src="https://cdn.ckeditor.com/ckeditor5/35.1.0/super-build/ckeditor.js" th:src="@{/ckeditor5/ckeditor.js}"></script>
+      <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js"></script>
+      <script defer th:src="@{/js/manager/room_register.js}"></script>
+      <script>
+          document.addEventListener('alpine:init', () => {
+            Alpine.store('fileInfo', {
+                src: 'https://dummyimage.com/850x650/dee2e6/6c757d.jpg',
+                fileCount : 0,
+                change(src) {
+                    this.src = src
+                }
+            })
+        })
+      </script>
+  </head>
+  <body>
+        <style>
+            .ck-editor__editable[role="textbox"] {
+                /* editing area */
+                min-height: 300px;
+                max-height: 300px;
+            }
+        </style>
+    <!-- Navigation-->
+    <div th:replace="~{/common/fragments/nav :: fragment-nav}"></div>
+
+    <div class="text-center my-5">
+        <!--
+        <h1 class="fw-bolder">Welcome to Blog Home!</h1>
+        <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
+        -->
+    </div>
+
+    <!-- PageContent -->
+    <div class="container px-4 px-lg-5 w-75">
+        <div class="d-flex my-2 justify-content-end">
+            <button class="btn btn-outline-primary" type="button">방 등록하기</button>
+        </div>
+        <div class="row">
+            <!-- Blog entries-->
+            <div class="col-lg-6">
+                <!-- Featured blog post-->
+                <div class="card mb-4" x-data>
+                    <div class="card-header">
+                        <div class="d-inline">
+                            <span class="align-middle text-primary fw-bold">사진등록</span>
+                        </div>
+                        <label :class="$store.fileInfo.fileCount < 10 ? 'btn btn-sm btn-primary text-white float-end' : 'btn btn-sm btn-primary text-white float-end disabled'" for="input-file">
+                            사진 추가
+                        </label>
+                        <input type="file" multiple id="input-file" class="d-none" @change="addFile"/>
+                    </div>
+                    <img class="card-img-top" :src="$store.fileInfo.src" width="850" height="450" />
+                    <div class="card-body">
+                        <div id="thumbnail-carousel" class="splide">
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Side widgets-->
+            <div class="col-lg-6">
+                <!-- Search widget-->
+                <div class="card mb-4">
+                    <div class="card-header text-primary fw-bold">제목</div>
+                    <div class="card-body">
+                        <div>
+                            <input class="form-control" type="text" />
+                        </div>
+                    </div>
+                </div>
+                <!-- Categories widget-->
+                <div class="card mb-4">
+                    <div class="card-header text-primary fw-bold">공간 소개</div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">층</span>
+                            <input type="text" class="form-control" aria-describedby="basic-addon1">
+                            <span class="input-group-text" id="basic-addon2">최대인원</span>
+                            <input type="number" class="form-control" aria-describedby="basic-addon2">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="editor"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="my-5 py-2">
+    </div>
+    <!-- Footer-->
+    <div th:replace="~{/common/fragments/footer :: common-footer}"></div>
+</body>
+</html>

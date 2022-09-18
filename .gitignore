@@ -37,4 +37,8 @@ out/
 .vscode/
 
 ### upload file ###
-test_upload/
+files/
+
+### aplication yml ###
+src/main/resources/application.yml
+src/test/resources/application.yml
