@@ -12,119 +12,70 @@
 
     <title>로그인 페이지</title>
     <!-- Custom styles for this template-->
-    <link th:href="@{/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css"/>
-    <link th:href="@{/css/bootstrap/sb-admin-2.min.css}" rel="stylesheet" type="text/css"/>
-    <link th:href="@{/css/bootstrap/sweetalert2.min.css}" rel="stylesheet" type="text/css"/>
+    <div th:replace="~{/common/fragments/head :: common-head}"></div>
+    <style>
+      .fs-7 {font-size: 0.8rem !important;}
+    </style>
   </head>
 
   <body class="bg-gradient-gray">
-    <div class="container">
-      <!-- Outer Row -->
-      <div class="row justify-content-center">
-        <div class="col-xl-6 col-lg-12 col-md-9">
-          <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-              <!-- Nested Row within Card Body -->
-              <div class="row">
-                <!-- <div class="col-lg-6 d-none d-lg-block bg-login-image"></div> -->
-                <div class="col-lg-12">
-                  <div class="p-5">
-                    <div class="text-center">
-                      <h1 class="h2 text-gray-900 mb-4">게스트 로그인</h1>
-                    </div>
-                    <form class="login" action="/auth/login" method="post">
-                      <div class="form-group">
-                        <input
-                          type="email"
-                          class="form-control form-control-user"
-                          id="inputEmail"
-                          name="email"
-                          aria-describedby="emailHelp"
-                          placeholder="이메일 입력"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <input
-                          type="password"
-                          class="form-control form-control-user"
-                          id="inputPassword"
-                          name="password"
-                          placeholder="비밀번호 입력"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <div class="custom-control custom-checkbox small">
-                          <input
-                            type="checkbox"
-                            class="custom-control-input"
-                            id="customCheck"
-                          />
-                          <label class="custom-control-label" for="customCheck"
-                            >로그인 기억하기</label
-                          >
-                        </div>
-                      </div>
-                      <button
-                        type="submit"
-                        class="btn btn-user btn-block"
-                        style="background-color: #00ead3; color: #000"
-                      >
-                        로그인
-                      </button>
-                      <hr />
-                      <a
-                        href="index.html"
-                        class="btn btn-outline-dark btn-block"
-                      >
-                        <i
-                          class="fab fa-naver fa-fw"
-                          style="color: lightgreen; font-weight: bold;"
-                        ></i>
-                        네이버로 로그인
-                      </a>
-                      <a
-                        href="index.html"
-                        class="btn btn-outline-dark btn-block"
-                      >
-                        <i
-                          class="fab fa-kakao fa-fw"
-                          style="color: yellow; font-weight: bold;"
-                        ></i>
-                        카카오로 로그인
-                      </a>
-                    </form>
-                    <hr />
-                    <div class="text-center">
-                      <a class="small" href="forgot-password.html"
-                        >비밀번호 찾기</a
-                      >
-                    </div>
-                    <div class="text-center">
-                      <a class="small" href="/auth/register">회원가입</a>
-                    </div>
-                  </div>
+    <div class="container col-lg-6">
+      <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body">
+          <!-- Nested Row within Card Body -->
+          <div class="row">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">로그인</h1>
+            </div>
+            <div class="d-flex justify-content-center mb-3">
+              <a href="#" class="w-100 btn btn-outline-primary text-secondary py-2">
+                <span>
+                  <img src="..." th:src="@{/image/kakaologo.png}" class="rounded me-2" style="height: 1.5em; width: 1.5em;">
+                  <span class="align-middle fw-bold">카카오로 로그인하기</span>
+                </span>
+              </a>
+            </div>
+            <div class="d-flex justify-content-center mb-3">
+              <a href="#" class="w-100 btn btn-outline-primary text-secondary py-2">
+                <span>
+                  <img src="..." th:src="@{/image/naver_icon.png}" class="rounded me-2" style="height: 1.5em; width: 1.5em;">
+                  <span class="align-middle fw-bold">네이버로 로그인하기</span>
+                </span>
+              </a>
+            </div>
+            <hr />
+            <form th:action="@{/auth/register}" method="post">
+              <div class="mb-3">
+                <input type="text" class="form-control" placeholder="이메일을 입력해주세요"/>
+              </div>
+              <div class="mb-3">
+                <input type="password" class="form-control" placeholder="비밀번호를 입력해주세요"/>
+              </div>
+              <div class="form-group row mb-3">
+                <div class="col-sm-4">
+                  <input type="checkbox" class="custom-control-input" id="agreed" />
+                  <label th:for="agreed" >로그인 기억하기</label>
                 </div>
               </div>
+              <div class = "d-flex justify-content-center mb-3">
+                <button type="submit" class="w-100 btn btn-outline-primary">
+                  로그인
+                </button>
+              </div>
+            </form>
+            <hr />
+            <div class="text-center">
+              <a class="small" href="/auth/register">회원가입</a>
+            </div>
+            <div class="text-center">
+              <a class="small" href="forgot-password.html">비밀번호 찾기</a>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Custom scripts for all pages-->
-    <script src="js/bootstrap/sb-admin-2.min.js" th:src="@{/js/bootstrap/sb-admin-2.min.js}"></script>
-    <script src="js/bootstrap/sweetalert2.min.js" th:src="@{/js/bootstrap/sweetalert2.min.js}"></script>
 
-    <script th:inline="javascript">
-      var isValidLogin = [[${param.isValidLogin}]];
-      if(isValidLogin !== null) {
-        if(!JSON.parse(isValidLogin[0])) {
-          swal.fire(
-            '로그인 오류',
-            '아이디 또는 패스워드가 일치하지 않습니다.',
-            'error'
-          );
-        }
-      }
-    </script>
+    <!-- Footer-->
+    <div th:replace="~{/common/fragments/footer :: common-footer}"></div>
   </body>
 </html>

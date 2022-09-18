@@ -11,11 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 @EnableCaching
 public class Pr2sApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(Pr2sApplication.class, args);
 	}
-
-
-
 }
