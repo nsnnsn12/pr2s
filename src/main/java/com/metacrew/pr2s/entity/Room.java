@@ -61,6 +61,9 @@ public class Room extends BaseEntity {
         room.title = roomDto.getTitle();
         room.description = roomDto.getDescription();
         room.maximumPersonCount = roomDto.getMaximumPersonCount();
+        room.floor = roomDto.getFloor();
+        room.usage = roomDto.getUsage();
+        room.isUdrt = roomDto.isUdrt();
         room.institutionAddress = institutionAddress;
 
         return room;

@@ -5,6 +5,8 @@ import com.metacrew.pr2s.entity.Institution;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+
 @Getter
 @Setter
 public class RoomDto {
@@ -15,5 +17,8 @@ public class RoomDto {
     private String title;
     private String description;
     private int maximumPersonCount;
+    private int floor;
+    private String usage;
+    private boolean isUdrt;
 
 }
