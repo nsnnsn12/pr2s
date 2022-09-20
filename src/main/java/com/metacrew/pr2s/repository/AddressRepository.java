@@ -12,7 +12,5 @@ import java.util.List;
  */
 public interface AddressRepository extends JpaRepository<Address, Long>{
 
-    List<Address> findAllByZipNo(String zipNo);
-
-    boolean existsByRoadFullAddrAndUdrtYnAndFloorAndAddrDetail(String roadFullAddr,String udrtYn, String Floor, String addrDetail);
+    boolean existsByRoadFullAddr(String roadFullAddr);
 }

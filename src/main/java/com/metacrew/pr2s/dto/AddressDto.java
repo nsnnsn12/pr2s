@@ -24,8 +24,6 @@ public class AddressDto {
     private String jibunAddr;
     private String engAddr;
     private String zipNo;
-    private String floor;
-    private String addrDetail;
     private String admCd;
     private String rnMgtSn;
     private String bdMgtSn;

@@ -46,14 +46,10 @@ public class InstitutionAddressService implements AddressService {
     //유효성 검사
     public boolean validateAddress(AddressDto addressDto){
         //주소 입력후 셋팅되는 값 :: zipNo, roadFullAddr
-        //사용자 입력 :: 층이랑 호수는 필수
         String zipNo = addressDto.getZipNo();
         String roadFullAddr = addressDto.getRoadFullAddr();
-        String floor = addressDto.getFloor();
-        String addrDetail = addressDto.getAddrDetail();
 
-
-        if(zipNo=="" || roadFullAddr=="" || floor=="" || addrDetail=="" ){
+        if(zipNo=="" || roadFullAddr==""){
             return true;
         }else{
             return false;
@@ -62,11 +58,8 @@ public class InstitutionAddressService implements AddressService {
 
     public boolean duplicateAddress(AddressDto addressDto){
         String roadFullAddr = addressDto.getRoadFullAddr();
-        String udrtYn = addressDto.getUdrtYn();
-        String floor = addressDto.getFloor();
-        String addrDetail = addressDto.getAddrDetail();
 
-        boolean dupYn = addressRepository.existsByRoadFullAddrAndUdrtYnAndFloorAndAddrDetail(roadFullAddr,udrtYn,floor,addrDetail);
+        boolean dupYn = addressRepository.existsByRoadFullAddr(roadFullAddr);
 
         return dupYn;
     }

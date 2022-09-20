@@ -46,12 +46,6 @@ public class Address extends BaseEntity {
     private String udrtYn;
 
     @Column
-    private String floor;
-
-    @Column
-    private String addrDetail;
-
-    @Column
     private String admCd;
 
     @Column
@@ -124,8 +118,6 @@ public class Address extends BaseEntity {
         address.engAddr = addressDto.getEngAddr();
         address.zipNo = addressDto.getZipNo();
         address.udrtYn = addressDto.getUdrtYn();
-        address.floor = addressDto.getFloor();
-        address.addrDetail = addressDto.getAddrDetail();
         address.admCd = addressDto.getAdmCd();
         address.rnMgtSn = addressDto.getRnMgtSn();
         address.bdMgtSn = addressDto.getBdMgtSn();
@@ -162,8 +154,6 @@ public class Address extends BaseEntity {
         this.engAddr = addressDto.getEngAddr();
         this.zipNo = addressDto.getZipNo();
         this.udrtYn = addressDto.getUdrtYn();
-        this.floor = addressDto.getFloor();
-        this.addrDetail = addressDto.getAddrDetail();
         this.admCd = addressDto.getAdmCd();
         this.rnMgtSn = addressDto.getRnMgtSn();
         this.bdMgtSn = addressDto.getBdMgtSn();

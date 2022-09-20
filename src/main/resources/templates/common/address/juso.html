@@ -31,14 +31,12 @@ function jusoCallBack(roadFullAddr,roadAddrPart1,roadAddrPart2,engAddr, jibunAdd
         $('input[name=bdMgtSn]').attr('value',bdMgtSn);
         $('input[name=detBdNmList]').attr('value',detBdNmList);
         $('input[name=bdNm]').attr('value',bdNm);
-        $('input[name=bdKdcd]').attr('value',bdKdcd);
-        $('input[name=siNm]').attr('value',siNm);
+        $('input[name=bdKdcd]').attr('value',bdKdcd);        $('input[name=siNm]').attr('value',siNm);
         $('input[name=sggNm]').attr('value',sggNm);
         $('input[name=emdNm]').attr('value',emdNm);
         $('input[name=liNm]').attr('value',liNm);
         $('input[name=rn]').attr('value',rn);
         $('input[name=udrtYn]').attr('value',udrtYn);
-<!--        $("#udrtYn").val(udrtYn).prop("selected", true);-->
         $('input[name=buldMnnm]').attr('value',buldMnnm);
         $('input[name=buldSlno]').attr('value',buldSlno);
         $('input[name=mtYn]').attr('value',mtYn);
@@ -48,26 +46,25 @@ function jusoCallBack(roadFullAddr,roadAddrPart1,roadAddrPart2,engAddr, jibunAdd
         window.close();
 }
 
-
 </script>
 </head>
     <body>
 
 
-    <form name="form" id="form" method="post"  action="/saveAddress">
+    <form name="form" id="form" method="post" action="/saveAddress">
         <div id="list"></div>
         <div id="callBackDiv">
             <table>
                 <tr><td><input type="text" id="zipNo"  name="zipNo" value="" placeholder="00000" readonly /><button type="button" onclick="goPopup(); ">도로명주소 호출</button></td></tr>
                 <tr><td><input type="text"  style="width:500px;" id="roadFullAddr"  name="roadFullAddr" placeholder="도로명 주소" readonly /></td></tr>
-                <tr><td>
-                    <select class="form-select" id="udrtYn" name="udrtYn">
-                        <option value="0">지상</option>
-                        <option value="1">지하</option>
-                    </select>
-                    <input type="number" id="floor" name="floor" min="1" />층
-                    <input type="number" id="addrDetail"  name="addrDetail" min="1" />호
-                </td></tr>
+
+<!--                    <select class="form-select" id="udrtYn" name="udrtYn">-->
+<!--                        <option value="0">지상</option>-->
+<!--                        <option value="1">지하</option>-->
+<!--                    </select>-->
+<!--                    <input type="number" id="floor" name="floor" min="1" />층-->
+<!--                    <input type="number" id="addrDetail" name="addrDetail" min="1" />호-->
+
                 <tr><td><button type="submit" >저장하기</button></td></tr>
                 <tr><td>도로명주소           </td><td><input type="text"  style="width:500px;" id="roadAddrPart1"  name="roadAddrPart1" /></td></tr>
                 <tr><td>참고주소             </td><td><input type="text"  style="width:500px;" id="roadAddrPart2"  name="roadAddrPart2" /></td></tr>
@@ -79,6 +76,7 @@ function jusoCallBack(roadFullAddr,roadAddrPart1,roadAddrPart2,engAddr, jibunAdd
                 <tr><td>상세번물명        	</td><td><input type="text"  style="width:500px;" id="detBdNmList"  name="detBdNmList" /></td></tr>
                 <tr><td>건물명        		</td><td><input type="text"  style="width:500px;" id="bdNm"  name="bdNm" /></td></tr>
                 <tr><td>공동주택여부       </td><td><input type="text"  style="width:500px;" id="bdKdcd"  name="bdKdcd" /></td></tr>
+                <tr><td>지상지하여부       </td><td><input type="text"  style="width:500px;" id="udrtYn"  name="udrtYn" /></td></tr>
                 <tr><td>시도명        	</td><td><input type="text"  style="width:500px;" id="siNm"  name="siNm" /></td></tr>
                 <tr><td>시군구명        	</td><td><input type="text"  style="width:500px;" id="sggNm"  name="sggNm" /></td></tr>
                 <tr><td>읍면동명        	</td><td><input type="text"  style="width:500px;" id="emdNm"  name="emdNm" /></td></tr>
