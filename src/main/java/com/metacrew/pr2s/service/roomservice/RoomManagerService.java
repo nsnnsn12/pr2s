@@ -4,6 +4,7 @@ import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.RoomDto;
 import com.metacrew.pr2s.entity.Address;
 import com.metacrew.pr2s.entity.FileInfo;
+import com.metacrew.pr2s.entity.InstitutionAddress;
 import com.metacrew.pr2s.entity.Room;
 import com.metacrew.pr2s.repository.AddressRepository;
 import com.metacrew.pr2s.repository.roomrepository.RoomRepository;
@@ -32,15 +33,12 @@ public class RoomManagerService implements RoomService{
      * @author nahyun
      * @since 2022.07.16
      * @param roomDto 등록할 방 정보.
-     * @param addressDto 등록할 방의 주소 정보.
+     * @param institutionAddress 등록할 방의 주소 정보.
      * @return 등록한 방 key 값.
      */
     @Override
-    public Room register(RoomDto roomDto, AddressDto addressDto, List<FileInfo> fileInfoList) {
-
-
-        Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
-        Room room = Room.createRoomByRoomDto(roomDto,address);
+    public Room register(RoomDto roomDto, InstitutionAddress institutionAddress, List<FileInfo> fileInfoList) {
+        Room room = Room.createRoomByRoomDto(roomDto, institutionAddress);
         Room savedRoom = roomRepository.save(room);
         // TODO: 2022-07-23 RoomImage 구현 필요
 //        for(File file : fileList){

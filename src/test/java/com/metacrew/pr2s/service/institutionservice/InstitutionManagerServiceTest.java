@@ -73,8 +73,11 @@ class InstitutionManagerServiceTest {
         assertThat(findInstitution.getWorkdays().getIsWednesday()).isEqualTo(testWorkdaysDtoByUpdateTestData.getIsWednesday());
         assertThat(findInstitution.getWorkdays().getIsThursday()).isEqualTo(testWorkdaysDtoByUpdateTestData.getIsThursday());
         assertThat(findInstitution.getWorkdays().getIsFriday()).isEqualTo(testWorkdaysDtoByUpdateTestData.getIsFriday());
-        assertThat(findInstitution.getAddress().getRn()).isEqualTo(testAddressDtoByUpdateTestData.getRn());
-        assertThat(findInstitution.getAddress().getZipNo()).isEqualTo(testAddressDtoByUpdateTestData.getZipNo());
+
+        // TODO: 2022-09-18 기관주소정보 테이블 추가에 따른 테이블 변경으로 인하여 추가 작업 필요
+
+        //assertThat(findInstitution.getAddress().getRn()).isEqualTo(testAddressDtoByUpdateTestData.getRn());
+        //assertThat(findInstitution.getAddress().getZipNo()).isEqualTo(testAddressDtoByUpdateTestData.getZipNo());
     }
 
     @Test
@@ -126,7 +129,9 @@ class InstitutionManagerServiceTest {
         Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByInsertTestData());
         Address address = Address.createAddressByAddressDto(getTestAddressDtoByInsertTestData());
 
-        Institution insertedInstitution = institutionRepository.save(Institution.createInstitution(institutionCreateDto, workdays, address));
+        Institution insertedInstitution = institutionRepository.save(Institution.createInstitution(institutionCreateDto, workdays));
+
+        // TODO: 2022-09-18 기관주소정보 테이블 추가에 따른 테이블 변경으로 인하여 추가 작업 필요
 
         //when
         institutionManagerService.deleteInstitution(insertedInstitution.getId());

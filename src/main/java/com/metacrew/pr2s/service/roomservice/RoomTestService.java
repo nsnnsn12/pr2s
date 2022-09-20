@@ -4,6 +4,7 @@ package com.metacrew.pr2s.service.roomservice;
 import com.metacrew.pr2s.dto.RoomDto;
 import com.metacrew.pr2s.entity.Address;
 import com.metacrew.pr2s.entity.FileInfo;
+import com.metacrew.pr2s.entity.InstitutionAddress;
 import com.metacrew.pr2s.entity.Room;
 import com.metacrew.pr2s.repository.roomrepository.RoomRepository;
 import com.metacrew.pr2s.repository.roomrepository.RoomTestRepository;
@@ -52,10 +53,10 @@ public class RoomTestService{
      * @param  roomDto
      * @return key값
      */
-    public Room registerRoom(RoomDto roomDto, Address address,List<FileInfo> fileInfoList){
+    public Room registerRoom(RoomDto roomDto, InstitutionAddress institutionAddress, List<FileInfo> fileInfoList){
         fileInfoList =null;
         validateDuplicateRoom(roomDto.getId());
-        Room room=Room.createRoomByRoomDto(roomDto,address);
+        Room room=Room.createRoomByRoomDto(roomDto,institutionAddress);
         return roomRepository.save(room);
         //return roomTestRepository.register(room);
     }

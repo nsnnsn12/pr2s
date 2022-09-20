@@ -26,13 +26,9 @@ public class Room extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    @JoinColumn(name = "address_id")
     @OneToOne(fetch = FetchType.LAZY)
-    private Address address;
-
-    @JoinColumn(name = "institution_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Institution institution;
+    @JoinColumn(name = "institution_address_id")
+    private InstitutionAddress institutionAddress;
 
     @Column
     private String title;
@@ -43,6 +39,15 @@ public class Room extends BaseEntity {
     @Column
     private int maximumPersonCount;
 
+    @Column
+    private int floor;
+
+    @Column
+    private String usage;
+
+    @Column
+    private boolean isUdrt;
+
     /**
      * RoomDto -> Room
      * @author nahyun
@@ -50,13 +55,13 @@ public class Room extends BaseEntity {
      * @param roomDto 엔티티로 변환할 값
      * @return Room 엔티티로 변환한 값
      */
-    public static Room createRoomByRoomDto(RoomDto roomDto, Address address){
+    public static Room createRoomByRoomDto(RoomDto roomDto, InstitutionAddress institutionAddress){
         Room room = new Room();
-        room.id=roomDto.getId();
-        room.title= roomDto.getTitle();
-        room.description=roomDto.getDescription();
-        room.maximumPersonCount=roomDto.getMaximumPersonCount();
-        room.address=address;
+        room.id = roomDto.getId();
+        room.title = roomDto.getTitle();
+        room.description = roomDto.getDescription();
+        room.maximumPersonCount = roomDto.getMaximumPersonCount();
+        room.institutionAddress = institutionAddress;
 
         return room;
     }
