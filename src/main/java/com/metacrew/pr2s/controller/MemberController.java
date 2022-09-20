@@ -1,4 +1,4 @@
-package com.metacrew.pr2s.controller.member;
+package com.metacrew.pr2s.controller;
 
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.MailDto;
@@ -25,6 +25,7 @@ public class MemberController {
     private final ClientMemberService clientMemberService;
     private final JoinMemberValidator joinMemberValidator;
     private final EmailSenderService emailSenderService;
+
     /* 커스텀 유효성 검증을 위해 추가 */
     @InitBinder
     public void validatorBinder(WebDataBinder binder) {
@@ -34,7 +35,7 @@ public class MemberController {
     //로그인 페이지
     @GetMapping("/login")
     public String loginPage(){
-        return MemberURL.LOGIN_URL.getUrl();
+        return getLoginPage();
     }
 
     //로그인 페이지
@@ -42,22 +43,21 @@ public class MemberController {
     public String login(Model model, @RequestParam("email") String loginId, @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
         if(!clientMemberService.validLoginCheck(loginId, password)) {
             redirectAttributes.addAttribute("isValidLogin", false);
-            return MemberURL.LOGIN_URL.getUrl();
+            return getLoginPage();
         }
         return "redirect:/hello";
     }
-
     //회원가입 페이지
     @GetMapping("/register")
     public String registerPage(JoinMemberDto joinMemberDto){
-        return MemberURL.REGISTER_URL.getUrl();
+        return getRegisterPage();
     }
 
     //회원가입 페이지
     @PostMapping("/register")
     public String register(@Valid JoinMemberDto joinMemberDto, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return MemberURL.REGISTER_URL.getUrl();
+            return getRegisterPage();
         }
 
         String uuid = setCacheJoinMember(joinMemberDto);
@@ -93,6 +93,18 @@ public class MemberController {
     public String alert(Model model, @PathVariable("agree") boolean agree){
         log.info("확인"+agree);
         model.addAttribute("agree", agree);
-        return "auth/body/alert";
+        return getAlertPage();
+    }
+
+    public String getLoginPage(){
+        return "auth/body/login";
+    }
+
+    public String getRegisterPage(){
+        return "auth/body/register";
+    }
+
+    public String getAlertPage(){
+        return "auth/body/register";
     }
 }
