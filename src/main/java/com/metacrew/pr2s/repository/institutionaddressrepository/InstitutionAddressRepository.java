@@ -1,6 +1,7 @@
 package com.metacrew.pr2s.repository.institutionaddressrepository;
 
 import com.metacrew.pr2s.entity.Institution;
+import com.metacrew.pr2s.entity.InstitutionAddress;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -8,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author hyeonwoo
  * @since 2022.09.20
  */
-public interface InstitutionAddressRepository extends JpaRepository<Institution, Long>{
+public interface InstitutionAddressRepository extends JpaRepository<InstitutionAddress, Long>{
 }
