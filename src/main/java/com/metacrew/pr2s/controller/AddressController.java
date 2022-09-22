@@ -1,30 +1,37 @@
 package com.metacrew.pr2s.controller;
 
 import com.metacrew.pr2s.dto.AddressDto;
-import com.metacrew.pr2s.entity.Address;
-import com.metacrew.pr2s.repository.AddressRepository;
-import com.metacrew.pr2s.service.addressservice.AddressService;
+import com.metacrew.pr2s.dto.MailDto;
 import com.metacrew.pr2s.service.addressservice.InstitutionAddressService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @Slf4j
+@RequestMapping("/address")
 @RequiredArgsConstructor
 public class AddressController {
     @Autowired
     private InstitutionAddressService institutionAddressService;
 
     @GetMapping("/juso")
-    public String sample() {
+    public String sample(Model model) {
+        model.addAttribute("addressDto", new AddressDto());
         return "common/address/juso";
     }
 
@@ -43,11 +50,14 @@ public class AddressController {
     }
 
     @PostMapping("/saveAddress")
-    public String saveAddress(AddressDto addressDto){
+    public String saveAddress(@Valid AddressDto addressDto, BindingResult bindingResult){
 
+        if(bindingResult.hasErrors()){
+            return "redirect:/address/juso";
+        }
         institutionAddressService.saveAddress(addressDto);
+        return "redirect:/";
 
-        return "redirect:/juso";
     }
 
 

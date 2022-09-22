@@ -10,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+
 /**
  * Address 테이블과 매핑되는 엔티티이다.
  * 주소를 수정 및 조회할 수 있다.

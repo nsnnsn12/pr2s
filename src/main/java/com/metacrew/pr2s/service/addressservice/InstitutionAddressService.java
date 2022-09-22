@@ -34,26 +34,13 @@ public class InstitutionAddressService implements AddressService {
     @Override
     public Address saveAddress(AddressDto addressDto){
         //유효성검사
-        if(validateAddress(addressDto)) throw new IllegalStateException("유효하지 않은 주소입니다");
+//        if(validateAddress(addressDto)) throw new IllegalStateException("유효하지 않은 주소입니다");
 
         //중복여부확인
         if(duplicateAddress(addressDto)) throw new IllegalStateException("중복 주소입니다.");
 
         Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
         return address;
-    }
-
-    //유효성 검사
-    public boolean validateAddress(AddressDto addressDto){
-        //주소 입력후 셋팅되는 값 :: zipNo, roadFullAddr
-        String zipNo = addressDto.getZipNo();
-        String roadFullAddr = addressDto.getRoadFullAddr();
-
-        if(zipNo=="" || roadFullAddr==""){
-            return true;
-        }else{
-            return false;
-        }
     }
 
     public boolean duplicateAddress(AddressDto addressDto){

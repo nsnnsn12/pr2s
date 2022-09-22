@@ -7,14 +7,14 @@
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- Core theme JS-->
     <script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
-<script>
+    <script th:inline="javascript">
 function goPopup(){
 	// IE에서 opener관련 오류가 발생하는 경우, window에 이름을 명시해줍니다.
 	window.name="jusoPopup";
 
 	// 주소검색을 수행할 팝업 페이지를 호출합니다.
 	// 호출된 페이지(popUp.html)에서 실제 주소검색URL(http://www.juso.go.kr/addrlink/addrLinkUrl.do)를 호출하게 됩니다.
-	var pop = window.open("/popUp","pop","width=570,height=420, scrollbars=yes, resizable=yes");
+	var pop = window.open("/address/popUp","pop","width=570,height=420, scrollbars=yes, resizable=yes");
 }
 
 
@@ -51,12 +51,12 @@ function jusoCallBack(roadFullAddr,roadAddrPart1,roadAddrPart2,engAddr, jibunAdd
     <body>
 
 
-    <form name="form" id="form" method="post" action="/saveAddress">
+    <form name="form" id="form" method="post" th:action="@{/address/saveAddress}" th:object="${addressDto}">
         <div id="list"></div>
         <div id="callBackDiv">
             <table>
-                <tr><td><input type="text" id="zipNo"  name="zipNo" value="" placeholder="00000" readonly /><button type="button" onclick="goPopup(); ">도로명주소 호출</button></td></tr>
-                <tr><td><input type="text"  style="width:500px;" id="roadFullAddr"  name="roadFullAddr" placeholder="도로명 주소" readonly /></td></tr>
+                <tr><td><input type="text" th:field="*{zipNo}" name="zipNo" readonly /><button type="button" onclick="goPopup(); ">도로명주소 호출</button></td></tr>
+                <tr><td><input type="text"  style="width:500px;" th:field="*{roadFullAddr}" name="roadFullAddr" placeholder="도로명 주소" readonly /></td></tr>
 
 <!--                    <select class="form-select" id="udrtYn" name="udrtYn">-->
 <!--                        <option value="0">지상</option>-->
@@ -66,27 +66,27 @@ function jusoCallBack(roadFullAddr,roadAddrPart1,roadAddrPart2,engAddr, jibunAdd
 <!--                    <input type="number" id="addrDetail" name="addrDetail" min="1" />호-->
 
                 <tr><td><button type="submit" >저장하기</button></td></tr>
-                <tr><td>도로명주소           </td><td><input type="text"  style="width:500px;" id="roadAddrPart1"  name="roadAddrPart1" /></td></tr>
-                <tr><td>참고주소             </td><td><input type="text"  style="width:500px;" id="roadAddrPart2"  name="roadAddrPart2" /></td></tr>
-                <tr><td>영문 도로명주소      </td><td><input type="text"  style="width:500px;" id="engAddr"  name="engAddr" /></td></tr>
-                <tr><td>지번                 </td><td><input type="text"  style="width:500px;" id="jibunAddr"  name="jibunAddr" /></td></tr>
-                <tr><td>행정구역코드        </td><td><input type="text"  style="width:500px;" id="admCd"  name="admCd" /></td></tr>
-                <tr><td>도로명코드          </td><td><input type="text"  style="width:500px;" id="rnMgtSn"  name="rnMgtSn" /></td></tr>
-                <tr><td>건물관리번호        </td><td><input type="text"  style="width:500px;" id="bdMgtSn"  name="bdMgtSn" /></td></tr>
-                <tr><td>상세번물명        	</td><td><input type="text"  style="width:500px;" id="detBdNmList"  name="detBdNmList" /></td></tr>
-                <tr><td>건물명        		</td><td><input type="text"  style="width:500px;" id="bdNm"  name="bdNm" /></td></tr>
-                <tr><td>공동주택여부       </td><td><input type="text"  style="width:500px;" id="bdKdcd"  name="bdKdcd" /></td></tr>
-                <tr><td>지상지하여부       </td><td><input type="text"  style="width:500px;" id="udrtYn"  name="udrtYn" /></td></tr>
-                <tr><td>시도명        	</td><td><input type="text"  style="width:500px;" id="siNm"  name="siNm" /></td></tr>
-                <tr><td>시군구명        	</td><td><input type="text"  style="width:500px;" id="sggNm"  name="sggNm" /></td></tr>
-                <tr><td>읍면동명        	</td><td><input type="text"  style="width:500px;" id="emdNm"  name="emdNm" /></td></tr>
-                <tr><td>법정리명        	</td><td><input type="text"  style="width:500px;" id="liNm"  name="liNm" /></td></tr>
-                <tr><td>도로명        	</td><td><input type="text"  style="width:500px;" id="rn"  name="rn" /></td></tr>
-                <tr><td>건물본번        	</td><td><input type="text"  style="width:500px;" id="buldMnnm"  name="buldMnnm" /></td></tr><tr><td>건물부번        	</td><td><input type="text"  style="width:500px;" id="buldSlno"  name="buldSlno" /></td></tr>
-                <tr><td>산여부        	</td><td><input type="text"  style="width:500px;" id="mtYn"  name="mtYn" /></td></tr>
-                <tr><td>지번본번(번지)     </td><td><input type="text"  style="width:500px;" id="lnbrMnnm"  name="lnbrMnnm" /></td></tr>
-                <tr><td>지번부번(호)       </td><td><input type="text"  style="width:500px;" id="lnbrSlno"  name="lnbrSlno" /></td></tr>
-                <tr><td>읍면동일련번호       </td><td><input type="text"  style="width:500px;" id="emdNo"  name="emdNo" /></td></tr>
+                <tr><td>도로명주소           </td><td><input type="text"  style="width:500px;" th:field="*{roadAddrPart1}" name="roadAddrPart1" /></td></tr>
+                <tr><td>참고주소             </td><td><input type="text"  style="width:500px;" th:field="*{roadAddrPart2}" name="roadAddrPart2" /></td></tr>
+                <tr><td>영문 도로명주소      </td><td><input type="text"  style="width:500px;" th:field="*{engAddr}"  name="engAddr" /></td></tr>
+                <tr><td>지번                 </td><td><input type="text"  style="width:500px;" th:field="*{jibunAddr}"  name="jibunAddr" /></td></tr>
+                <tr><td>행정구역코드        </td><td><input type="text"  style="width:500px;" th:field="*{admCd}"  name="admCd" /></td></tr>
+                <tr><td>도로명코드          </td><td><input type="text"  style="width:500px;" th:field="*{rnMgtSn}"  name="rnMgtSn" /></td></tr>
+                <tr><td>건물관리번호        </td><td><input type="text"  style="width:500px;" th:field="*{bdMgtSn}" name="bdMgtSn" /></td></tr>
+                <tr><td>상세번물명        	</td><td><input type="text"  style="width:500px;" th:field="*{detBdNmList}" name="detBdNmList" /></td></tr>
+                <tr><td>건물명        		</td><td><input type="text"  style="width:500px;" th:field="*{bdNm}"  name="bdNm" /></td></tr>
+                <tr><td>공동주택여부       </td><td><input type="text"  style="width:500px;" th:field="*{bdKdcd}" name="bdKdcd" /></td></tr>
+                <tr><td>지상지하여부       </td><td><input type="text"  style="width:500px;" th:field="*{udrtYn}" name="udrtYn" /></td></tr>
+                <tr><td>시도명        	</td><td><input type="text"  style="width:500px;" th:field="*{siNm}" name="siNm" /></td></tr>
+                <tr><td>시군구명        	</td><td><input type="text"  style="width:500px;" th:field="*{sggNm}"  name="sggNm" /></td></tr>
+                <tr><td>읍면동명        	</td><td><input type="text"  style="width:500px;" th:field="*{emdNm}"  name="emdNm" /></td></tr>
+                <tr><td>법정리명        	</td><td><input type="text"  style="width:500px;" th:field="*{liNm}"  name="liNm" /></td></tr>
+                <tr><td>도로명        	</td><td><input type="text"  style="width:500px;" th:field="*{rn}"  name="rn" /></td></tr>
+                <tr><td>건물본번        	</td><td><input type="text"  style="width:500px;" th:field="*{buldMnnm}"  name="buldMnnm" /></td></tr><tr><td>건물부번        	</td><td><input type="text"  style="width:500px;" id="buldSlno"  name="buldSlno" /></td></tr>
+                <tr><td>산여부        	</td><td><input type="text"  style="width:500px;" th:field="*{mtYn}"  name="mtYn" /></td></tr>
+                <tr><td>지번본번(번지)     </td><td><input type="text"  style="width:500px;" th:field="*{lnbrMnnm}"  name="lnbrMnnm" /></td></tr>
+                <tr><td>지번부번(호)       </td><td><input type="text"  style="width:500px;" th:field="*{lnbrSlno}"  name="lnbrSlno" /></td></tr>
+                <tr><td>읍면동일련번호       </td><td><input type="text"  style="width:500px;" th:field="*{emdNo}"  name="emdNo" /></td></tr>
             </table>
         </div>
     </form>
