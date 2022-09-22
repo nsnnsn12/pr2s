@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 @RequiredArgsConstructor
 public class HomeController {
-    @GetMapping("/")
+    @GetMapping({"/", "index"})
     public String index(){
         return "common/body/index";
     }

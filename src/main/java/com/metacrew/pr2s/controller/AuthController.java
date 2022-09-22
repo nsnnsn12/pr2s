@@ -21,7 +21,7 @@ import java.util.UUID;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
-public class MemberController {
+public class AuthController {
     private final ClientMemberService clientMemberService;
     private final JoinMemberValidator joinMemberValidator;
     private final EmailSenderService emailSenderService;
@@ -45,7 +45,7 @@ public class MemberController {
             redirectAttributes.addAttribute("isValidLogin", false);
             return getLoginPage();
         }
-        return "redirect:/hello";
+        return "redirect:/";
     }
     //회원가입 페이지
     @GetMapping("/register")
@@ -105,6 +105,6 @@ public class MemberController {
     }
 
     public String getAlertPage(){
-        return "auth/body/register";
+        return "auth/body/alert";
     }
 }

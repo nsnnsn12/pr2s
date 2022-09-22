@@ -40,13 +40,13 @@ public class ClientMemberService implements MemberService{
     private final InstitutionRepository institutionRepository;
     private final JoinInfoRepository joinInfoRepository;
 
-    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public Member join(JoinMemberDto joinMember){
-        joinMember.setPassword(passwordEncoder.encode(joinMember.getPassword()));
         Member member = Member.createJoinMember(joinMember);
+        member.encryptPassword(passwordEncoder);
         return memberRepository.save(member);
     }
 
