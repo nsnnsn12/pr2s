@@ -48,6 +48,7 @@ public class MemberController {
         return "redirect:/hello";
     }
 
+
     @GetMapping("/register")
     public String registerPage(JoinMemberDto joinMemberDto){
         return "auth/body/register";
