@@ -44,7 +44,7 @@
               </a>
             </div>
             <hr />
-            <form th:action="@{/auth/register}" method="post" th:object="${joinMemberDto}">
+            <form th:action="@{/member/register}" method="post" th:object="${joinMemberDto}">
               <div class="mb-3">
                 <input type="text" th:field="*{name}" class="form-control" placeholder="이름"/>
                 <p th:if="${#fields.hasErrors('name')}" th:text="'* ' + ${#fields.errors('name')[0]}" class="mt-2 fw-bold text-danger fs-7"/>
@@ -87,7 +87,7 @@
               </div>
             </form>
             <div class="text-center">
-                <a class="small" href="/auth/login"
+                <a class="small" href="/login"
                   >이미 가입하셨다면? 로그인하기!</a
                 >
             </div>

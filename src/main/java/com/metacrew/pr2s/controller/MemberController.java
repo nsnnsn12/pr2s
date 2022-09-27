@@ -12,16 +12,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/auth")
+@RequestMapping("/member")
 @RequiredArgsConstructor
 @Slf4j
-public class AuthController {
+public class MemberController {
     private final ClientMemberService clientMemberService;
     private final JoinMemberValidator joinMemberValidator;
     private final EmailSenderService emailSenderService;
@@ -32,21 +31,6 @@ public class AuthController {
         binder.addValidators(joinMemberValidator);
     }
 
-    //로그인 페이지
-    @GetMapping("/login")
-    public String loginPage(){
-        return getLoginPage();
-    }
-
-    //로그인 페이지
-    @PostMapping("/login")
-    public String login(Model model, @RequestParam("email") String loginId, @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
-        if(!clientMemberService.validLoginCheck(loginId, password)) {
-            redirectAttributes.addAttribute("isValidLogin", false);
-            return getLoginPage();
-        }
-        return "redirect:/";
-    }
     //회원가입 페이지
     @GetMapping("/register")
     public String registerPage(JoinMemberDto joinMemberDto){
@@ -61,14 +45,14 @@ public class AuthController {
         }
 
         String uuid = setCacheJoinMember(joinMemberDto);
-        emailSenderService.sendSimpleMessage(new MailDto(joinMemberDto.getEmail(), "PR2S 가입 인증 메일입니다.", String.format("http://localhost:8080/auth/confirm/%s", uuid)));
-        return "redirect:/auth/login";
+        emailSenderService.sendSimpleMessage(new MailDto(joinMemberDto.getEmail(), "PR2S 가입 인증 메일입니다.", String.format("http://localhost:8080/member/confirm/%s", uuid)));
+        return "redirect:/login";
     }
 
     //회원정보 캐시에 저장
     private String setCacheJoinMember(JoinMemberDto joinMemberDto){
         String uuid = UUID.randomUUID().toString();
-        log.info("uuid 확인 : {} ", String.format("http://localhost:8080/auth/confirm/%s", uuid));
+        log.info("uuid 확인 : {} ", String.format("http://localhost:8080/member/confirm/%s", uuid));
         clientMemberService.putCacheJoinMember(joinMemberDto, uuid);
 
         return uuid;
@@ -79,13 +63,13 @@ public class AuthController {
     public String signupConfirmByEmail(@PathVariable("uuid") String uuid){
         JoinMemberDto joinMemberDto = clientMemberService.getCacheJoinMember(uuid);
         if(joinMemberDto == null) {
-            return "redirect:/auth/alert/false";
+            return "redirect:/member/alert/false";
         }
         log.info("uuid를 이용한 캐싱 정보 확인 : {}", joinMemberDto.toString());
         clientMemberService.join(joinMemberDto);
         //캐시 정보 삭제
         clientMemberService.removeCacheJoinMember(uuid);
-        return "redirect:/auth/alert/true";
+        return "redirect:/member/alert/true";
     }
 
     //이메일 인증 여부 alert
@@ -96,15 +80,12 @@ public class AuthController {
         return getAlertPage();
     }
 
-    public String getLoginPage(){
-        return "auth/body/login";
-    }
 
     public String getRegisterPage(){
-        return "auth/body/register";
+        return "member/body/register";
     }
 
     public String getAlertPage(){
-        return "auth/body/alert";
+        return "member/body/alert";
     }
 }
