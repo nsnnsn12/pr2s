@@ -1,11 +1,8 @@
 package com.metacrew.pr2s.service.memberservice;
 
-import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.MyPageDto;
 import com.metacrew.pr2s.entity.*;
-import com.metacrew.pr2s.repository.AddressRepository;
-import com.metacrew.pr2s.repository.FileInfoRepository;
 import com.metacrew.pr2s.repository.joininforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
@@ -14,17 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * 사용자가 자신의 정보를 관리하기 위한 서비스 로직을 가지고 있는 클래스이다.
@@ -40,21 +31,14 @@ public class ClientMemberService implements MemberService{
     private final InstitutionRepository institutionRepository;
     private final JoinInfoRepository joinInfoRepository;
 
-    private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public Member join(JoinMemberDto joinMember){
-        joinMember.setPassword(passwordEncoder.encode(joinMember.getPassword()));
         Member member = Member.createJoinMember(joinMember);
+        member.encryptPassword(passwordEncoder);
         return memberRepository.save(member);
-    }
-
-    // 로그인 검사
-    public boolean validLoginCheck(String email, String password){
-        Optional<Member> findMember = memberRepository.findByEmail(email);
-
-        return findMember.map(member -> member.getPassword().equals(password)).orElse(false);
     }
 
     //존재하고 삭제되지 않은 회원정보 조회
@@ -71,7 +55,6 @@ public class ClientMemberService implements MemberService{
         return institution;
     }
 
-    // TODO: 2022-07-21 회원 인증 로직 추가 필요
     // TODO: 2022-07-21 회원 인증에 따른 회원 중복 가입 여부 처리 필요
 
     @Override

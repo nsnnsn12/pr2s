@@ -12,6 +12,7 @@ import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
 import com.metacrew.pr2s.repository.joininforepository.JoinInfoRepository;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
 import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysRepository;
+import com.metacrew.pr2s.service.memberservice.ClientMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -30,6 +31,8 @@ public class TestDataLoader implements CommandLineRunner {
     private final WorkdaysRepository workdaysRepository;
     private final FileInfoRepository fileInfoRepository;
     private final AddressRepository addressRepository;
+
+    private final ClientMemberService clientMemberService;
 
 
 
@@ -52,10 +55,9 @@ public class TestDataLoader implements CommandLineRunner {
         for(int i = 0; i < ADD_SIZE; i++){
             JoinMemberDto joinMemberDto = new JoinMemberDto();
             joinMemberDto.setName("박현우"+i);
-            joinMemberDto.setEmail("kqrgusdn"+i + "@naver.com");
-            joinMemberDto.setPassword("qkrgusdn"+i);
-            Member joinMember = Member.createJoinMember(joinMemberDto);
-            memberRepository.save(joinMember);
+            joinMemberDto.setEmail("qkrgusdn"+i + "@naver.com"); //박현우
+            joinMemberDto.setPassword("gusdnqkr"+i);//현우박
+            clientMemberService.join(joinMemberDto);
         }
     }
 
