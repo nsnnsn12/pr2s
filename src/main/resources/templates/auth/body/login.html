@@ -63,6 +63,7 @@
                 </button>
               </div>
             </form>
+            <p th:if="${param.error}" class="mt-2 fw-bold text-danger"> 이메일 혹은 비밀번호가 올바르지 않습니다. </p>
             <hr />
             <div class="text-center">
               <a class="small" href="/auth/register">회원가입</a>

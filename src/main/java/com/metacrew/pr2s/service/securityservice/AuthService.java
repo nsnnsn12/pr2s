@@ -1,4 +1,4 @@
-package com.metacrew.pr2s.service;
+package com.metacrew.pr2s.service.securityservice;
 
 import com.metacrew.pr2s.entity.Member;
 import com.metacrew.pr2s.repository.memberrepository.MemberRepository;
@@ -29,6 +29,7 @@ public class AuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Member> member = memberRepository.findByEmail(email);
         Member findMember = member.orElseThrow(() -> {throw new UsernameNotFoundException(email);});
+
         return new User(findMember.getEmail(), findMember.getPassword(), getGrantedAuthorities(findMember));
     }
 
