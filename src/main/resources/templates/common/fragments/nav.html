@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<html lang="kr" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav class="navbar navbar-light bg-light justify-content-end" th:fragment="fragment-nav">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand fw-bold text-primary" href="#!">PR2S</a>
@@ -36,13 +37,13 @@
                                 <li><a class="dropdown-item" href="#">운영정책</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item mt-5">
+                        <li class="nav-item mt-5" sec:authorize="isAnonymous()">
                             <div class="btn-group w-100" role="group" aria-label="Basic example">
                                 <button class="btn btn-light border" type="button">Login</button>
                                 <button class="btn btn-light border" type="button">Join</button>
                             </div>
                         </li>
-                        <li class="nav-item mt-5">
+                        <li class="nav-item mt-5" sec:authorize="isAuthenticated()">
                             <div class="btn-group w-100" role="group" aria-label="Basic example">
                                 <button class="btn btn-light border w-50" type="button">Logout</button>
                                 <button class="btn btn-light border w-50" type="button">호스트로 등록하기</button>
