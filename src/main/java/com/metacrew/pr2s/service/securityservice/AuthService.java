@@ -29,7 +29,6 @@ public class AuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Member> member = memberRepository.findByEmail(email);
         Member findMember = member.orElseThrow(() -> {throw new UsernameNotFoundException(email);});
-
         return new User(findMember.getEmail(), findMember.getPassword(), getGrantedAuthorities(findMember));
     }
 

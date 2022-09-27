@@ -36,6 +36,10 @@ public class ClientMemberService implements MemberService{
 
     @Override
     public Member join(JoinMemberDto joinMember){
+        //회원인증 전 동일한 이메일로 가입하는 경우도 있기 때문에 이메일 유효성 검사가 필요하다.
+        if(memberRepository.findByEmail(joinMember.getEmail()).isPresent()){
+            throw new IllegalStateException("이미 사용중인 이메일 입니다.");
+        }
         Member member = Member.createJoinMember(joinMember);
         member.encryptPassword(passwordEncoder);
         return memberRepository.save(member);
@@ -55,7 +59,6 @@ public class ClientMemberService implements MemberService{
         return institution;
     }
 
-    // TODO: 2022-07-21 회원 인증에 따른 회원 중복 가입 여부 처리 필요
 
     @Override
     public MyPageDto getMyPageInfo(Long id) {
