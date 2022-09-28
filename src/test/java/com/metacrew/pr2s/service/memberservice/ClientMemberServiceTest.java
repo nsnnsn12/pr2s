@@ -54,9 +54,9 @@ class ClientMemberServiceTest {
         Member findMember = memberRepository.findById(member.getId()).orElseThrow(() -> new IllegalArgumentException("테스트 실패"));
 
         // then
-        assertThat(findMember.getName()).isEqualTo(joinMemberDto.getName());
-        assertThat(findMember.getEmail()).isEqualTo(joinMemberDto.getEmail());
-        assertThat(findMember.getPassword()).isEqualTo(joinMemberDto.getPassword());
+        assertThat(findMember.getName()).isEqualTo(member.getName());
+        assertThat(findMember.getEmail()).isEqualTo(member.getEmail());
+        assertThat(findMember.getPassword()).isEqualTo(member.getPassword());
     }
 
 
