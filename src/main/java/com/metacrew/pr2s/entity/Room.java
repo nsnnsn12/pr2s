@@ -43,9 +43,6 @@ public class Room extends BaseEntity {
     private int floor;
 
     @Column
-    private String usage;
-
-    @Column
     private boolean isUdrt;
 
     /**
@@ -62,7 +59,6 @@ public class Room extends BaseEntity {
         room.description = roomDto.getDescription();
         room.maximumPersonCount = roomDto.getMaximumPersonCount();
         room.floor = roomDto.getFloor();
-        room.usage = roomDto.getUsage();
         room.isUdrt = roomDto.isUdrt();
         room.institutionAddress = institutionAddress;
 

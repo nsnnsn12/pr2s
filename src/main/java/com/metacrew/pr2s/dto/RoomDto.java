@@ -18,7 +18,6 @@ public class RoomDto {
     private String description;
     private int maximumPersonCount;
     private int floor;
-    private String usage;
     private boolean isUdrt;
 
 }

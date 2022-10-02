@@ -29,7 +29,6 @@ class AddressTest {
         assertThat(address.getJibunAddr()).isEqualTo(testAddressDto.getJibunAddr());
         assertThat(address.getEngAddr()).isEqualTo(testAddressDto.getEngAddr());
         assertThat(address.getZipNo()).isEqualTo(testAddressDto.getZipNo());
-        assertThat(address.getAddrDetail()).isEqualTo(testAddressDto.getAddrDetail());
         assertThat(address.getAdmCd()).isEqualTo(testAddressDto.getAdmCd());
         assertThat(address.getRnMgtSn()).isEqualTo(testAddressDto.getRnMgtSn());
         assertThat(address.getBdMgtSn()).isEqualTo(testAddressDto.getBdMgtSn());
