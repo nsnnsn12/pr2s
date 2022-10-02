@@ -3,7 +3,7 @@
 <head th:fragment="common-head">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>PR2S</title>
     <link href="../css/bootstrap.min.css" th:href="@{/main.css}" rel="stylesheet">
     <link th:href="@{/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css"/>
 
@@ -12,5 +12,9 @@
     
     <!-- alpine JS-->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" th:src="@{/alpinejs/dist/cdn.min.js}"></script>
+
+    <!-- sweetalert2 -->
+    <link th:href="@{/sweetalert2/sweetalert2.min.css}" rel="stylesheet" type="text/css"/>
+    <script defer src="js/sweetalert2/sweetalert2.min.js" th:src="@{/sweetalert2/sweetalert2.min.js}"></script>
 </head>
 </html>
