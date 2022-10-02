@@ -20,13 +20,12 @@ class JoinInfoTest {
         joinMemberDto.setPassword("shtjdrb123");
         Member member = Member.createJoinMember(joinMemberDto);
 
-        Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
-
-        Address address = Address.createAddressByAddressDto(getTestAddressDtoByTestData());
         InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
         institutionCreateDto.setName("우리은행");
         institutionCreateDto.setTelNumber("010-3013-8124");
-        Institution institution = Institution.createInstitution(institutionCreateDto, workdays, address);
+        Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
+        Institution institution = Institution.createInstitution(institutionCreateDto, workdays);
+
         // when
         JoinInfo joinInfo = JoinInfo.createJoinInfo(member, institution);
 
@@ -41,11 +40,5 @@ class JoinInfoTest {
         workdaysDto.setIsWednesday(true);
         workdaysDto.setIsFriday(true);
         return workdaysDto;
-    }
-
-    public AddressDto getTestAddressDtoByTestData() {
-        AddressDto addressDto = new AddressDto();
-        addressDto.setRn("비고");
-        return addressDto;
     }
 }

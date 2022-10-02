@@ -12,22 +12,15 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-@RequiredArgsConstructor
-public class RoomTestRepository {
-
 /**
  * JPQL 학습을 위한 테스트 Repository 클래스이다.
  * @author nahyun
  * @since 2022.07.01
  */
+@Repository
+@RequiredArgsConstructor
+public class RoomRepositoryImpl {
     private final EntityManager em;
-
-    //등록
-    public Room register(Room newRoom){
-        em.persist(newRoom);
-        return newRoom;
-    }
 
     //타이틀로 리스트 조회
     public List<Room> findByRoomTitle(String title){
@@ -35,19 +28,5 @@ public class RoomTestRepository {
                 .setParameter("title",title)
                 .getResultList();
     }
-
-    //id로 단건조회
-    public Room findByRoomLongId(Long roomId){
-        return em.find(Room.class,roomId);
-    }
-
-    //모두 조회
-    public List<Room> findAllRoom(){
-        return em.createQuery("select r from Room r", Room.class)
-                .getResultList();
-    }
-
-
-
 
 }

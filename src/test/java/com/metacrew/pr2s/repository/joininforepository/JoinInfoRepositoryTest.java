@@ -29,9 +29,9 @@ class JoinInfoRepositoryTest {
     private InstitutionRepository institutionRepository;
     @Autowired
     private WorkdaysRepository workdaysRepository;
-
     @Autowired
     private AddressRepository addressRepository;
+
     @Test
     public void findByMemberAndInstitutionAndIsDeletedTest(){
         //given
@@ -66,13 +66,11 @@ class JoinInfoRepositoryTest {
         Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
         workdaysRepository.save(workdays);
 
-        Address testAddress = Address.createAddressByAddressDto(getTestAddressDtoByTestData());
-        addressRepository.save(testAddress);
-
         InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
         institutionCreateDto.setName("우리은행");
         institutionCreateDto.setTelNumber("010-3013-8124");
-        return Institution.createInstitution(institutionCreateDto,workdays, testAddress);
+
+        return Institution.createInstitution(institutionCreateDto,workdays);
     }
 
     public WorkdaysDto getTestWorkdaysDtoByTestData() {

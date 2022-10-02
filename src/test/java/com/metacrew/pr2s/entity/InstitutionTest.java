@@ -19,10 +19,9 @@ class InstitutionTest {
         //given
         InstitutionCreateDto institutionCreateDto = getTestInstitutionDtoByInsertTestData();
         Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
-        Address address = Address.createAddressByAddressDto(getTestAddressDtoByTestData());
 
         //when
-        Institution institution = Institution.createInstitution(institutionCreateDto, workdays, address);
+        Institution institution = Institution.createInstitution(institutionCreateDto, workdays);
 
         //then
         assertThat(institution.getName()).isEqualTo(institutionCreateDto.getName());
@@ -48,11 +47,5 @@ class InstitutionTest {
         workdaysDto.setIsWednesday(true);
         workdaysDto.setIsFriday(true);
         return workdaysDto;
-    }
-
-    public AddressDto getTestAddressDtoByTestData() {
-        AddressDto addressDto = new AddressDto();
-        addressDto.setRn("비고");
-        return addressDto;
     }
 }

@@ -10,6 +10,5 @@ import java.util.Optional;
  * @author hyeonwoo
  * @since 2022.06.26
  */
-public interface
-InstitutionRepository extends JpaRepository<Institution, Long>{
+public interface InstitutionRepository extends JpaRepository<Institution, Long>{
 }

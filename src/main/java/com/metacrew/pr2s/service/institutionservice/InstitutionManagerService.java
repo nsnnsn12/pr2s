@@ -40,8 +40,7 @@ public class InstitutionManagerService implements InstitutionService {
         
         // 2. 기관 생성
         Workdays workdays = workdaysRepository.save(Workdays.createWorkdays(workdaysDto));
-        Address address = addressRepository.save(Address.createAddressByAddressDto(addressDto));
-        Institution institution = Institution.createInstitution(institutionCreateDto, workdays, address);
+        Institution institution = Institution.createInstitution(institutionCreateDto, workdays);
         institutionRepository.save(institution);
 
         return institution;
@@ -49,7 +48,7 @@ public class InstitutionManagerService implements InstitutionService {
 
     /**
      * 수정하려는 기관에 대한 수정 정보를 입력받아 DB에 반영한 후 key 값 리턴
-     * @author hpyeonwoo
+     * @author hyeonwoo
      * @since 2022.07.07
      * @param institutionCreateDto 변경할 기관 정보
      * @return 수정한 회원 엔터티
@@ -63,10 +62,7 @@ public class InstitutionManagerService implements InstitutionService {
 
         // 3. 기관 정보 수정
         Workdays findWorkdays = workdaysRepository.findById(findInstitution.getWorkdays().getId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 운영 요일입니다."));
-        Address findAddress = getValidAddress(findInstitution.getAddress().getId());
         findWorkdays.updateWorkdays(workdaysDto);
-        findAddress.updateAddressByAddressDto(addressDto);
-
         findInstitution.updateInstitution(institutionCreateDto);
 
         return findInstitution;

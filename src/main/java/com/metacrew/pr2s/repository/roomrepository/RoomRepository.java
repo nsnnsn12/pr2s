@@ -14,11 +14,4 @@ import java.util.List;
  */
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
-
-    //id로 리스트조회
-   @Query("select r from Room r where r.id = :roomId")
-   List<Room> findByRoomListLongId(Long roomId);
-    //id로 단건 조회
-    @Query("select r from Room r where r.id = :roomId")
-    Room findByRoomId(Long roomId);
 }

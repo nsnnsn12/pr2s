@@ -311,10 +311,6 @@ class ClientMemberServiceTest {
         return addressDto;
     }
 
-    public FileInfo getTestFile(){
-        return FileInfo.createFile("노성규", "/photo", null);
-    }
-
     private MyPageDto getMyPageDto() {
         MyPageDto myPageDto = new MyPageDto();
         myPageDto.setEmail("gkdlshtjdrb@naver.com");

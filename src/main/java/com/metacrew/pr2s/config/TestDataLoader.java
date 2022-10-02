@@ -5,7 +5,6 @@ import com.metacrew.pr2s.dto.InstitutionCreateDto;
 import com.metacrew.pr2s.dto.JoinMemberDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
 import com.metacrew.pr2s.entity.*;
-import com.metacrew.pr2s.entity.enums.FileType;
 import com.metacrew.pr2s.repository.AddressRepository;
 import com.metacrew.pr2s.repository.FileInfoRepository;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
@@ -15,7 +14,6 @@ import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysRepository;
 import com.metacrew.pr2s.service.memberservice.ClientMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,7 +66,8 @@ public class TestDataLoader implements CommandLineRunner {
             InstitutionCreateDto institutionCreateDto = new InstitutionCreateDto();
             institutionCreateDto.setName("우리은행"+i);
             institutionCreateDto.setTelNumber("010-1234-1234");
-            Institution institution = Institution.createInstitution(institutionCreateDto, workdays.get(i), addresses.get(i));
+            Institution institution = Institution.createInstitution(institutionCreateDto, workdays.get(i));
+            // TODO: 2022-09-18 기관주소정보 테이블 추가에 따른 테이블 변경으로 인하여 추가 작업 필요
             institutionRepository.save(institution);
         }
     }
@@ -83,7 +82,7 @@ public class TestDataLoader implements CommandLineRunner {
 
     public void addFiles(){
         for(int i = 0; i < ADD_SIZE; i++){
-            FileInfo fileInfo = FileInfo.createFile("file" + i, "/path/" + i, FileType.img);
+            FileInfo fileInfo = FileInfo.createFile("file" + i, "realFile" + i, "/path/" + i, "img", 1024L);
             fileInfoRepository.save(fileInfo);
         }
     }
