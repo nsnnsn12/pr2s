@@ -34,11 +34,8 @@ public class InstitutionManagerService implements InstitutionService {
      * @param workdaysDto 등록할 기관의 운영 요일 정보
      * @return 등록한 회원 key 값.
      */
-    public Institution joinPr2s(InstitutionCreateDto institutionCreateDto, WorkdaysDto workdaysDto, AddressDto addressDto){
-        // 유효성 검사
-        validateInstitution(institutionCreateDto, workdaysDto, addressDto);
-        
-        // 2. 기관 생성
+    public Institution joinPr2s(InstitutionCreateDto institutionCreateDto, WorkdaysDto workdaysDto){
+        // 1. 기관 생성
         Workdays workdays = workdaysRepository.save(Workdays.createWorkdays(workdaysDto));
         Institution institution = Institution.createInstitution(institutionCreateDto, workdays);
         institutionRepository.save(institution);

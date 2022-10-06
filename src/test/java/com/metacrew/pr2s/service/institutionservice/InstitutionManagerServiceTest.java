@@ -8,6 +8,7 @@ import com.metacrew.pr2s.entity.Institution;
 import com.metacrew.pr2s.entity.Workdays;
 import com.metacrew.pr2s.entity.embedded.TimePeriod;
 import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
+import com.metacrew.pr2s.repository.roomusagerepository.RoomUsageQueryRepositoryImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ class InstitutionManagerServiceTest {
     private InstitutionRepository institutionRepository;
     @Autowired
     EntityManager em;
+    private RoomUsageQueryRepositoryImpl roomUsageQueryRepository;
 
     @Test
     @DisplayName("기관 삽입 테스트")
@@ -38,7 +40,7 @@ class InstitutionManagerServiceTest {
         AddressDto addressDto = getTestAddressDtoByInsertTestData();
 
         //when
-        Institution insertedInstitution = institutionManagerService.joinPr2s(institutionCreateDto, workdaysDto, addressDto);
+        Institution insertedInstitution = institutionManagerService.joinPr2s(institutionCreateDto, workdaysDto);
 
         //then
         Institution findInstitution = institutionRepository.findById(insertedInstitution.getId()).orElseThrow(IllegalArgumentException::new);
@@ -50,7 +52,7 @@ class InstitutionManagerServiceTest {
     @DisplayName("기관 수정 테스트")
     public void updateInstitutionInfoTest() {
         // given
-        Institution insertedInstitution = institutionManagerService.joinPr2s(getTestInstitutionDtoByInsertTestData(), getTestWorkdaysDtoByInsertTestData(), getTestAddressDtoByInsertTestData());
+        Institution insertedInstitution = institutionManagerService.joinPr2s(getTestInstitutionDtoByInsertTestData(), getTestWorkdaysDtoByInsertTestData());
 
         // when
         InstitutionCreateDto testInstitutionDtoByUpdateTestData = getTestInstitutionDtoByUpdateTestData();
@@ -104,7 +106,7 @@ class InstitutionManagerServiceTest {
     @DisplayName("삭제 처리된 기관 수정 테스트")
     public void updateDeletedInstitution() {
         // given
-        Institution insertedInstitution = institutionManagerService.joinPr2s(getTestInstitutionDtoByInsertTestData(), getTestWorkdaysDtoByInsertTestData(), getTestAddressDtoByInsertTestData());
+        Institution insertedInstitution = institutionManagerService.joinPr2s(getTestInstitutionDtoByInsertTestData(), getTestWorkdaysDtoByInsertTestData());
         insertedInstitution.deleted();
 
         // when
