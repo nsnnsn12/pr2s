@@ -18,10 +18,9 @@ public interface InstitutionService {
      * @since 2022.07.14
      * @param institutionCreateDto 등록할 기관 정보.
      * @param workdaysDto 등록할 기관의 운영 요일 정보
-     * @param addressDto 등록할 기관의 주소 정보
      * @return 등록한 기관 정보
      */
-    Institution joinPr2s(InstitutionCreateDto institutionCreateDto, WorkdaysDto workdaysDto, AddressDto addressDto);
+    Institution joinPr2s(InstitutionCreateDto institutionCreateDto, WorkdaysDto workdaysDto);
 
     /**
      * 수정하려는 기관에 대한 수정 정보를 입력받아 수정한 후 기관 정보 리턴

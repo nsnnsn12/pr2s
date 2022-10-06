@@ -21,13 +21,14 @@ import javax.transaction.Transactional;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
 @Rollback(value = false)
-class RoomRepositoryImplTest {
+class RoomRepositoryTest {
     @Autowired
     private InstitutionRepository institutionRepository;
     @Autowired
@@ -38,15 +39,13 @@ class RoomRepositoryImplTest {
     private InstitutionAddressRepository institutionAddressRepository;
     @Autowired
     private RoomRepository roomRepository;
-    @Autowired
-    private RoomRepositoryImpl roomRepositoryImpl;
 
     @Autowired
     private EntityManager entityManager;
 
     @Test
-    @DisplayName("제목을 이용한 조회 테스트")
-    void findByRoomTitle(){
+    @DisplayName("방 입력 테스트")
+    void saveRoomTest(){
         //given
         Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
         workdaysRepository.save(workdays);
@@ -61,15 +60,13 @@ class RoomRepositoryImplTest {
         institutionAddressRepository.save(institutionAddress);
 
         Room room = Room.createRoomByRoomDto(getTestRoomDtoByInsertTestData(), institutionAddress);
-        roomRepository.save(room);
+        Room insertedRoom = roomRepository.save(room);
 
         //when
-        List<Room> findRooms = roomRepositoryImpl.findByRoomTitle("방타이틀wwwwwwwww");
+        Optional<Room> findRoom = roomRepository.findById(insertedRoom.getId());
 
         //then
-        for(Room findRoom : findRooms) {
-            assertThat(findRoom.getTitle()).isEqualTo("방타이틀wwwwwwwww");
-        }
+        assertThat(findRoom.isPresent()).isEqualTo(true);
     }
 
     public RoomDto getTestRoomDtoByInsertTestData() {
