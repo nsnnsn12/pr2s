@@ -1,22 +1,17 @@
 package com.metacrew.pr2s.entity;
 
-import com.metacrew.pr2s.dto.AddressDto;
-import com.metacrew.pr2s.dto.InstitutionCreateDto;
-import com.metacrew.pr2s.dto.RoomDto;
-import com.metacrew.pr2s.dto.WorkdaysDto;
+import com.metacrew.pr2s.dto.*;
+import com.metacrew.pr2s.entity.enums.Usage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RoomImageTest {
+class RoomUsageTest {
 
     @Test
-    @DisplayName("@@@방사진@@@")
-    public void createRoomImageTest(){
+    @DisplayName("방 사용용도 생성 테스트")
+    public void createRoomUsageTest(){
         //given
         RoomDto roomDto = getTestRoomDtoByInsertTestData();
         Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
@@ -24,14 +19,24 @@ public class RoomImageTest {
         Address address = Address.createAddressByAddressDto(getTestAddressDtoByInsertTestData());
         InstitutionAddress institutionAddress = InstitutionAddress.createInstitutionAddress(institution, address);
         Room room = Room.createRoomByRoomDto(roomDto, institutionAddress);
-        FileInfo fileInfo = FileInfo.createFile("file" + 1, "realFile" + 1, "/path/" + 1, "img", 1024L);
 
         //when
-        RoomImage roomImage = RoomImage.createRoomImage(room, fileInfo);
+        RoomUsage roomUsage = RoomUsage.createRoomUsage(getTestRoomUsageDtoByInsertTestData(), room);
 
         //then
-        assertThat(roomImage.getRoom().equals(room));
-        assertThat(roomImage.getFileInfo().equals(fileInfo));
+        assertThat(roomUsage.getRoom().getTitle()).isEqualTo("방타이틀");
+        assertThat(roomUsage.getRoom().getDescription()).isEqualTo("방설명");
+        assertThat(roomUsage.getRoom().getMaximumPersonCount()).isEqualTo(100);
+        assertThat(roomUsage.getRoom().getInstitutionAddress()).isEqualTo(institutionAddress);
+        assertThat(roomUsage.getUsage()).isEqualTo(Usage.PARTY_ROOM);
+
+    }
+
+    public RoomUsageDto getTestRoomUsageDtoByInsertTestData() {
+        RoomUsageDto roomUsageDto = new RoomUsageDto();
+        roomUsageDto.setUsage(Usage.PARTY_ROOM);
+
+        return roomUsageDto;
     }
 
     public RoomDto getTestRoomDtoByInsertTestData() {
@@ -64,5 +69,4 @@ public class RoomImageTest {
         testAddressDto.setRoadFullAddr("서울시 마포구 월드컵북로 434");
         return testAddressDto;
     }
-
 }

@@ -24,13 +24,15 @@ public class RoomImage {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    // TODO: 2022-06-23 File 엔티티 객체 매핑 필요
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "file_info_id")
+    private FileInfo fileInfo;
 
     public static RoomImage createRoomImage(Room room, FileInfo fileInfo){
         RoomImage roomImage = new RoomImage();
         roomImage.id= fileInfo.getId();
         roomImage.room = room;
-        //파일
+        roomImage.fileInfo = fileInfo;
 
         return roomImage;
     }

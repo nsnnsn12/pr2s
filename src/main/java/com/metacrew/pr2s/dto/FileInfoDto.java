@@ -1,10 +1,6 @@
 package com.metacrew.pr2s.dto;
 
-import com.metacrew.pr2s.entity.base.BaseEntity;
-import com.metacrew.pr2s.entity.enums.FileType;
 import lombok.*;
-
-import javax.persistence.*;
 
 
 @Getter @Setter

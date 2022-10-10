@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Institution 테이블과 매핑되는 엔티티이다.
@@ -32,17 +33,13 @@ public class Institution extends BaseEntity {
     @Column
     private String telNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
-    private Address address;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "workdays_id")
     private Workdays workdays;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "file_id")
-    private FileInfo thumbnail;
+    @JoinColumn(name = "file_info_id")
+    private FileInfo fileInfo;
 
     @Embedded
     private TimePeriod timePeriod;
@@ -53,16 +50,14 @@ public class Institution extends BaseEntity {
      * @since 2022.07.07
      * @param institutionCreateDto 엔티티로 변환할 값
      * @param workdays Workdays 엔티티
-     * @param address Address 엔티티
      * @return Institution 엔티티로 변환한 값
      */
-    public static Institution createInstitution(InstitutionCreateDto institutionCreateDto, Workdays workdays, Address address){
+    public static Institution createInstitution(InstitutionCreateDto institutionCreateDto, Workdays workdays){
         Institution institution = new Institution();
         institution.name = institutionCreateDto.getName();
         institution.telNumber = institutionCreateDto.getTelNumber();
         institution.timePeriod = institutionCreateDto.getTimePeriod();
         institution.workdays = workdays;
-        institution.address = address;
         /// TODO: 2022-07-16 썸네일 입력 필요
         return institution;
     }

@@ -1,43 +1,77 @@
-package com.metacrew.pr2s.entity;
+package com.metacrew.pr2s.repository.roomrepository;
 
 import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.InstitutionCreateDto;
 import com.metacrew.pr2s.dto.RoomDto;
 import com.metacrew.pr2s.dto.WorkdaysDto;
+import com.metacrew.pr2s.entity.*;
+import com.metacrew.pr2s.repository.AddressRepository;
+import com.metacrew.pr2s.repository.institutionaddressrepository.InstitutionAddressRepository;
+import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
+import com.metacrew.pr2s.repository.workdaysrepository.WorkdaysRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
-import java.util.ArrayList;
+
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
+
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
-class RoomTest {
+@SpringBootTest
+@Transactional
+@Rollback(value = false)
+class RoomRepositoryTest {
+    @Autowired
+    private InstitutionRepository institutionRepository;
+    @Autowired
+    private WorkdaysRepository workdaysRepository;
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
+    private InstitutionAddressRepository institutionAddressRepository;
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Test
-    @DisplayName("방 생성 테스트")
-    public void createRoomTest(){
+    @DisplayName("방 입력 테스트")
+    void saveRoomTest(){
         //given
-        RoomDto roomDto = getTestRoomDtoByInsertTestData();
         Workdays workdays = Workdays.createWorkdays(getTestWorkdaysDtoByTestData());
+        workdaysRepository.save(workdays);
+
         Institution institution = Institution.createInstitution(getTestInstitutionDtoByInsertTestData(), workdays);
+        institutionRepository.save(institution);
+
         Address address = Address.createAddressByAddressDto(getTestAddressDtoByInsertTestData());
+        addressRepository.save(address);
+
         InstitutionAddress institutionAddress = InstitutionAddress.createInstitutionAddress(institution, address);
+        institutionAddressRepository.save(institutionAddress);
+
+        Room room = Room.createRoomByRoomDto(getTestRoomDtoByInsertTestData(), institutionAddress);
+        Room insertedRoom = roomRepository.save(room);
 
         //when
-        Room room = Room.createRoomByRoomDto(roomDto, institutionAddress);
+        Optional<Room> findRoom = roomRepository.findById(insertedRoom.getId());
 
         //then
-        assertThat(room.getTitle()).isEqualTo("방타이틀");
-        assertThat(room.getDescription()).isEqualTo("방설명");
-        assertThat(room.getMaximumPersonCount()).isEqualTo(100);
-        assertThat(room.getInstitutionAddress().equals(institutionAddress));
-
+        assertThat(findRoom.isPresent()).isEqualTo(true);
     }
 
     public RoomDto getTestRoomDtoByInsertTestData() {
         RoomDto roomDto = new RoomDto();
-        roomDto.setTitle("방타이틀");
+        roomDto.setTitle("방타이틀wwwwwwwww");
         roomDto.setDescription("방설명");
         roomDto.setMaximumPersonCount(100);
 
@@ -65,4 +99,5 @@ class RoomTest {
         testAddressDto.setRoadFullAddr("서울시 마포구 월드컵북로 434");
         return testAddressDto;
     }
+
 }
