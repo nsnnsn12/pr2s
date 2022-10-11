@@ -1,10 +1,12 @@
-package com.metacrew.pr2s.repository.roomusagerepository;
+package com.metacrew.pr2s.repository.roomtagrepository;
 
 import com.metacrew.pr2s.dto.*;
 import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.entity.enums.Usage;
 import com.metacrew.pr2s.repository.institutionaddressrepository.InstitutionAddressRepository;
 import com.metacrew.pr2s.repository.roomrepository.RoomRepository;
+import com.metacrew.pr2s.repository.roomusagerepository.RoomUsageQueryRepositoryImpl;
+import com.metacrew.pr2s.repository.roomusagerepository.RoomUsageRepository;
 import com.metacrew.pr2s.service.addressservice.InstitutionAddressService;
 import com.metacrew.pr2s.service.institutionservice.InstitutionManagerService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,16 +20,16 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-class RoomUsageQueryRepositoryImplTest {
+class RoomTagQueryRepositoryImplTest {
     @Autowired
     EntityManager em;
-    RoomUsageQueryRepositoryImpl roomUsageQueryRepository;
+    RoomTagQueryRepositoryImpl roomTagQueryRepository;
     @Autowired
-    RoomUsageRepository roomUsageRepository;
+    RoomTagRepository roomTagRepository;
     @Autowired
     RoomRepository roomRepository;
     @Autowired
@@ -39,11 +41,11 @@ class RoomUsageQueryRepositoryImplTest {
 
     @BeforeEach
     public void init(){
-        roomUsageQueryRepository = new RoomUsageQueryRepositoryImpl(em);
+        roomTagQueryRepository = new RoomTagQueryRepositoryImpl(em);
     }
 
     @Test
-    @DisplayName("방 ID로 방 사용용도 검색")
+    @DisplayName("방 ID로 방 태그 검색")
     void searchByRoomIdTest() {
         //given
         Institution insertedInstitution = institutionManagerService.joinPr2s(getTestInstitutionDtoByInsertTestData(), getTestWorkdaysDtoByTestData());
@@ -51,32 +53,32 @@ class RoomUsageQueryRepositoryImplTest {
         InstitutionAddress insertedInstitutionAddress = institutionAddressRepository.save(InstitutionAddress.createInstitutionAddress(insertedInstitution,insertAddress));
         Room room = roomRepository.save(Room.createRoomByRoomDto(getTestRoomDtoByInsertTestData(), insertedInstitutionAddress));
 
-        for (RoomUsageDto roomUsageDto : getTestRoomUsageListByInsertedData()) {
-            roomUsageRepository.save(RoomUsage.createRoomUsage(roomUsageDto, room));
+        for (RoomTagDto roomTagDto : getTestRoomTagListByInsertedData()) {
+            roomTagRepository.save(RoomTag.createRoomTag(roomTagDto, room));
         }
 
         //when
-        List<RoomUsage> roomUsageList = roomUsageQueryRepository.searchByRoomId(room);
+        List<RoomTag> roomTagList = roomTagQueryRepository.searchByRoomId(room);
 
         //then
-        assertThat(roomUsageList.size()).isEqualTo(getTestRoomUsageListByInsertedData().size());
+        assertThat(roomTagList.size()).isEqualTo(getTestRoomTagListByInsertedData().size());
 
     }
 
-    public List<RoomUsageDto> getTestRoomUsageListByInsertedData() {
-        List<RoomUsageDto> roomUsageDtoList = new ArrayList<>();
-        Usage[] usages = new Usage[3];
-        usages[0] = Usage.PARTY_ROOM;
-        usages[1] = Usage.CONCERT_ROOM;
-        usages[2] = Usage.CONFERENCE_ROOM;
+    public List<RoomTagDto> getTestRoomTagListByInsertedData() {
+        List<RoomTagDto> roomTagDtoList = new ArrayList<>();
+        String[] names = new String[3];
+        names[0] = "아늑함";
+        names[1] = "신남";
+        names[2] = "MZ";
 
         for(int i = 0; i < 3; i++) {
-            RoomUsageDto roomUsageDto = new RoomUsageDto();
-            roomUsageDto.setUsage(usages[i]);
-            roomUsageDtoList.add(roomUsageDto);
+            RoomTagDto roomTagDto = new RoomTagDto();
+            roomTagDto.setName(names[i]);
+            roomTagDtoList.add(roomTagDto);
         }
 
-        return roomUsageDtoList;
+        return roomTagDtoList;
     }
 
     public RoomDto getTestRoomDtoByInsertTestData() {
