@@ -1,5 +1,6 @@
 package com.metacrew.pr2s.dto.condition;
 
+import com.metacrew.pr2s.dto.RoomUsageDto;
 import com.metacrew.pr2s.entity.enums.Usage;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,16 +20,13 @@ public class RoomSearchConditionDto {
     // TODO: 2022-10-10 태그 관련 조건 필요
 
     //사용인원
-    private int maximumPersonCount;
+    private Integer maximumPersonCount;
 
     //x좌표
     private String entX;
 
     //y좌표
     private String entY;
-
-    //사용용도
-    private List<Usage> usage;
 
     //예약 시작 시간
     private LocalDateTime startDate;
@@ -39,13 +37,12 @@ public class RoomSearchConditionDto {
     //제목
     private String title;
 
-    //내용
-    private String description;
-
     //시도
     private String siNm;
     //시군구
     private String sggNm;
     //읍면동
     private String emdNm;
+
+    private List<Usage> usages;
 }
