@@ -2,6 +2,7 @@ package com.metacrew.pr2s.service.roomservice;
 
 import com.metacrew.pr2s.dto.AddressDto;
 import com.metacrew.pr2s.dto.RoomDto;
+import com.metacrew.pr2s.dto.RoomTagDto;
 import com.metacrew.pr2s.dto.RoomUsageDto;
 import com.metacrew.pr2s.entity.FileInfo;
 import com.metacrew.pr2s.entity.InstitutionAddress;
@@ -23,10 +24,12 @@ public interface RoomService {
      * 방등록용 DTO와 Address Dto를 입력받아 방 등록 처리하고 방 정보를 리턴한다.
      * @param roomDto 회원 정보.
      * @param institutionAddress 주소 정보
+     * @param roomUsageDtoList 방 사용용도 정보
+     * @param roomTagDtoList 방 태그 정보
      * @return 방정보
      * @author nahyun
      * @since 2022.07.16
      */
-    Room register(RoomDto roomDto, InstitutionAddress institutionAddress, List<RoomUsageDto> roomUsageDtoList);
+    Room register(RoomDto roomDto, InstitutionAddress institutionAddress, List<RoomUsageDto> roomUsageDtoList, List<RoomTagDto> roomTagDtoList);
 
 }
