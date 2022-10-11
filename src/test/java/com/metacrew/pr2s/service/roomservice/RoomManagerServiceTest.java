@@ -3,9 +3,8 @@ package com.metacrew.pr2s.service.roomservice;
 import com.metacrew.pr2s.dto.*;
 import com.metacrew.pr2s.entity.*;
 import com.metacrew.pr2s.entity.enums.Usage;
-import com.metacrew.pr2s.repository.AddressRepository;
 import com.metacrew.pr2s.repository.institutionaddressrepository.InstitutionAddressRepository;
-import com.metacrew.pr2s.repository.institutionrepository.InstitutionRepository;
+import com.metacrew.pr2s.repository.roomtagrepository.RoomTagQueryRepositoryImpl;
 import com.metacrew.pr2s.repository.roomusagerepository.RoomUsageQueryRepositoryImpl;
 import com.metacrew.pr2s.service.addressservice.InstitutionAddressService;
 import com.metacrew.pr2s.service.institutionservice.InstitutionManagerService;
@@ -39,10 +38,12 @@ class RoomManagerServiceTest {
     @Autowired
     EntityManager em;
     RoomUsageQueryRepositoryImpl roomUsageQueryRepository;
+    RoomTagQueryRepositoryImpl roomTagQueryRepository;
 
     @BeforeEach
     public void init(){
         roomUsageQueryRepository = new RoomUsageQueryRepositoryImpl(em);
+        roomTagQueryRepository = new RoomTagQueryRepositoryImpl(em);
     }
 
     @Test
@@ -54,13 +55,15 @@ class RoomManagerServiceTest {
         InstitutionAddress insertedInstitutionAddress = institutionAddressRepository.save(InstitutionAddress.createInstitutionAddress(insertedInstitution,insertAddress));
 
         //when
-        Room insertedRoom = roomManagerService.register(getTestRoomDtoByInsertTestData(), insertedInstitutionAddress, getTestRoomUsageDtoListByInsertTestData());
+        Room insertedRoom = roomManagerService.register(getTestRoomDtoByInsertTestData(), insertedInstitutionAddress, getTestRoomUsageDtoListByInsertTestData(), getTestRoomTagDtoListByInsertTestData());
         List<RoomUsage> roomUsages = roomUsageQueryRepository.searchByRoomId(insertedRoom);
+        List<RoomTag> roomTags = roomTagQueryRepository.searchByRoomId(insertedRoom);
 
         //then
         assertThat(insertedRoom.getTitle()).isEqualTo(getTestRoomDtoByInsertTestData().getTitle());
         assertThat(insertedRoom.getInstitutionAddress().getId()).isEqualTo(insertedInstitutionAddress.getId());
         assertThat(roomUsages.size()).isEqualTo(getTestRoomUsageDtoListByInsertTestData().size());
+        assertThat(roomTags.size()).isEqualTo(getTestRoomTagDtoListByInsertTestData().size());
     }
 
     public List<RoomUsageDto> getTestRoomUsageDtoListByInsertTestData() {
@@ -72,6 +75,19 @@ class RoomManagerServiceTest {
 
         roomUsageDtoList.add(roomUsageDto1);
         roomUsageDtoList.add(roomUsageDto2);
+
+        return roomUsageDtoList;
+    }
+    
+    public List<RoomTagDto> getTestRoomTagDtoListByInsertTestData() {
+        List<RoomTagDto> roomUsageDtoList = new ArrayList<>();
+        RoomTagDto roomTagDto1 = new RoomTagDto();
+        roomTagDto1.setName("아늑함");
+        RoomTagDto roomTagDto2 = new RoomTagDto();
+        roomTagDto2.setName("신남");
+
+        roomUsageDtoList.add(roomTagDto1);
+        roomUsageDtoList.add(roomTagDto2);
 
         return roomUsageDtoList;
     }
