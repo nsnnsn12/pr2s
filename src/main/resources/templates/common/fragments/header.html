@@ -1,11 +1,31 @@
 <!doctype html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
-<header  class="py-5" th:fragment="common-header" id=mainImage alt="slide" style="background: url(../../image/bgImage3.jpg); background-size: cover; no-repeat; background-position:center; ">
-    <div class="container px-4 px-lg-5 my-5" >
-        <div class="text-center">
-            <h1 class="display-4 fw-bolder text-primary">PR2S</h1>
-            <p class="lead fst-italic fw-semibold text-light mb-0" style="text-shadow:1px 1px 1px #000;">Public Room Reservation System</p>
-        </div>
+<header  class="py-5" th:fragment="common-header" style="background: url(../../image/bgImage3.jpg); background-size: cover; no-repeat; background-position:center; ">
+    <!-- 검색조건 -->
+    <div class="container px-5 px-lg-5 py-5 bg-white ">
+        <form class="row col-sm row-cols">
+            <div class="col-4">
+                <select class="form-select">
+                    <option selected>지역</option>
+                    <option value="1">서울시 마포구</option>
+                    <option value="2">서울시 종로구</option>
+                    <option value="3">서울시 ㅁㅁ구</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <input type="text" class="form-control" placeholder="인원" aria-label="Last name">
+            </div>
+            <div class="col-3">
+                <div class="input-group">
+                    <input type="text" class="form-control text-center" id="datepicker" placeholder="날짜">
+                </div>
+            </div>
+            <div class="col-2 d-flex justify-content-around">
+                <button type="submit" class="btn btn-light border">필터</button>
+                <button type="submit" class="btn btn-light border">지도</button>
+                <button type="submit" class="btn btn-light border">검색</button>
+            </div>
+        </form>
     </div>
 </header>
 </html>

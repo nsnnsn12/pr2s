@@ -9,43 +9,6 @@
     <div th:replace="~{/common/fragments/nav :: fragment-nav}"></div>
     <!-- Header-->
     <div th:replace="~{/common/fragments/header :: common-header}"></div>
-    <!-- Section-->
-
-    <!-- 검색조건 -->
-    <section class="">
-        <div class="container px-4 p-2 px-lg-5 mt-5">
-            <form class="row col-sm row-cols justify-content-center">
-                <div class="col-sm-5">
-                    <select class="form-select" id="location">
-                        <option selected>지역</option>
-                        <option value="1">서울시 마포구</option>
-                        <option value="2">서울시 종로구</option>
-                        <option value="3">서울시 ㅁㅁ구</option>
-                    </select>
-                </div>
-                <div class="col-sm-3">
-                    <select class="form-select" id="userCnt">
-                        <option selected>인원</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <div class="input-group">
-                        <input type="text" class="form-control text-center" id="datepicker" placeholder="날짜">
-                    </div>
-                </div>
-                <div class="col">
-                    <button type="submit" class="btn btn-light border">검색</button>
-                </div>
-                <div class="col" >
-                    <button type="submit" class="btn btn-light border float-end btn-block">지도</button>
-                </div>
-            </form>
-        </div>
-    </section>
-
 
     <!-- Room List -->
     <section class="py-5">
@@ -159,20 +122,6 @@
     </section>
     <!-- Footer-->
     <div th:replace="~{/common/fragments/footer :: common-footer}"></div>
-    <script>
-    var myImage = document.getElementById("mainImage");
-    var imageArray = [ "../../image/bgImage1.jpg", "../../image/bgImage2.jpg", "../../image/bgImage3.jpg" ];
-    var imageIndex = 0;
-
-    function changeImage() {
-        myImage.style.backgroundImage = "url("+imageArray[imageIndex]+")";
-        imageIndex++;
-        if (imageIndex >= imageArray.length) {
-            imageIndex = 0;
-        }
-    }
-    setInterval(changeImage, 5000);
-    </script>
     <!-- datepicker -->
 
 
