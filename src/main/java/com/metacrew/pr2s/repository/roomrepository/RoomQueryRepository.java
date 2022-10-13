@@ -50,7 +50,9 @@ public class RoomQueryRepository {
                 .select(room)
                 .from(room)
                 .join(room.institutionAddress, institutionAddress) //다대일
+                .fetchJoin()
                 .join(institutionAddress.address, address) //일대일
+                .fetchJoin()
                 .where(room.isDeleted.eq(false)
                         , likeTitle(roomSearchConditionDto.getTitle())
                         , goeMaximumPersonCount(roomSearchConditionDto.getMaximumPersonCount())
@@ -60,6 +62,7 @@ public class RoomQueryRepository {
                         , notInDatePeriod(roomSearchConditionDto.getStartDate(), roomSearchConditionDto.getEndDate())
                         , inUsage(roomSearchConditionDto.getUsages())
                         , likeTag(roomSearchConditionDto.getTitle()))
+                .distinct()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
