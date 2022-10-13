@@ -7,6 +7,8 @@ import com.metacrew.pr2s.service.roomsearchservice.RoomSearchService;
 import com.metacrew.pr2s.validator.SearchConditionValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,11 +34,11 @@ public class RoomSearchController {
     }
 
     @GetMapping("/user/search")
-    public String searchByReservationCondition(@Valid RoomSearchConditionDto roomSearchConditionDto, BindingResult bindingResult, Model model){
+    public String searchByReservationCondition(@Valid RoomSearchConditionDto roomSearchConditionDto, BindingResult bindingResult, Model model, Pageable pageable){
         if(bindingResult.hasErrors()){
             return "redirect:/room-search/user/search";
         }
-        List<SearchedRoomDto> result = roomSearchService.searchByReservationCondition(roomSearchConditionDto);
+        Page<SearchedRoomDto> result = roomSearchService.searchByReservationCondition(roomSearchConditionDto, pageable);
         model.addAttribute("roomList", result);
         return getSearchList();
     }
