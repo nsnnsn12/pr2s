@@ -12,6 +12,5 @@ import java.util.List;
  * @author nahyun
  * @since 2022.07.16
  */
-
 public interface RoomRepository extends JpaRepository<Room, Long> {
 }

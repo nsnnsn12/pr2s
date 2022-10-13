@@ -33,7 +33,6 @@ public class ClientMemberService implements MemberService{
 
     private final PasswordEncoder passwordEncoder;
 
-
     @Override
     public Member join(JoinMemberDto joinMember){
         //회원인증 전 동일한 이메일로 가입하는 경우도 있기 때문에 이메일 유효성 검사가 필요하다.
