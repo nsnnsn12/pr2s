@@ -12,12 +12,30 @@
             <form class="w-75">
                 <div class="row mb-3">
                     <div class="col-4">
-                        <select class="form-select">
-                            <option selected>지역</option>
-                            <option value="1">서울시 마포구</option>
-                            <option value="2">서울시 종로구</option>
-                            <option value="3">서울시 ㅁㅁ구</option>
-                        </select>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                지역 선택
+                            </button>
+                            <div class="dropdown-menu">
+                                <div>
+                                    <button class="btn btn-sm btn-primary text-white m-4" type="button" >
+                                        지금 내 주변에서 찾기
+                                    </button>
+                                </div>
+                                <div class=" container text-center" x-data="tagSelect()" x-init="init()" >
+                                    <div class="row">
+                                        <table class="table table-bordered border-black">
+                                            <template x-for="i in locationSize">
+                                                <tr>
+                                                    <td x-text="getSidoNm((i-1)*2)" @click="selectSido((i-1)*2)" style="cursor:pointer;"></td>
+                                                    <td x-text="getSidoNm((i-1)*2+1)" @click="selectSido((i-1)*2+1)"  style="cursor:pointer;"></td>
+                                                </tr>
+                                            </template>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-3">
                         <input type="text" class="form-control" placeholder="인원" aria-label="Last name">
@@ -41,5 +59,30 @@
             </form>
         </div>
     </div>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var data = /*[[${locations}]]*/;
+    console.log(data);
+    function tagSelect() {
+        return {
+            locations : [],
+            locationSize : 0,
+            init() {
+                this.locations = data;
+                this.locationSize = Math.ceil(this.locations.length / 2);
+            },
+            getSidoNm(index){
+                console.log(index);
+                if(index >= this.locations.length) return '';
+                return this.locations[index].sidoNm;
+            },
+            selectSido(index){
+                console.log(index);
+            }
+        }
+    }
+/*]]>*/
+</script>
 </header>
 </html>
