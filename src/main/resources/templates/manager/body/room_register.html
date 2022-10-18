@@ -1,14 +1,17 @@
 <!doctype html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
-  <head>
-      <div th:replace="~{/common/fragments/head :: common-head}"></div>
-      <!-- or link to the CDN -->
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide.min.css">
-      <script defer src="https://cdn.ckeditor.com/ckeditor5/35.1.0/super-build/ckeditor.js" th:src="@{/ckeditor5/ckeditor.js}"></script>
-      <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js"></script>
-      <script defer th:src="@{/js/manager/room_register.js}"></script>
-      <script>
-          document.addEventListener('alpine:init', () => {
+<head>
+    <div th:replace="~{/common/fragments/head :: common-head}"></div>
+
+    <!-- or link to the CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide.min.css">
+    <script defer src="https://cdn.ckeditor.com/ckeditor5/35.1.0/super-build/ckeditor.js" th:src="@{/ckeditor5/ckeditor.js}"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js"></script>
+    <script defer th:src="@{/js/manager/room_register.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
             Alpine.store('fileInfo', {
                 src: 'https://dummyimage.com/850x650/dee2e6/6c757d.jpg',
                 fileCount : 0,
@@ -17,89 +20,231 @@
                 }
             })
         })
+
       </script>
-  </head>
-  <body>
-        <style>
-            .ck-editor__editable[role="textbox"] {
-                /* editing area */
-                min-height: 300px;
-                max-height: 300px;
-            }
-        </style>
-    <!-- Navigation-->
-    <div th:replace="~{/common/fragments/nav :: fragment-nav}"></div>
+</head>
+<body>
+    <style>
+        .ck-editor__editable[role="textbox"] {
+            /* editing area */
+            min-height: 300px;
+            max-height: 300px;
+        }
 
-    <div class="text-center my-5">
-        <!--
-        <h1 class="fw-bolder">Welcome to Blog Home!</h1>
-        <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
-        -->
+        .badge {
+            background-color: rgb(0, 138, 32);
+            background-color: rgb(184, 230, 191);
+        }
+
+        .text-bg-danger {
+            color: #fff !important;
+            background-color: #669966 !important;
+        }
+    </style>
+<!-- Navigation-->
+<div th:replace="~{/common/fragments/nav :: fragment-nav}"></div>
+
+<div class="text-center my-5">
+    <!--
+    <h1 class="fw-bolder">Welcome to Blog Home!</h1>
+    <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
+    -->
+</div>
+
+<!-- PageContent -->
+<div class="container px-4 px-lg-5 w-75">
+    <div class="d-flex my-2 justify-content-end">
+        <button class="btn btn-outline-primary" type="button">방 등록하기</button>
     </div>
-
-    <!-- PageContent -->
-    <div class="container px-4 px-lg-5 w-75">
-        <div class="d-flex my-2 justify-content-end">
-            <button class="btn btn-outline-primary" type="button">방 등록하기</button>
-        </div>
-        <div class="row">
-            <!-- Blog entries-->
-            <div class="col-lg-6">
-                <!-- Featured blog post-->
-                <div class="card mb-4" x-data>
-                    <div class="card-header">
-                        <div class="d-inline">
-                            <span class="align-middle text-primary fw-bold">사진등록</span>
-                        </div>
-                        <label :class="$store.fileInfo.fileCount < 10 ? 'btn btn-sm btn-primary text-white float-end' : 'btn btn-sm btn-primary text-white float-end disabled'" for="input-file">
-                            사진 추가
-                        </label>
-                        <input type="file" multiple id="input-file" class="d-none" @change="addFile"/>
+    <div class="row">
+        <!-- Side widgets-->
+        <div class="col-lg-12">
+            <!-- Search widget-->
+            <div class="card mb-4">
+                <div class="card-header text-primary fw-bold">제목</div>
+                <div class="card-body">
+                    <div>
+                        <input class="form-control" type="text" />
                     </div>
-                    <img class="card-img-top" :src="$store.fileInfo.src" width="850" height="450" />
-                    <div class="card-body">
-                        <div id="thumbnail-carousel" class="splide">
-                            <div class="splide__track">
-                                <ul class="splide__list">
-                                </ul>
+                </div>
+            </div>
+            <!-- Categories widget-->
+            <div class="card mb-4">
+                <div class="card-header text-primary fw-bold">공간 소개</div>
+                <div class="card-body">
+                    <div id="editor"></div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header text-primary fw-bold">공간 유형</div>
+                <div class="card-body">
+                    <div class="input-group" id="usageBadge">
+                        <h4>
+                            <span class="badge rounded-pill me-2" th:each="usageValue : ${T(com.metacrew.pr2s.entity.enums.Usage).values()}" th:value="${usageValue}" th:text="${usageValue.name}"></span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header text-primary fw-bold">공간 태그</div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <div x-data @tags-update="console.log('tags updated', $event.detail.tags)" data-tags='[]' class="max-w-lg m-6">
+                            <div x-data="tagSelect()" x-init="init('parentEl')" @click.away="clearSearch()" @keydown.escape="clearSearch()">
+                                <div class="relative" @keydown.enter.prevent="addTag(textInput)">
+                                    <input x-model="textInput" x-ref="textInput" @input="search($event.target.value)" class="border rounded w-full p-3 py-1 px-4 text-gray-700  focus:outline-none focus:shadow-outline" placeholder="원하시는 태그를 입력하세요.">
+                                    <div :class="[open ? 'd-block' : 'd-none']">
+                                        <div class="absolute z-40 left-0 mt-2 w-full">
+                                            <div class="py-1 text-sm bg-white rounded shadow-lg border border-gray-300">
+                                                <a @click.prevent="addTag(textInput)" class="block py-1 px-5 cursor-pointer hover:bg-indigo-600 hover:text-white">태그 추가 "<span class="font-semibold" x-text="textInput"></span>"</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- selections -->
+                                    <div class="mt-2">
+                                        <template x-for="(tag, index) in tags">
+                                            <button type="button" class="btn btn-outline-primary me-2 mb-1">
+                                                <span x-text="tag"></span> <span class="badge text-bg-danger" @click.prevent="removeTag(index)">X</span>
+                                            </button>
+                                        </template>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Side widgets-->
-            <div class="col-lg-6">
-                <!-- Search widget-->
-                <div class="card mb-4">
-                    <div class="card-header text-primary fw-bold">제목</div>
-                    <div class="card-body">
-                        <div>
-                            <input class="form-control" type="text" />
+        </div>
+        <!-- Blog entries-->
+        <div class="col-lg-6">
+            <!-- Featured blog post-->
+            <div class="card mb-4" x-data>
+                <div class="card-header">
+                    <div class="d-inline">
+                        <span class="align-middle text-primary fw-bold">사진등록</span>
+                    </div>
+                    <label :class="$store.fileInfo.fileCount < 10 ? 'btn btn-sm btn-primary text-white float-end' : 'btn btn-sm btn-primary text-white float-end disabled'" for="input-file">
+                        사진 추가
+                    </label>
+                    <input type="file" multiple id="input-file" class="d-none" @change="addFile"/>
+                </div>
+                <img class="card-img-top" :src="$store.fileInfo.src" width="850" height="450" />
+                <div class="card-body">
+                    <div id="thumbnail-carousel" class="splide">
+                        <div class="splide__track">
+                            <ul class="splide__list">
+                            </ul>
                         </div>
                     </div>
                 </div>
-                <!-- Categories widget-->
-                <div class="card mb-4">
-                    <div class="card-header text-primary fw-bold">공간 소개</div>
-                    <div class="card-body">
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon1">층</span>
-                            <input type="text" class="form-control" aria-describedby="basic-addon1">
-                            <span class="input-group-text" id="basic-addon2">최대인원</span>
-                            <input type="number" class="form-control" aria-describedby="basic-addon2">
-                        </div>
+            </div>
+        </div>
+        <!-- Side widgets-->
+        <div class="col-lg-6">
+            <!-- Search widget-->
+            <div class="card mb-4">
+                <div class="card-header text-primary fw-bold">제목</div>
+                <div class="card-body">
+                    <div>
+                        <input class="form-control" type="text" />
                     </div>
-                    <div class="card-body">
-                        <div id="editor"></div>
+                </div>
+            </div>
+            <!-- Categories widget-->
+            <div class="card mb-4">
+                <div class="card-header text-primary fw-bold">공간 소개</div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon3">층</span>
+                        <input type="text" class="form-control" aria-describedby="basic-addon1">
+                        <span class="input-group-text" id="basic-addon4">최대인원</span>
+                        <input type="number" class="form-control" aria-describedby="basic-addon2">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="editor2"></div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header text-primary fw-bold">공간 유형</div>
+                <div class="card-body">
+                    <div class="input-group">
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div class="my-5 py-2">
+</div>
+<!-- Footer-->
+<div th:replace="~{/common/fragments/footer :: common-footer}"></div>
+<script>
+<!-- tagSelect Start -->
+function tagSelect() {
+  return {
+    open: false,
+    textInput: '',
+    tags: [],
+    init() {
+      this.tags = JSON.parse(this.$el.parentNode.getAttribute('data-tags'));
+    },
+    addTag(tag) {
+      tag = tag.trim()
+      if (tag != "" && !this.hasTag(tag)) {
+        this.tags.push( tag )
+      }
+      this.clearSearch()
+      this.$refs.textInput.focus()
+      this.fireTagsUpdateEvent()
+    },
+    fireTagsUpdateEvent() {
+      this.$el.dispatchEvent(new CustomEvent('tags-update', {
+        detail: { tags: this.tags },
+        bubbles: true,
+      }));
+    },
+    hasTag(tag) {
+      var tag = this.tags.find(e => {
+        return e.toLowerCase() === tag.toLowerCase()
+      })
+      return tag != undefined
+    },
+    removeTag(index) {
+      this.tags.splice(index, 1)
+      this.fireTagsUpdateEvent()
+    },
+    search(q) {
+      if ( q.includes(",") ) {
+        q.split(",").forEach(function(val) {
+          this.addTag(val)
+        }, this)
+      }
+      this.toggleSearch()
+    },
+    clearSearch() {
+      this.textInput = ''
+      this.toggleSearch()
+    },
+    toggleSearch() {
+      this.open = this.textInput != ''
+    }
+  }
+}
+<!-- tagSelect Start -->
 
-    <div class="my-5 py-2">
-    </div>
-    <!-- Footer-->
-    <div th:replace="~{/common/fragments/footer :: common-footer}"></div>
+var badges = $(".badge").on("click", function() {
+    var idx = $(this).index();
+
+    var badgeColor = $(this).css("background-color");
+
+    if(badgeColor == "rgb(184, 230, 191)") {
+        $(this).css("background-color","rgb(0, 138, 32)");
+    } else if(badgeColor == "rgb(0, 138, 32)") {
+        $(this).css("background-color","rgb(184, 230, 191)");
+    }
+})
+</script>
 </body>
 </html>
