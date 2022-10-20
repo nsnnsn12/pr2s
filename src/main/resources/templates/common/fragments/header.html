@@ -24,14 +24,46 @@
                                 </div>
                                 <div class=" container text-center" x-data="tagSelect()" x-init="init()" >
                                     <div class="row">
-                                        <table class="table table-bordered border-black">
+                                        <div class="accordion accordion-flush" id="accordionFlushExample">
                                             <template x-for="i in locationSize">
-                                                <tr>
-                                                    <td x-text="getSidoNm((i-1)*2)" @click="selectSido((i-1)*2)" style="cursor:pointer;"></td>
-                                                    <td x-text="getSidoNm((i-1)*2+1)" @click="selectSido((i-1)*2+1)"  style="cursor:pointer;"></td>
-                                                </tr>
+                                                <div class="accordion-item row">
+                                                    <div class="col-6" :id="getSidoHeadingId((i-1)*2)">
+                                                        <button class="p-0 accordion-button collapsed" type="button" x-text="getSidoNm((i-1)*2)" data-bs-toggle="collapse" :data-bs-target="'#'+getSidoCollapseId((i-1)*2)" aria-expanded="false" :aria-controls="getSidoCollapseId((i-1)*2)">
+                                                            Accordion Item #1
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-6" :id="getSidoHeadingId((i-1)*2+1)">
+                                                        <button class="p-0 accordion-button collapsed" type="button" x-text="getSidoNm((i-1)*2+1)" data-bs-toggle="collapse" :data-bs-target="'#'+getSidoCollapseId((i-1)*2+1)" aria-expanded="false" :aria-controls="getSidoCollapseId((i-1)*2+1)">
+                                                            Accordion Item #1
+                                                        </button>
+                                                    </div>
+                                                    <div :id="getSidoCollapseId((i-1)*2)" class="accordion-collapse collapse" :aria-labelledby="getSidoHeadingId((i-1)*2)" data-bs-parent="#accordionFlushExample">
+                                                        <div class="accordion-body" x-data="detailSido(locations[(i-1)*2])" x-init="init()">
+                                                            <table class="table table-bordered border-black table-sm">
+                                                                <template x-for="i in siGunGuSize">
+                                                                    <tr>
+                                                                        <td x-text="getSiGunGuNm((i-1)*2)" @click="selectSiGunGu((i-1)*2)" style="cursor:pointer;"></td>
+                                                                        <td x-text="getSiGunGuNm((i-1)*2+1)" @click="selectSiGunGu((i-1)*2+1)"  style="cursor:pointer;"></td>
+                                                                    </tr>
+                                                                </template>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div :id="getSidoCollapseId((i-1)*2+1)" class="accordion-collapse collapse" :aria-labelledby="getSidoHeadingId((i-1)*2+1)" data-bs-parent="#accordionFlushExample">
+                                                        <div class="accordion-body" x-data="detailSido(locations[(i-1)*2+1])" x-init="init()">
+                                                            <table class="table table-bordered border-black table-sm">
+                                                                <template x-for="i in siGunGuSize">
+                                                                    <tr>
+                                                                        <td x-text="getSiGunGuNm((i-1)*2)" @click="selectSiGunGu((i-1)*2)" style="cursor:pointer;"></td>
+                                                                        <td x-text="getSiGunGuNm((i-1)*2+1)" @click="selectSiGunGu((i-1)*2+1)"  style="cursor:pointer;"></td>
+                                                                    </tr>
+                                                                </template>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </template>
-                                        </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -78,6 +110,34 @@
                 return this.locations[index].sidoNm;
             },
             selectSido(index){
+                console.log(index);
+            },
+            getSidoHeadingId(index){
+                return 'sido-heading-id-'+index;
+            },
+            getSidoCollapseId(index){
+                return 'sido-callapse-id-'+index;
+            }
+        }
+    }
+
+    function detailSido(location) {
+        return {
+            location : {},
+            sigunguNms : [],
+            siGunGuSize : 0,
+            init() {
+                console.log(location);
+                this.location = location;
+                this.sigunguNms = location.sigunguNm;
+                this.siGunGuSize = Math.ceil(this.sigunguNms.length / 2);
+            },
+            getSiGunGuNm(index){
+                console.log(index);
+                if(index >= this.sigunguNms.length) return '';
+                return this.sigunguNms[index];
+            },
+            selectSiGunGu(index){
                 console.log(index);
             }
         }
