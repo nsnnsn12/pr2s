@@ -1,7 +1,9 @@
 package com.metacrew.pr2s.controller;
 
+import com.metacrew.pr2s.dto.RoomUsageDto;
 import com.metacrew.pr2s.dto.SidoSigunguDto;
 import com.metacrew.pr2s.entity.enums.SidoSigungu;
+import com.metacrew.pr2s.entity.enums.Usage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,12 +20,17 @@ public class HomeController {
     @GetMapping({"/", "index"})
     public String index(Model model){
         List<SidoSigunguDto> sidoSigunguDtoList = new ArrayList<>();
-        SidoSigungu[] values = SidoSigungu.values();
-        for(SidoSigungu value : values){
-            sidoSigunguDtoList.add(new SidoSigunguDto(value));
+        List<RoomUsageDto> usageDtoList = new ArrayList<>();
+        for(SidoSigungu sidoSiGungu : SidoSigungu.values()){
+            sidoSigunguDtoList.add(new SidoSigunguDto(sidoSiGungu));
+        }
+
+        for(Usage usage : Usage.values()){
+            usageDtoList.add(new RoomUsageDto(usage));
         }
 
         model.addAttribute("locations", sidoSigunguDtoList);
+        model.addAttribute("usages", usageDtoList);
         return "common/body/index";
     }
 }
