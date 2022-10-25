@@ -1,6 +1,7 @@
 package com.metacrew.pr2s.controller;
 
 import com.metacrew.pr2s.dto.AddressDto;
+import com.metacrew.pr2s.dto.InstitutionCreateDto;
 import com.metacrew.pr2s.dto.MailDto;
 import com.metacrew.pr2s.service.addressservice.InstitutionAddressService;
 import lombok.RequiredArgsConstructor;
@@ -30,22 +31,87 @@ public class AddressController {
     private InstitutionAddressService institutionAddressService;
 
     @GetMapping("/juso")
-    public String sample(Model model) {
+    public String juso(Model model) {
         model.addAttribute("addressDto", new AddressDto());
         return "common/address/juso";
     }
 
-    @RequestMapping("/popUp")
-    public String pop(HttpServletRequest request, Model model){
+    @GetMapping("/popUp")
+    public String jusoPopupOpen(HttpServletRequest request, Model model) {
+        String firstYn = request.getParameter("firstYn");
+        if(firstYn == null) firstYn = "N";
+        String confmKey = "U01TX0FVVEgyMDIyMTAxMzIxMDUxODExMzA1MzA=";
 
-        String confmKey = "devU01TX0FVVEgyMDIyMDkwNDE5MTUxOTExMjk0NjU="; // 검색API 승인키
-        String domain = "http://www.juso.go.kr"; // 인터넷망
-        // ※ 행정망 내에서 운영되는 시스템도 이용 가능합니다. 행정망 서비스를 위한 API 요청URL은 별도로 문의 주시기 바랍니다.(1588-0061)
-        String resultType = "4"; // 검색결과 화면 출력유(1 : 도로명, 2 : 도로명+지번, 3 : 도로명+상세건물명, 4 : 도로명+지번+상세건물명)
+        model.addAttribute("confmKey", confmKey);
+        model.addAttribute("firstYn", firstYn);
 
-        model.addAttribute("confmKey",confmKey);
-        model.addAttribute("domain",domain);
-        model.addAttribute("resultType",resultType);
+        return "common/address/popUp";
+    }
+
+    @PostMapping("/popUp")
+    public String jusoPopupClose(HttpServletRequest request, Model model) {
+        String inputYn = request.getParameter("inputYn");
+        String firstYn = "N";
+
+        String roadFullAddr = request.getParameter("roadFullAddr");
+        String roadAddrPart1 = request.getParameter("roadAddrPart1");
+        String roadAddrPart2 = request.getParameter("roadAddrPart2");
+        String engAddr = request.getParameter("engAddr");
+        String jibunAddr = request.getParameter("jibunAddr");
+        String zipNo = request.getParameter("zipNo");
+        String admCd = request.getParameter("admCd");
+        String rnMgtSn = request.getParameter("rnMgtSn");
+        String bdMgtSn = request.getParameter("bdMgtSn");
+        String detBdNmList = request.getParameter("detBdNmList");
+        String bdNm = request.getParameter("bdNm");
+        String bdKdcd = request.getParameter("bdKdcd");
+        String siNm = request.getParameter("siNm");
+        String sggNm = request.getParameter("sggNm");
+        String emdNm = request.getParameter("emdNm");
+        String liNm = request.getParameter("liNm");
+        String rn = request.getParameter("rn");
+        String udrtYn = request.getParameter("udrtYn");
+        String buldMnnm = request.getParameter("buldMnnm");
+        String buldSlno = request.getParameter("buldSlno");
+        String mtYn = request.getParameter("mtYn");
+        String lnbrMnnm = request.getParameter("lnbrMnnm");
+        String lnbrSlno = request.getParameter("lnbrSlno");
+        String emdNo = request.getParameter("emdNo");
+        String entX = request.getParameter("entX");
+        String entY = request.getParameter("entY");
+
+        String confmKey = "U01TX0FVVEgyMDIyMTAxMzIxMDUxODExMzA1MzA=";
+
+        model.addAttribute("confmKey", confmKey);
+        model.addAttribute("firstYn", firstYn);
+
+        model.addAttribute("roadFullAddr", roadFullAddr);
+        model.addAttribute("roadAddrPart1", roadAddrPart1);
+        model.addAttribute("roadAddrPart2", roadAddrPart2);
+        model.addAttribute("engAddr", engAddr);
+        model.addAttribute("jibunAddr", jibunAddr);
+        model.addAttribute("zipNo", zipNo);
+        model.addAttribute("admCd", admCd);
+        model.addAttribute("rnMgtSn", rnMgtSn);
+        model.addAttribute("bdMgtSn", bdMgtSn);
+        model.addAttribute("detBdNmList", detBdNmList);
+        model.addAttribute("bdNm", bdNm);
+        model.addAttribute("bdKdcd", bdKdcd);
+        model.addAttribute("siNm", siNm);
+        model.addAttribute("sggNm", sggNm);
+        model.addAttribute("emdNm", emdNm);
+        model.addAttribute("liNm", liNm);
+        model.addAttribute("rn", rn);
+        model.addAttribute("udrtYn", udrtYn);
+        model.addAttribute("buldMnnm", buldMnnm);
+        model.addAttribute("buldSlno", buldSlno);
+        model.addAttribute("mtYn", mtYn);
+        model.addAttribute("lnbrMnnm", lnbrMnnm);
+        model.addAttribute("lnbrSlno", lnbrSlno);
+        model.addAttribute("emdNo", emdNo);
+        model.addAttribute("entX", entX);
+        model.addAttribute("entY", entY);
+
         return "common/address/popUp";
     }
 
@@ -60,6 +126,11 @@ public class AddressController {
 
     }
 
-
+    @GetMapping("/inst")
+    public String inst(Model model) {
+        model.addAttribute("institutionDto", new InstitutionCreateDto());
+        model.addAttribute("addressDto", new AddressDto());
+        return "manager/body/inst_register";
+    }
 
 }
