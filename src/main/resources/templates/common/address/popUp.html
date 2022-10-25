@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>좌표팝업API</title>
+  <meta charset="UTF-8">
+    <script th:src="@{/js/addrlink.js}"></script>
+    <script th:src="@{/js/jquery-1.12.4.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/addrlink.css}">
+<script>
+      function init() {
+         var url = location.href;
+         var confmKey =$("input[name=confmKey]").val();
+         var resultType = "4";
+         var firstYn = $("input[name=firstYn]").val();
+
+         if (firstYn == "Y") {
+               console.log("최초요청");
+               document.form.confmKey.value = confmKey;
+               document.form.returnUrl.value = url;
+               document.form.resultType.value = resultType;
+               document.form.action = "https://www.juso.go.kr/addrlink/addrCoordUrl.do";
+               document.form.submit();
+         } else {
+         opener.jusoCallBack(
+              $('input[name=roadFullAddr]').val(),
+              $('input[name=roadAddrPart1]').val(),
+              $('input[name=roadAddrPart2]').val(),
+              $('input[name=engAddr]').val(),
+              $('input[name=jibunAddr]').val(),
+              $('input[name=zipNo]').val(),
+              $('input[name=admCd]').val(),
+              $('input[name=rnMgtSn]').val(),
+              $('input[name=bdMgtSn]').val(),
+              $('input[name=detBdNmList]').val(),
+              $('input[name=bdNm]').val(),
+              $('input[name=bdKdcd]').val(),
+              $('input[name=siNm]').val(),
+              $('input[name=sggNm]').val(),
+              $('input[name=emdNm]').val(),
+              $('input[name=liNm]').val(),
+              $('input[name=rn]').val(),
+              $('input[name=udrtYn]').val(),
+              $('input[name=buldMnnm]').val(),
+              $('input[name=buldSlno]').val(),
+              $('input[name=mtYn]').val(),
+              $('input[name=lnbrMnnm]').val(),
+              $('input[name=lnbrSlno]').val(),
+              $('input[name=emdNo]').val(),
+              $('input[name=entX]').val(),
+              $('input[name=entY]').val()
+
+
+        )
+        window.close();
+  }
+  };
+
+</script>
+
+</head>
+
+
+<body onload="init();">
+
+
+
+<form id="form" name="form" method="post">
+  <input type="hidden" id="confmKey" name="confmKey" th:value="${confmKey}"/>
+  <input type="hidden" id="returnUrl" name="returnUrl" value=""/>
+  <input type="hidden" id="resultType" name="resultType" value=""/>
+</form>
+<input type="hidden" id="firstYn" name="firstYn" th:value="${firstYn}"/>
+
+<input type="hidden" id="inputYn" name="inputYn" th:value="${inputYn}"/>
+<input type="hidden" name="roadFullAddr" id="roadFullAddr" th:value="${roadFullAddr}"/>
+<input type="hidden" name="roadAddrPart1" id="roadAddrPart1" th:value="${roadAddrPart1}"/>
+<input type="hidden" name="roadAddrPart2" id="roadAddrPart2" th:value="${roadAddrPart2}"/>
+<input type="hidden" name="engAddr" id="engAddr" th:value="${engAddr}"/>
+<input type="hidden" name="jibunAddr" id="jibunAddr" th:value="${jibunAddr}"/>
+<input type="hidden" name="zipNo" id="zipNo" th:value="${zipNo}"/>
+<input type="hidden" name="admCd" id="admCd" th:value="${admCd}" />
+<input type="hidden" name="rnMgtSn" id="rnMgtSn" th:value="${rnMgtSn}" />
+<input type="hidden" name="bdMgtSn" id="bdMgtSn" th:value="${bdMgtSn}" />
+<input type="hidden" name="detBdNmList" id="detBdNmList" th:value="${detBdNmList}" />
+<input type="hidden" name="bdNm" id="bdNm" th:value="${bdNm}"/>
+<input type="hidden" name="bdKdcd" id="bdKdcd" th:value="${bdKdcd}" />
+<input type="hidden" name="siNm" id="siNm" th:value="${siNm}" />
+<input type="hidden" name="sggNm" id="sggNm" th:value="${sggNm}" />
+<input type="hidden" name="emdNm" id="emdNm" th:value="${emdNm}" />
+<input type="hidden" name="liNm" id="liNm" th:value="${liNm}" />
+<input type="hidden" name="rn" id="rn" th:value="${rn}" />
+<input type="hidden" name="udrtYn" id="udrtYn" th:value="${udrtYn}" />
+<input type="hidden" name="buldMnnm" id="buldMnnm" th:value="${buldMnnm}" />
+<input type="hidden" name="buldSlno" id="buldSlno" th:value="${buldSlno}" />
+<input type="hidden" name="mtYn" id="mtYn" th:value="${mtYn}" />
+<input type="hidden" name="lnbrMnnm" id="lnbrMnnm" th:value="${lnbrMnnm}" />
+<input type="hidden" name="lnbrSlno" id="lnbrSlno" th:value="${lnbrSlno}" />
+<input type="hidden" name="emdNo" id="emdNo" th:value="${emdNo}" />
+<input type="hidden" name="entX" id="entX" th:value="${entX}"/>
+<input type="hidden" name="entY" id="entY" th:value="${entY}"/>
+</body>
