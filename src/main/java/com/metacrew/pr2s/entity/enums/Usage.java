@@ -16,5 +16,5 @@ public enum Usage {
 
     Usage(String name)  { this.name = name; }
 
-    public String getCode() { return name; }
+    public String getName() { return name; }
 }
