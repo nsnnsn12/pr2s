@@ -20,6 +20,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf().ignoringAntMatchers("/address/**");
         http.authorizeHttpRequests((requests) -> requests
                         // /about 요청에 대해서는 로그인을 요구함
                         .antMatchers("/about").authenticated()
