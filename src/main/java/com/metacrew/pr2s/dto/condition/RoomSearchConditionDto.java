@@ -41,8 +41,6 @@ public class RoomSearchConditionDto {
     private String siNm;
     //시군구
     private String sggNm;
-    //읍면동
-    private String emdNm;
 
     private List<Usage> usages;
 }
