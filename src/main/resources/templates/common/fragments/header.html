@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
-<header  class="py-5" th:fragment="common-header" style="background: url(../../image/bgImage3.jpg); background-size: cover; no-repeat; background-position:center; ">
+<header  class="py-5" th:fragment="common-header" style="background: url(../../image/bgImage3.jpg); background-size: cover; background-position:center; ">
     <!-- 검색조건 -->
     <div class="container px-5 px-lg-5 py-5 bg-white ">
         <div class="mb-3">
@@ -16,7 +16,7 @@
                             <button class="btn btn-outline-primary dropdown-toggle" id="location-dropdown" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                 지역 선택
                             </button>
-                            <input type="text" x-model="$store.searchCondition.selectLocation" class="ms-3 form-control" disabled>
+                            <input type="text" x-model="$store.searchCondition.sggNm" class="ms-3 form-control" disabled>
                             <div class="dropdown-menu" >
                                 <div>
                                     <button class="btn btn-sm btn-primary text-white m-4" type="button" >
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="col-2">
-                        <input type="text" class="form-control" placeholder="인원" aria-label="Last name">
+                        <input x-mask="99" type="text" class="form-control" placeholder="인원" aria-label="Last name" x-model="$store.searchCondition.maximumPersonCount">
                     </div>
                     <div class="col-3">
                         <div class="input-group">
@@ -102,8 +102,8 @@
                 </div>
                 <div class="row">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="검색어를 입력해주세요" >
-                        <button class="btn btn-outline-secondary" type="submit">검색</button>
+                        <input type="text" class="form-control" placeholder="검색어를 입력해주세요" x-model="$store.searchCondition.title">
+                        <button class="btn btn-outline-secondary" type="button" @click="search()">검색</button>
                     </div>
                 </div>
             </form>
@@ -118,9 +118,24 @@
     document.addEventListener('alpine:init', () => {
             console.log('알파인 초기화');
             Alpine.store('searchCondition', {
-                selectLocation : ''
+                usages : new Map,
+                title : '',
+                maximumPersonCount : 0,
+                siNm : '',
+                sggNm : '',
+                date : ''
             })
       });
+
+    function search(){
+        Alpine.store('searchCondition').date = $( "#datepicker" ).val();
+        console.log(Alpine.store('searchCondition').usages);
+        console.log(Alpine.store('searchCondition').title);
+        console.log(Alpine.store('searchCondition').maximumPersonCount);
+        console.log(Alpine.store('searchCondition').siNm);
+        console.log(Alpine.store('searchCondition').sggNm);
+        console.log(Alpine.store('searchCondition').date);
+    }
     function sidoSelect() {
         return {
             locations : [],
@@ -165,14 +180,13 @@
                 return this.sigunguNms[index];
             },
             selectSiGunGu(index){
-                Alpine.store('searchCondition').selectLocation = this.sigunguNms[index];
+                Alpine.store('searchCondition').sggNm = this.sigunguNms[index];
+                Alpine.store('searchCondition').siNm = this.location.sidoNm;
                 console.log(index);
                 const bsCollapse = bootstrap.Collapse.getInstance(this.sidoCollapseId);
-                //console.log(bsCollapse);
                 bsCollapse.hide();
 
                 const dropDown = bootstrap.Dropdown.getInstance('#location-dropdown');
-                //console.log(dropDown);
                 dropDown.hide();
             }
         }
@@ -182,10 +196,11 @@
         return {
             usages : [],
             usageSize : 0,
-            selectMap : new Map,
+            selectMap : {},
             init() {
                 this.usages = usages;
                 this.usageSize = Math.ceil(this.usages.length / 3);
+                this.selectMap = Alpine.store('searchCondition').usages;
             },
             getUsage(index){
                 if(index >= this.usages.length) return '';
