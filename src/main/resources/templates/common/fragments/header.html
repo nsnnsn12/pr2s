@@ -16,7 +16,7 @@
                             <button class="btn btn-outline-primary dropdown-toggle" id="location-dropdown" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                 지역 선택
                             </button>
-                            <input type="text" x-model="$store.searchCondition.sggNm" class="ms-3 form-control" disabled>
+                            <input type="text" x-model="$store.store.roomSearchConditionDto.sggNm" class="ms-3 form-control" disabled>
                             <div class="dropdown-menu" >
                                 <div>
                                     <button class="btn btn-sm btn-primary text-white m-4" type="button" >
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="col-2">
-                        <input x-mask="99" type="text" class="form-control" placeholder="인원" aria-label="Last name" x-model="$store.searchCondition.maximumPersonCount">
+                        <input x-mask="99" type="text" class="form-control" placeholder="인원" aria-label="Last name" x-model="$store.store.roomSearchConditionDto.maximumPersonCount">
                     </div>
                     <div class="col-3">
                         <div class="input-group">
@@ -102,7 +102,7 @@
                 </div>
                 <div class="row">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="검색어를 입력해주세요" x-model="$store.searchCondition.title">
+                        <input type="text" class="form-control" placeholder="검색어를 입력해주세요" x-model="$store.store.roomSearchConditionDto.title">
                         <button class="btn btn-outline-secondary" type="button" @click="search()">검색</button>
                     </div>
                 </div>
@@ -117,25 +117,58 @@
     console.log(usages);
     document.addEventListener('alpine:init', () => {
             console.log('알파인 초기화');
-            Alpine.store('searchCondition', {
-                usages : new Map,
-                title : '',
-                maximumPersonCount : 0,
-                siNm : '',
-                sggNm : '',
-                date : ''
+            Alpine.store('store', {
+                roomSearchConditionDto : {
+                    usages : new Map,
+                    title : '',
+                    maximumPersonCount : 0,
+                    siNm : '',
+                    sggNm : '',
+                    date : '',
+                    entX : '',
+                    entY : ''
+                }
             })
       });
 
     function search(){
-        Alpine.store('searchCondition').date = $( "#datepicker" ).val();
-        console.log(Alpine.store('searchCondition').usages);
-        console.log(Alpine.store('searchCondition').title);
-        console.log(Alpine.store('searchCondition').maximumPersonCount);
-        console.log(Alpine.store('searchCondition').siNm);
-        console.log(Alpine.store('searchCondition').sggNm);
-        console.log(Alpine.store('searchCondition').date);
+        Alpine.store('store').roomSearchConditionDto.date = $( "#datepicker" ).val();
+        let roomSearchConditionDto = Alpine.store('store').roomSearchConditionDto;
+        let map = roomSearchConditionDto.usages;
+        let usages = [];
+
+        map.forEach((value, key, mapObject) => usages.push(value.usage));
+        roomSearchConditionDto.usages = usages;
+        console.log(roomSearchConditionDto);
+        sendSearchCondition(1, 20, '', roomSearchConditionDto);
     }
+
+    async function sendSearchCondition(page, size, sort, roomSearchConditionDto) {
+        let url = "/room-search/user/search?page="+page+"&size="+size+"&sort="+sort;
+
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(roomSearchConditionDto),
+            headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+
+        // this.newpost = await (await fetch('https://jsonplaceholder.typicode.com/posts', {
+        //     method: 'POST',
+        //     body: JSON.stringify({
+        //     title: 'foo',
+        //     body: 'bar',
+        //     userId: 1,
+        //     }),
+        //     headers: {
+        //     'Content-type': 'application/json; charset=UTF-8',
+        //     },
+        // })).json();
+
+        // console.log(this.newpost);
+    }
+
     function sidoSelect() {
         return {
             locations : [],
@@ -180,8 +213,8 @@
                 return this.sigunguNms[index];
             },
             selectSiGunGu(index){
-                Alpine.store('searchCondition').sggNm = this.sigunguNms[index];
-                Alpine.store('searchCondition').siNm = this.location.sidoNm;
+                Alpine.store('store').roomSearchConditionDto.sggNm = this.sigunguNms[index];
+                Alpine.store('store').roomSearchConditionDto.siNm = this.location.sidoNm;
                 console.log(index);
                 const bsCollapse = bootstrap.Collapse.getInstance(this.sidoCollapseId);
                 bsCollapse.hide();
@@ -200,7 +233,7 @@
             init() {
                 this.usages = usages;
                 this.usageSize = Math.ceil(this.usages.length / 3);
-                this.selectMap = Alpine.store('searchCondition').usages;
+                this.selectMap = Alpine.store('store').roomSearchConditionDto.usages;
             },
             getUsage(index){
                 if(index >= this.usages.length) return '';
