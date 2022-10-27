@@ -4,8 +4,12 @@ import com.metacrew.pr2s.dto.RoomUsageDto;
 import com.metacrew.pr2s.entity.enums.Usage;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.Column;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,12 +18,11 @@ import java.util.List;
  * @author sunggyu
  * @since 2022.10.07
  */
-@Getter @Setter
+@Getter @Setter @ToString
 public class RoomSearchConditionDto {
     // TODO: 2022-10-07 사용자 등급 별로 조회가 달라지는데 그의 따라 검색 조건도 나누어야 하는지 고민이 필요
-    // TODO: 2022-10-10 태그 관련 조건 필요
-
     //사용인원
+    @NumberFormat
     private Integer maximumPersonCount;
 
     //x좌표
@@ -29,10 +32,8 @@ public class RoomSearchConditionDto {
     private String entY;
 
     //예약 시작 시간
-    private LocalDateTime startDate;
-
-    //예약 종료 시간
-    private LocalDateTime endDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
     //제목
     private String title;
