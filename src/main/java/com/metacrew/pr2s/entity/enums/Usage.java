@@ -1,5 +1,8 @@
 package com.metacrew.pr2s.entity.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Usage {
     // 모임
     PARTY_ROOM("파티룸"),
