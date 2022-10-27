@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org" xmlns:x-mask="http://www.w3.org/1999/xhtml"
+      xmlns:x-on="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="~{/common/fragments/head :: common-head}"></div>
+
+</head>
+<body class="bg-gradient-gray">
+<!-- Navigation-->
+<div th:replace="~{/common/fragments/nav :: fragment-nav}"></div>
+
+
+<div class="container col-lg-6">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">기관등록</h1>
+                </div>
+                <hr/>
+
+                <form th:action="@{/auth/register}" method="post" th:object="${institutionDto}">
+                    <div class="mb-3">
+                        <span>기관명</span>
+                        <input type="text" th:field="*{name}" class="form-control" placeholder="기관명"/>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <div class="col-sm-6 mb-3 mb-sm-0" x-data=" {}">
+                            <span>대표전화번호</span>
+                            <input x-mask:dynamic=" $input.startsWith('02') ? '99 9999 9999' : '999 9999 9999' "
+                                   th:field="*{telNumber}" class="form-control form-control-user" placeholder="전화번호"/>
+                        </div>
+                        <div class="col-sm-6" x-data="{user:'username'}">
+                            <span>대표담당자</span>
+                            <input type="text" th:field="*{name}" class="form-control form-control-user" x-text="name"
+                                   value="로그인사용자" readonly/>
+                        </div>
+                    </div>
+
+                    <div x-data="{ workDays : ['월','화','수','목','금','토','일'] }">
+                        <span>운영 요일 시간</span>
+                        <template x-for="(day, index) in workDays">
+                            <div class="form-group mb-3 row">
+                                <!--월-->
+                                <div class="input-group mb-3"
+                                     x-data="{ isDisabled : true , startHour : 0, endHour : 23, startMin :[00,30], endMin :[00,30]}">
+                                    <!-- /* 클릭ㅎㅐ제하면 시간 초기화*/ -->
+                                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                                        <input type="checkbox" class="btn-check" :id="'btnCheck'+index"
+                                               autocokmplete="off" x-on:click="isDisabled = !isDisabled">
+                                        <label class="btn btn-outline-primary" :for="'btnCheck'+index"
+                                               x-text="day"></label>
+                                    </div>
+                                    <select :value="isDisabled ? 'initValue' : ' '" class="form-select border-0"
+                                            :id="'startHour'+index" :disabled="isDisabled"
+                                            @change="endHour = 23 - startHour" x-model="startHour">
+                                        <option value="initValue" selected>선택</option>
+                                        <template x-for="i in 24">
+                                            <option :key="i-1" :value="i-1" x-text="i-1"></option>
+                                        </template>
+                                    </select>
+                                    <span :class="isDisabled ? 'input-group-text border-0' : 'input-group-text border-0 bg-white'">:</span>
+                                    <select :value="isDisabled ? 'initValue' : ' '" class="form-select  border-0"
+                                            :disabled="isDisabled">
+                                        <option value="initValue" selected>선택</option>
+                                        <template x-for="min in startMin">
+                                            <option :key="min" :value="min" x-text="min"></option>
+                                        </template>
+                                    </select>
+                                    <span :class="isDisabled ? 'input-group-text border-0' : 'input-group-text border-0 bg-white'">~</span>
+                                    <select :value="isDisabled ? 'initValue' : ' '" class="form-select border-0"
+                                            :id="'endHour'+index" :disabled="isDisabled">
+                                        <option value="initValue" selected>선택</option>
+                                        <template x-for="i in endHour">
+                                            <option :key="parseInt(startHour) + parseInt(i)"
+                                                    :value="parseInt(startHour) + parseInt(i)"
+                                                    x-text="parseInt(startHour) + parseInt(i)"></option>
+                                        </template>
+                                    </select>
+                                    <span :class="isDisabled ? 'input-group-text border-0' : 'input-group-text border-0 bg-white'">:</span>
+                                    <select :value="isDisabled ? 'initValue' : ' '" class="form-select border-0"
+                                            :disabled="isDisabled">
+                                        <option value="initValue" selected>선택</option>
+                                        <template x-for="min in endMin">
+                                            <option :key="min" :value="min" x-text="min"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                            </div>
+                        </template>
+
+                    </div>
+
+                    <span>대표이미지</span>
+                    <div class="form-group row mb-3">
+                        <div class="col-sm-9 mb-3 mb-sm-2">
+                            <img class="card-img-top" :src="" width="850" height="150"/>
+                        </div>
+                        <div class="col-sm-3 mb-3 mb-sm-2">
+                            <button class="w-100 btn btn-outline-primary">
+                                사진 추가
+                            </button>
+                            <input type="file" multiple id="input-file" class="d-none" @change=""/>
+                        </div>
+                    </div>
+                </form>
+                <form th:action="@{/address/popUp}" method="post" th:object="${addressDto}">
+                    <div x-data="{ count: 1, max :10 }">
+                        <span id="addressSpan">주소</span>
+                        <template x-for="i in count">
+                            <div class="form-group row mb-3 addressDiv" id="addressDiv">
+                                <div class="col-sm-7 mb-3 mb-sm-2">
+                                    <input type="text" th:field="*{zipNo}" class="form-control" name="zipNo"
+                                           placeholder="우편번호" readonly/>
+                                </div>
+                                <div class="col-sm-5 mb-3 mb-sm-2">
+                                    <button type="button" class="w-100 btn btn-outline-primary" onclick="goPopup()" ;>
+                                        도로명주소 호출
+                                    </button>
+                                </div>
+                                <div class="col-sm-12 mb-3 mb-sm-2">
+                                    <input type="text" class="form-control" th:field="*{roadFullAddr}"
+                                           name="roadFullAddr" placeholder="도로명 주소" readonly/>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="form-group row mb-3">
+                            <div class="col-sm-9">
+                            </div>
+                            <div :class="max==count ? 'col-sm-3 visually-hidden' : 'col-sm-3'">
+                                <button type="button" id="addAddress" class="w-100 btn btn-outline-primary"
+                                        x-on:click="count++">추가▽
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="d-flex justify-content-center mb-3">
+                    <div class="form-group row">
+                        <button type="submit" class="w-100 btn btn-outline-primary">
+                            기관 등록하기
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer-->
+<div th:replace="~{/common/fragments/footer :: common-footer}"></div>
+</body>
+</html>
