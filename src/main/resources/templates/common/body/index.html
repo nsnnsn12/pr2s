@@ -2,6 +2,11 @@
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
   <head>
       <div th:replace="~{/common/fragments/head :: common-head}"></div>
+      <style>
+        .fs-7 {
+            font-size: 0.8rem!important;
+        }       
+      </style>
   </head>
   <body>
     <!-- Navigation-->
@@ -11,119 +16,48 @@
 
     <!-- Room List -->
     <section class="py-5">
-        <div class="container px-4 px-lg-5 mt-5">
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Condition badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">마감
-                        </div>
-                        <!-- Room image-->
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Room name-->
-                                <h5 class="fw-bolder">First Room</h5>
-                                <!-- Institution name-->
-                                기관명
+        <div class="container px-4 px-lg-5 mt-5" x-data="roomList()" x-init="initRoomList()">
+            <template x-for="row in list" >
+                <div class="row justify-content-center mb-5">
+                    <template x-for="room in row">
+                        <div class="col-4" x-data="room">
+                            <div class="card">
+                                <!-- Condition badge-->
+                                <div x-if="isDeadLine" class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">마감
+                                </div>
+                                <!-- Room image-->
+                                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                                <!-- Product details-->
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bolder">제리네_루프탑</h5>
+                                    <div class="mb-2">
+                                        <ul class="list-group list-group-horizontal">
+                                            <li class="list-group-item border-0 p-0 align-middle"><i class="fa-solid fa-location-dot"></i><p class="fs-7 d-inline">은평구</p></li>
+                                            <li class="list-group-item border-0 p-0 align-middle"><span class="fs-7 mx-1">|</span></li>
+                                            <li class="list-group-item border-0 p-0 align-middle"><span class="fs-7">#홍대루프탑</span></li>
+                                            <li class="list-group-item border-0 p-0 align-middle"><span class="fs-7">#홍대파티룸</span></li>
+                                            <li class="list-group-item border-0 p-0 align-middle"><span class="fs-7">#브라이덜샤워</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <ul class="list-group list-group-horizontal">
+                                            <li class="list-group-item border-0 p-0 align-middle ms-1"><i class="fa-solid fa-person"></i><p class="fs-7 d-inline ms-1">최대 6인</p></li>
+                                            <li class="list-group-item border-0 p-0 align-middle ms-1"><i class="fa-regular fa-comment-dots"></i><p class="fs-7 d-inline ms-1">50</p></li>
+                                            <li class="list-group-item border-0 p-0 align-middle ms-1"><i class="fa-regular fa-heart"></i><p class="fs-7 d-inline ms-1">50</p></li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- Room actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a>
-                            </div>
-                        </div>
-                    </div>
+                    </template>
                 </div>
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Room image-->
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Room name-->
-                                <h5 class="fw-bolder">Room</h5>
-                                <!-- Institution name-->
-                                기관명
-                            </div>
-                        </div>
-                        <!-- Room actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Room image-->
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Room name-->
-                                <h5 class="fw-bolder">Room</h5>
-                                <!-- Institution name-->
-                                기관명
-                            </div>
-                        </div>
-                        <!-- Room actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Room image-->
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Room name-->
-                                <h5 class="fw-bolder">Room</h5>
-                                <!-- Institution name-->
-                                기관명
-                            </div>
-                        </div>
-                        <!-- Room actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Room image-->
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Room name-->
-                                <h5 class="fw-bolder">Room</h5>
-                                <!-- Institution name-->
-                                기관명
-                            </div>
-                        </div>
-                        <!-- Room actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </template>
         </div>
     </section>
     <!-- Footer-->
     <div th:replace="~{/common/fragments/footer :: common-footer}"></div>
+
     <!-- datepicker -->
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
             integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -135,28 +69,8 @@
           crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../../datepicker/jquery-ui.css" th:href="@{/datepicker/jquery-ui.css}">
     <script th:src="@{/datepicker/jquery-ui.min.js}"></script>
-    <script>
-        $.datepicker.setDefaults({
-            dateFormat: 'yy-mm-dd',
-            prevText: '이전 달',
-            nextText: '다음 달',
-            monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-            dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-            dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-            dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-            showMonthAfterYear: true,
-            yearSuffix: '년'
-        });
 
-        $(function () {
-            $("#datepicker").datepicker({
-                showButtonPanel: true,
-                currentText: '오늘',
-                closeText: '닫기',
-                minDate: 0
-            });
-        });
-    </script>
+    <!-- script-->
+    <div th:replace="~{/common/fragments/script :: common-script}"></div>
 </body>
 </html>

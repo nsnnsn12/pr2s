@@ -1,6 +1,18 @@
 <!doctype html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <script th:inline="javascript" th:fragment="common-script">
+class Room {
+    constructor(id, feildId,  title, sigunguNm, maximumPersonCount, replyCount, favoriteCount, isDeadLine) {
+        this.id = id;
+        this.feildId = feildId;
+        this.title = title;
+        this.sigunguNm = sigunguNm;
+        this.maximumPersonCount = maximumPersonCount;
+        this.replyCount = replyCount;
+        this.favoriteCount = favoriteCount;
+        this.isDeadLine = isDeadLine;
+    }
+}
 /*<![CDATA[*/
     const data = /*[[${locations}]]*/
     const usages = /*[[${usages}]]*/
@@ -148,30 +160,21 @@
             list : [],
             initRoomList(){
                 //여기서 검색조건을 이용한 ajax 필요
-                let room = {
-                    id : 0,
-                    fileId : 1,
-                    title : '제리네_루프탑',
-                    sigunguNm : '은평구',
-                    maximumPersonCount : 6,
-                    replyCount : 50,
-                    favoriteCount : 50,
-                    isDeadLine : false
-                };
+
                 let n = 4;
                 let rowCount = parseInt(n / 3);
                 let restCount = n % 3;
                 for(var i = 0; i < rowCount; i++){
                     let row = [];
                     for(var j = 0; j < 3; j++){
-                        row.push(room);
+                        row.push(new Room(0, 1, '제리네_루프탑', '은평구', 6, 50, 50, false));
                     }
                     this.list.push(row);
                 }
                 if(restCount >= 0){
                     let row = [];
                     for(var i = 0; i < n % 3; i++){
-                        row.push(room);
+                        row.push(new Room(0, 1, '제리네_루프탑', '은평구', 6, 50, 50, false));
                     }
                     row[0].isDeadLine = true;
                     this.list.push(row);
