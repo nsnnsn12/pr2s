@@ -58,8 +58,6 @@ public class RoomQueryRepository {
                         , goeMaximumPersonCount(roomSearchConditionDto.getMaximumPersonCount())
                         , eqSiNm(roomSearchConditionDto.getSiNm())
                         , eqSggNm(roomSearchConditionDto.getSggNm())
-                        , eqEmdNm(roomSearchConditionDto.getEmdNm())
-                        , notInDatePeriod(roomSearchConditionDto.getStartDate(), roomSearchConditionDto.getEndDate())
                         , inUsage(roomSearchConditionDto.getUsages())
                         , likeTag(roomSearchConditionDto.getTitle()))
                 .distinct()
@@ -89,27 +87,10 @@ public class RoomQueryRepository {
         return StringUtils.hasText(sggNm) ? address.sggNm.eq(sggNm): null;
     }
 
-    //읍면동 조건
-    private BooleanExpression eqEmdNm(String emdNm){
-        return StringUtils.hasText(emdNm) ? address.emdNm.eq(emdNm): null;
-    }
 
-    //날짜조건
-    //다대일 매핑이기 때문에 성능을 주의해야 함.
-    //사용자가 선택한 기간의 포함하는 예약일자를 조회하여 방 id를 그룹짓는다.
-    //해당 id는 제외한다.
+    //날짜조건(운영요일만 확인하는 것으로)
     private BooleanExpression notInDatePeriod(LocalDateTime startDate, LocalDateTime endDate){
-        if(startDate != null && endDate != null){
-            return room.id.notIn(
-                    JPAExpressions
-                        .select(reservation.room.id)
-                        .from(reservation)
-                        .where(reservation.isDeleted.eq(false)
-                                , reservation.datePeriod.startDate.between(startDate, endDate)
-                                        .or(reservation.datePeriod.endDate.between(startDate, endDate)))
-                        .groupBy(reservation.room.id)
-            );
-        }
+        // TODO: 2022-10-27 운영 요일을 확인하는 것으로 
         return null;
     }
 

@@ -31,6 +31,9 @@ public class SearchedRoomDto {
     //즐겨찾기 수
     private int favoriteCount;
 
-    //읍면동
-    private String emdNm;
+    //시군구명
+    private String sigunguNm;
+    
+    //마감여부
+    private boolean isDeadLine;
 }

@@ -1,5 +1,8 @@
 package com.metacrew.pr2s.entity.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Usage {
     // 모임
     PARTY_ROOM("파티룸"),
@@ -12,9 +15,7 @@ public enum Usage {
     CONCERT_ROOM("공연실"),
     CONFERENCE_ROOM("컨퍼런스");
 
-    private final String name;
+    private final String value;
 
-    Usage(String name)  { this.name = name; }
-
-    public String getName() { return name; }
+    Usage(String value)  { this.value = value; }
 }

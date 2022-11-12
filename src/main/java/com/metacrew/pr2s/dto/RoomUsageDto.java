@@ -18,4 +18,12 @@ import lombok.ToString;
 @ToString
 public class RoomUsageDto {
     private Usage usage;
+    private String name;
+    private String value;
+
+    public RoomUsageDto(Usage usage){
+        this.usage = usage;
+        this.value = usage.getValue();
+        this.name = usage.name();
+    }
 }

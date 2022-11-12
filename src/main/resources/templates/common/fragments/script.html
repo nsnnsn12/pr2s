@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<script th:inline="javascript" th:fragment="common-script">
+class Room {
+    constructor(id, feildId,  title, sigunguNm, maximumPersonCount, replyCount, favoriteCount, isDeadLine) {
+        this.id = id;
+        this.feildId = feildId;
+        this.title = title;
+        this.sigunguNm = sigunguNm;
+        this.maximumPersonCount = maximumPersonCount;
+        this.replyCount = replyCount;
+        this.favoriteCount = favoriteCount;
+        this.isDeadLine = isDeadLine;
+    }
+}
+/*<![CDATA[*/
+    const data = /*[[${locations}]]*/
+    const usages = /*[[${usages}]]*/
+    console.log(usages);
+    document.addEventListener('alpine:init', () => {
+        console.log('알파인 초기화');
+        Alpine.store('store', {
+            roomSearchConditionDto : {
+                usages : new Map,
+                title : '',
+                maximumPersonCount : 0,
+                siNm : '',
+                sggNm : '',
+                date : '',
+                entX : '',
+                entY : ''
+            }
+        })
+    });
+
+    function search(){
+        Alpine.store('store').roomSearchConditionDto.date = $( "#datepicker" ).val();
+        let roomSearchConditionDto = Alpine.store('store').roomSearchConditionDto;
+        let map = roomSearchConditionDto.usages;
+        let usages = [];
+
+        map.forEach((value, key, mapObject) => usages.push(value.usage));
+        roomSearchConditionDto.usages = usages;
+        console.log(roomSearchConditionDto);
+        sendSearchCondition(1, 20, '', roomSearchConditionDto);
+    }
+
+    async function sendSearchCondition(page, size, sort, roomSearchConditionDto) {
+        let url = "/room-search/user/search?page="+page+"&size="+size+"&sort="+sort;
+
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(roomSearchConditionDto),
+            headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+    }
+
+    function sidoSelect() {
+        return {
+            locations : [],
+            locationSize : 0,
+            init() {
+                this.locations = data;
+                this.locationSize = Math.ceil(this.locations.length / 2);
+            },
+            getSidoNm(index){
+                if(index >= this.locations.length) return '';
+                return this.locations[index].sidoNm;
+            },
+            getSidoHeadingId(index){
+                return 'sido-heading-id-'+index;
+            },
+            getSidoCollapseId(index){
+                return 'sido-callapse-id-'+index;
+            }
+        }
+    }
+
+    function detailSido(location, sidoCollapseId) {
+        return {
+            sidoCollapseId : 0,
+            location : {},
+            sigunguNms : [],
+            siGunGuSize : 0,
+            init() {
+                if(undefined === location){
+                    return;
+                }
+                console.log(location);
+                console.log(sidoCollapseId);
+                this.sidoCollapseId = '#'+sidoCollapseId;
+                this.location = location;
+                this.sigunguNms = location.sigunguNm;
+                this.siGunGuSize = Math.ceil(this.sigunguNms.length / 2);
+            },
+            getSiGunGuNm(index){
+                //console.log(index);
+                if(index >= this.sigunguNms.length) return '';
+                return this.sigunguNms[index];
+            },
+            selectSiGunGu(index){
+                Alpine.store('store').roomSearchConditionDto.sggNm = this.sigunguNms[index];
+                Alpine.store('store').roomSearchConditionDto.siNm = this.location.sidoNm;
+                console.log(index);
+                const bsCollapse = bootstrap.Collapse.getInstance(this.sidoCollapseId);
+                bsCollapse.hide();
+
+                const dropDown = bootstrap.Dropdown.getInstance('#location-dropdown');
+                dropDown.hide();
+            }
+        }
+    }
+
+    function usageSelect() {
+        return {
+            usages : [],
+            usageSize : 0,
+            selectMap : {},
+            init() {
+                this.usages = usages;
+                this.usageSize = Math.ceil(this.usages.length / 3);
+                this.selectMap = Alpine.store('store').roomSearchConditionDto.usages;
+            },
+            getUsage(index){
+                if(index >= this.usages.length) return '';
+                return this.usages[index];
+            },
+            getUsageCount(index){
+                let count = usages.length - index * 3
+                if(count > 2) return 3;
+                return count;
+            }
+        }
+    }
+
+    function usageButton(usage) {
+        return {
+            usage : {},
+            isSelect:false,
+            init() {
+                this.usage = usage;
+            },
+            select(selectMap){
+                this.isSelect = !this.isSelect;
+                if(this.isSelect){
+                    selectMap.set(this.usage.name, this.usage);
+                }else{
+                    selectMap.delete(this.usage.name);
+                }
+
+                console.log(selectMap);
+            }
+        }
+    }
+
+    function roomList(){
+        return{
+            list : [],
+            initRoomList(){
+                //여기서 검색조건을 이용한 ajax 필요
+
+                let n = 4;
+                let rowCount = parseInt(n / 3);
+                let restCount = n % 3;
+                for(var i = 0; i < rowCount; i++){
+                    let row = [];
+                    for(var j = 0; j < 3; j++){
+                        row.push(new Room(0, 1, '제리네_루프탑', '은평구', 6, 50, 50, false));
+                    }
+                    this.list.push(row);
+                }
+                if(restCount >= 0){
+                    let row = [];
+                    for(var i = 0; i < n % 3; i++){
+                        row.push(new Room(0, 1, '제리네_루프탑', '은평구', 6, 50, 50, false));
+                    }
+                    row[0].isDeadLine = true;
+                    this.list.push(row);
+                }
+
+                console.log(this.list);
+            }
+        }
+    }
+
+    $.datepicker.setDefaults({
+        dateFormat: 'yy-mm-dd',
+        prevText: '이전 달',
+        nextText: '다음 달',
+        monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+        dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+        dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+        showMonthAfterYear: true,
+        yearSuffix: '년'
+    });
+
+    $(function () {
+        $("#datepicker").datepicker({
+            showButtonPanel: true,
+            currentText: '오늘',
+            closeText: '닫기',
+            minDate: 0
+        });
+    });
+/*]]>*/
+</script>
+</html>
